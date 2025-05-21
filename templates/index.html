@@ -1,13 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
-    <title>Document</title>
+    <title>Accueil </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
 </head>
 <body>
-    <p><a href="{{url_for('a_propos')}}">A propos</a></p>
-    <p><a href="{{url_for('indice')}}">Indice</a></p>
+
+
+    <header>
+
+        <h1>Accueil </h1>
+        <img id="image" src="{{ url_for('get_media', filename='aah.jpg') }}" alt="logo">
+
+        <nav class="nav">
+            <ul>
+                <li class="navigation"><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
+                <li class="navigation"><a href="{{ url_for('Documentation') }}">Documentation</a></li>
+                <li class="navigation"><a href="{{ url_for('apropos') }}">A propos</a></li>
+                <li class="navigation"><a href="{{url_for('indice')}}">Indice</a></li>
+                
+            </ul>
+        </nav>
+
+    </header>
+
+    <div class="texte">
+        <p> Bienvenue sur notre site web représentant l'API de HUB'EAU sur les indicateurs des services. </p>
+        </br>
+        <p> Nous avons réalisé ce site web afin d'organiser les données de l'API indicateurs des services afin qu'elles soit plus compréhensibles.
+            Il est composé de plusieurs pages notamment données indicateurs qui a pour rôle d'illustrer les données que ce soit par des graphiques, par carte ou encore des tableaux.
+            Quant à la page documentation elle permettra d'aider les utilisateurs si ils ne comprennent pas à quoi correspondent les différents indicateurs.
+            Et pour finir la page à propos conclura avec l'organisation du projet.
+            Le site comprend plusieurs fonctionnalités, comme par exemple des tableaux, graphiques, carte intéractive et bien d'autre. 
+        </p>
+    </div>
+
+
+
+    <footer class="footer">
+        <p>Contactez-nous</p>
+        <p>Auteurs :</p>
+        <a href="mailto:diyan-sathsara.hetti-arachchige@etu.u-pec.fr">Diyan HETTI</a>
+        <a href="mailto:isabelle.ye@etu.u-pec.fr">Isabelle YE</a>
+        <a href="mailto:sarah.lebik@etu.u-pec.fr">Sarah Lebik</a>
+        <a href="mailto:mohamed.siffer@etu.u-pec.fr">Mohamed SIFFER</a>
+        <a href="mailto:rayane.ramdane@etu.u-pec.fr">Rayane RAMDANE</a>
+    </footer>
+    
+
+    
+    
 </body>
 </html>
