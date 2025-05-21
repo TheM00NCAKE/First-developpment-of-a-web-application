@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Données indicateurs  </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+<body>
+    <header>
+
+        <div class="video-background">
+            <video src="{{ url_for('static', filename='video_indicateur.mp4') }}" alt="video"> </video>
+
+            <div class="content">
+
+                <h1> Données indicateurs </h1>
+                 <nav class="nav">
+                    <ul>
+                        <li class="navigation"><a href="{{ url_for('index') }}">Accueil</a></li>
+                        <li class="navigation"><a href="{{ url_for('Documentation') }}">Documentation</a></li>
+                        <li class="navigation"><a href="{{ url_for('a_propos') }}">A propos</a></li>
+                    </ul>
+                 </nav>
+    </header>
+                
+            </div>
+        </div>
+
+        
+       
+
+    
+
+      
+</body>
+</html>

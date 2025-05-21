@@ -9,18 +9,16 @@
 <body>
 
 
-    <header>
+    <header class="tête">
 
         <h1>Accueil </h1>
-        <img id="image" src="{{ url_for('get_media', filename='aah.jpg') }}" alt="logo">
+        <video autoplay muted loop src="{{ url_for('static', filename='video_index.mp4') }}" alt="video" type="video/mp4" width="300"></video>
 
         <nav class="nav">
             <ul>
                 <li class="navigation"><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
                 <li class="navigation"><a href="{{ url_for('Documentation') }}">Documentation</a></li>
-                <li class="navigation"><a href="{{ url_for('apropos') }}">A propos</a></li>
-                <li class="navigation"><a href="{{url_for('indice')}}">Indice</a></li>
-                
+                <li class="navigation"><a href="{{ url_for('a_propos') }}">A propos</a></li>                
             </ul>
         </nav>
 
@@ -44,9 +42,10 @@
         <p>Auteurs :</p>
         <a href="mailto:diyan-sathsara.hetti-arachchige@etu.u-pec.fr">Diyan HETTI</a>
         <a href="mailto:isabelle.ye@etu.u-pec.fr">Isabelle YE</a>
-        <a href="mailto:sarah.lebik@etu.u-pec.fr">Sarah Lebik</a>
+        <a href="mailto:sarah.lebik@etu.u-pec.fr">Sarah LEBIK</a>
         <a href="mailto:mohamed.siffer@etu.u-pec.fr">Mohamed SIFFER</a>
         <a href="mailto:rayane.ramdane@etu.u-pec.fr">Rayane RAMDANE</a>
+         <img id="image" src="{{ url_for('static', filename='Logo_upec.png') }}" alt="logo" width="200">
     </footer>
     
 

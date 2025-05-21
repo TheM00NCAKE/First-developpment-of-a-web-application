@@ -1,0 +1,14 @@
+.tête{
+border: 3px solid;
+border-color: rgb(20, 130, 176);
+text-align:center;
+text-justify: auto;
+margin-right: 25px;
+}
+
+.nav{
+display: flex;
+justify-content: center;
+align-items: center;
+
+}
