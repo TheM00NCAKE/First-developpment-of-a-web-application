@@ -1,13 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='static')}}">
+    <title>A propos </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
 </head>
 <body>
-    <h1>A propos</h1>
-    <p><a href="{{url_for('accueil')}}">Retour a l'accueil</a></p>
+
+
+    <header>
+
+         <h1> A propos </h1>
+
+         <nav class="nav">
+            <ul>
+                <li class="navigation"><a href="{{ url_for('index') }}">Accueil</a></li>
+                <li class="navigation"><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
+                <li class="navigation"><a href="{{ url_for('Documentation') }}">Documentation</a></li>
+                
+
+
+            </ul>
+        </nav>
+    </header>
+   
+
+    
+    
 </body>
 </html>
