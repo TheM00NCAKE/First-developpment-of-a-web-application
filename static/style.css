@@ -22,4 +22,57 @@ margin-right: 25px;
 
 }
 
+/*CSS de la page Carte de la France*/
+.regions {
+    stroke: black;     
+    stroke-width: 1.2;  
+
+}
+.departements {
+    stroke: #1f5eb9;   
+    stroke-width: 0.3;    
+}
+
+#FrReg{
+    margin:auto;
+    max-height:600px;
+    max-width:800px;
+    overflow:hidden;
+    box-shadow:6px 6px 3px 3px #9b9c9c;
+
+}
+#header{
+    margin-top:-5%;
+    max-width:100%;
+    max-height:530px;
+}
+
+#titre{
+    font-family:impact;
+    color:white;
+    padding:140px;
+    position: relative;
+    text-align:center;
+    font-size:70px;
+}
+
+#libelle{
+    font-family:Playfair Display, serif;
+    position:relative;
+    text-align:center;
+    color:white;
+    font-size:25px;
+    margin-top:-5%;
+}
+
+video{
+    position: absolute;
+    width: 100%;
+    height: 70%;
+    object-fit: cover; /*recouvrir tout le width*/
+}
+
+button{ /*le bouton est très moche par ailleurs, je vais le changer après :D*/
+    margin:3%; 
+}
 
