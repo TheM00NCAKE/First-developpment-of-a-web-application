@@ -18,6 +18,9 @@ def Documentation():
 def Données_indicateurs():
     return render_template('Données_indicateurs.html')
 
+@app.route('/Test')
+def CarteFranceTest():
+    return render_template('Test.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
