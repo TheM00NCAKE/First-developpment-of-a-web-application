@@ -55,6 +55,7 @@ video {
   max-height: 500px; 
   object-fit: cover;
   display: block;
+  filter: brightness(75%);
 }
 
 .video-title {
@@ -123,8 +124,8 @@ video {
 }
 
 .logo-upec img {
-    width: 250px;
-    height: auto;
+    width: 200px;
+    height: 150px;
 }
 
 .logo-eaufrance{
