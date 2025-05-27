@@ -1,0 +1,132 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #e0f7fa;
+  color: #004d61;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  color: white;
+}
+
+.navbar .logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+
+.nav-links li a:hover {
+  color: #00bfff;
+  text-shadow: 0 0 5px #00bfff;
+}
+
+video {
+  width: 100%;
+  max-height: 500px; 
+  object-fit: cover;
+  display: block;
+}
+
+.video-title {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-size: 4rem;
+  z-index: 2;
+  text-align: center; 
+}
+
+.texte {
+    border: 2px solid #004d61;
+    padding: 20px;
+    margin: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.footer {
+    background-color: #38799c;
+    color: white;
+    padding: 30px 20px;
+    margin-top: 40px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    font-family: 'Arial', sans-serif;
+}
+
+.footer p {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.8rem;
+    margin: 5px 0; 
+}
+
+.footer .emails {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.footer .emails a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    background-color: #008db3;
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+.footer .emails a:hover {
+    background-color: #00cfff;
+    color: #003f4f;
+    text-decoration: underline;
+}
+
+.logo-upec {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.logo-upec img {
+    width: 300px;
+    height: auto;
+}
+
+.logo-eaufrance{
+    margin-right: 700px;
+}

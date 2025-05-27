@@ -3,53 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    <title>Accueil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+   
 </head>
 <body>
 
-
-    <header class="tête">
-
-        <h1>Accueil </h1>
-        <video id="background-video" autoplay loop muted src="{{ url_for('static', filename='video_index.mp4') }}" alt="video" type="video/mp4" width="300"></video>
-
-        <nav class="nav">
-            <ul>
-                <li class="navigation"><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
-                <li class="navigation"><a href="{{ url_for('Documentation') }}">Documentation</a></li>
-                <li class="navigation"><a href="{{ url_for('a_propos') }}">A propos</a></li>                
+    <header>
+        <nav class="navbar">
+        <div class="logo-hubeau">
+            <img src="{{ url_for('static', filename='LOGO_HUBEAU.png') }}" alt="LOGO HUBEAU" width="130">
+        </div>
+        <div class="logo-eaufrance">
+            <img src="{{ url_for('static', filename='eaufrance.png') }}" alt="Eaufrance" width="130">
+        </div>
+        <div class="barre">   
+            <ul class="nav-links">
+                <li><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
+                <li><a href="{{ url_for('Documentation') }}">Documentation</a></li>
+                <li><a href="{{ url_for('apropos') }}">À propos</a></li>
             </ul>
+        </div>     
         </nav>
-
     </header>
+        <div class="video-container">
+            <video autoplay muted loop playsinline>
+                <source src="{{ url_for('static', filename='video_index.mp4') }}" type="video/mp4">
+            </video>
+            <div class="video-title">Accueil</div>
+        </div>
 
-    <div class="texte">
-        <p> Bienvenue sur notre site web représentant l'API de HUB'EAU sur les indicateurs des services. </p>
-        </br>
-        <p> Nous avons réalisé ce site web afin d'organiser les données de l'API indicateurs des services afin qu'elles soit plus compréhensibles.
-            Il est composé de plusieurs pages notamment données indicateurs qui a pour rôle d'illustrer les données que ce soit par des graphiques, par carte ou encore des tableaux.
-            Quant à la page documentation elle permettra d'aider les utilisateurs si ils ne comprennent pas à quoi correspondent les différents indicateurs.
-            Et pour finir la page à propos conclura avec l'organisation du projet.
-            Le site comprend plusieurs fonctionnalités, comme par exemple des tableaux, graphiques, carte intéractive et bien d'autre. 
-        </p>
-    </div>
-
-
-
+        <section class="texte">
+            <p>
+                Bienvenue sur cette plateforme créée dans le cadre de notre projet étudiant, dédiée à la valorisation des données issues de l’API des indicateurs des services de l’eau.<br><br>
+                Notre objectif est de faciliter la compréhension de ces données grâce à des visualisations claires et interactives : graphiques, cartes et tableaux dynamiques.<br><br>
+                Découvrez la page <strong>Données indicateurs</strong> pour explorer différents types d'informations liées aux indicateurs, la page <strong>Documentation</strong> pour mieux comprendre les indicateurs, et la page <strong>À propos</strong> 
+                pour en savoir plus sur notre base de données ainsi que notre démarche.<br><br>
+            </p>
+        </section>
     <footer class="footer">
         <p>Contactez-nous</p>
-        <p>Auteurs :</p>
-        <a href="mailto:diyan-sathsara.hetti-arachchige@etu.u-pec.fr">Diyan HETTI</a>
-        <a href="mailto:isabelle.ye@etu.u-pec.fr">Isabelle YE</a>
-        <a href="mailto:sarah.lebik@etu.u-pec.fr">Sarah LEBIK</a>
-        <a href="mailto:mohamed.siffer@etu.u-pec.fr">Mohamed SIFFER</a>
-        <a href="mailto:rayane.ramdane@etu.u-pec.fr">Rayane RAMDANE</a>
-         <img id="image" src="{{ url_for('static', filename='Logo_upec.png') }}" alt="logo" width="200">
+        <div class="emails">
+            <a href="mailto:diyan-sathsara.hetti-arachchige@etu.u-pec.fr">Diyan HETTI</a>
+            <a href="mailto:isabelle.ye@etu.u-pec.fr">Isabelle YE</a>
+            <a href="mailto:sarah.lebik@etu.u-pec.fr">Sarah LEBIK</a>
+            <a href="mailto:mohamed.siffer@etu.u-pec.fr">Mohamed SIFFER</a>
+            <a href="mailto:rayane.ramdane@etu.u-pec.fr">Rayane RAMDANE</a>
+        </div>
+        <div class="logo-upec">
+            <img src="{{ url_for('static', filename='Logo_upec.png') }}" alt="LOGO UPEC" width="160">
+        </div>
     </footer>
-    
 
-    
-    
 </body>
 </html>
