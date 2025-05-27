@@ -4,34 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Données indicateurs  </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css')}}">
 </head>
 <body>
     <header>
-
-        <div class="video-background">
-            <video src="{{ url_for('static', filename='video_indicateur.mp4') }}" alt="video"> </video>
-
-            <div class="content">
-
-                <h1> Données indicateurs </h1>
-                 <nav class="nav">
-                    <ul>
-                        <li class="navigation"><a href="{{ url_for('index') }}">Accueil</a></li>
-                        <li class="navigation"><a href="{{ url_for('Documentation') }}">Documentation</a></li>
-                        <li class="navigation"><a href="{{ url_for('a_propos') }}">A propos</a></li>
-                    </ul>
-                 </nav>
-
-                
-            </div>
+        <nav class="navbar">
+        <div class="logo-hubeau">
+            <img src="{{ url_for('static', filename='LOGO_HUBEAU.png') }}" alt="LOGO HUBEAU" width="130">
         </div>
-      </header>
+        <div class="logo-eaufrance">
+            <img src="{{ url_for('static', filename='eaufrance.png') }}" alt="Eaufrance" width="130">
+        </div>
+        <div class="barre">   
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Accueil</a></li>
+                <li><a href="{{ url_for('Documentation') }}">Documentation</a></li>
+                <li><a href="{{ url_for('a_propos') }}">À propos</a></li>
+            </ul>
+        </div>     
+        </nav>
+    </header>
         
-       
+        <div class="video-container">
+            <video autoplay muted loop playsinline>
+                <source src="{{ url_for('static', filename='video_indicateur.mp4') }}" type="video/mp4">
+            </video>
+            <div class="video-title">Données indicateurs</div>
+        </div>
 
-    
+        <section class="texte">
+            <p>
+                Texte qui presente la page.<br><br>
+            </p>
+        </section>
 
-      
+  <footer class="footer">
+        <p>Contactez-nous</p>
+        <div class="emails">
+            <a href="mailto:diyan-sathsara.hetti-arachchige@etu.u-pec.fr">Diyan HETTI</a>
+            <a href="mailto:isabelle.ye@etu.u-pec.fr">Isabelle YE</a>
+            <a href="mailto:sarah.lebik@etu.u-pec.fr">Sarah LEBIK</a>
+            <a href="mailto:mohamed.siffer@etu.u-pec.fr">Mohamed SIFFER</a>
+            <a href="mailto:rayane.ramdane@etu.u-pec.fr">Rayane RAMDANE</a>
+        </div>
+        <div class="logo-upec">
+            <img src="{{ url_for('static', filename='Logo_upec.png') }}" alt="LOGO UPEC" width="160">
+        </div>
+    </footer>
+
 </body>
 </html>

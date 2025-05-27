@@ -20,7 +20,7 @@
         </div>
         <div class="barre">   
             <ul class="nav-links">
-                <li><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
+                <li><a href="{{ url_for('CarteFranceTest') }}">Données indicateurs</a></li>
                 <li><a href="{{ url_for('Documentation') }}">Documentation</a></li>
                 <li><a href="{{ url_for('a_propos') }}">À propos</a></li>
             </ul>
@@ -51,10 +51,16 @@
             <a href="mailto:mohamed.siffer@etu.u-pec.fr">Mohamed SIFFER</a>
             <a href="mailto:rayane.ramdane@etu.u-pec.fr">Rayane RAMDANE</a>
         </div>
-        <div class="logo-upec">
-            <img src="{{ url_for('static', filename='Logo_upec.png') }}" alt="LOGO UPEC" width="160">
-        </div>
+    
     </footer>
+
+    <div class="logo-upec">
+            <img src="{{ url_for('static', filename='Logo_upec.png') }}" alt="LOGO UPEC" width="120">
+            <img src="{{ url_for('static', filename='logo_OFB.jpg') }}" alt="LOGO OFB" width="120">
+            <img src="{{ url_for('static', filename='logo-api.svg') }}" alt="LOGO API" width="200">
+            <img src="{{ url_for('static', filename='logo_BGRM.png') }}" alt="LOGO BGRM" width="300">
+
+    </div>
 
 </body>
 </html>

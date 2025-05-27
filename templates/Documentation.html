@@ -4,87 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documentation </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css')}}">
 </head>
 <body>
-        <header>
 
-         <h1> Documentation </h1>
-
-         <nav class="nav">
-            <ul>
-                <li class="navigation"><a href="{{ url_for('index') }}">Accueil</a></li>
-                <li class="navigation"><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
-                <li class="navigation"><a href="{{ url_for('a_propos') }}">A propos</a></li>
-
+    <header>
+        <nav class="navbar">
+        <div class="logo-hubeau">
+            <img src="{{ url_for('static', filename='LOGO_HUBEAU.png') }}" alt="LOGO HUBEAU" width="130">
+        </div>
+        <div class="logo-eaufrance">
+            <img src="{{ url_for('static', filename='eaufrance.png') }}" alt="Eaufrance" width="130">
+        </div>
+        <div class="barre">   
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Accueil</a></li>
+                <li><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
+                <li><a href="{{ url_for('a_propos') }}">À propos</a></li>
             </ul>
+        </div>     
         </nav>
     </header>
+        
+        <div class="video-container">
+            <video autoplay muted loop playsinline>
+                <source src="{{ url_for('static', filename='video_indicateur.mp4') }}" type="video/mp4">
+            </video>
+            <div class="video-title">Documentation</div>
+        </div>
 
-    <div>
-        <p><a href="{{url_for('index')}}">Retour a l'accueil</a></p>
-    <p><strong>ac_D201_0</strong> : Indicateur de consommation domestique d'eau potable par habitant.</p>
-    <p><strong>ac_D202_0</strong> : Indicateur de rendement du réseau de distribution d'eau potable.</p>
-    <p><strong>ac_D204_0</strong> : Indicateur de taux de conformité de la qualité de l'eau potable.</p>
-    <p><strong>ac_P201_1</strong> : Indicateur de prix moyen de l'eau potable pour un service de distribution.</p>
-    <p><strong>ac_P203_3</strong> : Indicateur de coût moyen de production de l'eau potable.</p>
-    <p><strong>ac_P204_3</strong> : Indicateur de coût moyen de distribution de l'eau potable.</p>
-    <p><strong>ac_P205_3</strong> : Indicateur de coût moyen de traitement de l'eau potable.</p>
-    <p><strong>ac_P258_1</strong> : Indicateur de taux de renouvellement des réseaux d'eau potable.</p>
-    <p><strong>ac_VP_023</strong> : Indicateur de volume produit d'eau potable.</p>
-    <p><strong>ac_VP_056</strong> : Indicateur de volume perdu par fuites dans le réseau d'eau potable.</p>
-    <p><strong>ac_VP_176</strong> : Indicateur de volume consommé par les abonnés domestiques.</p>
-    <p><strong>ac_VP_177</strong> : Indicateur de volume consommé par les abonnés non domestiques.</p>
-    <p><strong>ac_VP_178</strong> : Indicateur de volume consommé total.</p>
-    <p><strong>ac_VP_179</strong> : Indicateur de volume facturé total.</p>
-    <p><strong>ac_VP_186</strong> : Indicateur de volume d'eau importé.</p>
-    <p><strong>ac_VP_190</strong> : Indicateur de volume d'eau exporté.</p>
-    <p><strong>ac_VP_191</strong> : Indicateur de volume d'eau prélevé.</p>
-    <p><strong>ac_VP_199</strong> : Indicateur de volume d'eau traité.</p>
-    <p><strong>ac_VP_200</strong> : Indicateur de volume d'eau distribué.</p>
-    <p><strong>ac_VP_228</strong> : Indicateur de volume d'eau non facturé.</p>
-    <p><strong>ac_VP_229</strong> : Indicateur de volume d'eau consommé non domestique.</p>
-    <p><strong>aep_D101_0</strong> : Indicateur de densité de population desservie en eau potable.</p>
-    <p><strong>aep_D102_0</strong> : Indicateur de longueur du réseau de distribution d'eau potable.</p>
-    <p><strong>aep_D151_0</strong> : Indicateur de nombre de branchements d'eau potable.</p>
-    <p><strong>aep_DC_192</strong> : Indicateur de conformité des installations de traitement d'eau potable.</p>
-    <p><strong>aep_P101_1</strong> : Indicateur de coût d'exploitation du service d'eau potable.</p>
-    <p><strong>aep_P101_1a</strong> : Indicateur de coût d'exploitation par mètre cube distribué.</p>
-    <p><strong>aep_P101_1b</strong> : Indicateur de coût d'exploitation par abonné.</p>
-    <p><strong>aep_P102_1</strong> : Indicateur de coût d'investissement du service d'eau potable.</p>
-    <p><strong>aep_P102_1a</strong> : Indicateur de coût d'investissement par mètre cube distribué.</p>
-    <p><strong>aep_P102_1b</strong> : Indicateur de coût d'investissement par abonné.</p>
-    <p><strong>aep_P104_3</strong> : Indicateur de coût total du service d'eau potable.</p>
-    <p><strong>aep_P106_3</strong> : Indicateur de coût total par mètre cube distribué.</p>
-    <p><strong>aep_P107_2</strong> : Indicateur de coût total par abonné.</p>
-    <p><strong>aep_P108_3</strong> : Indicateur de coût total par habitant desservi.</p>
-    <p><strong>aep_P151_1</strong> : Indicateur de coût de maintenance du réseau d'eau potable.</p>
-    <p><strong>aep_P152_1</strong> : Indicateur de coût de renouvellement du réseau d'eau potable.</p>
-    <p><strong>aep_P155_1</strong> : Indicateur de coût de gestion des ressources en eau.</p>
-    <p><strong>aep_VP_056</strong> : Indicateur de volume d'eau non comptabilisé.</p>
-    <p><strong>aep_VP_059</strong> : Indicateur de volume d'eau utilisé pour l'entretien du réseau.</p>
-    <p><strong>aep_VP_060</strong> : Indicateur de volume d'eau utilisé pour les incendies.</p>
-    <p><strong>aep_VP_061</strong> : Indicateur de volume d'eau utilisé pour les services publics.</p>
-    <p><strong>aep_VP_063</strong> : Indicateur de volume d'eau utilisé pour les usages agricoles.</p>
-    <p><strong>aep_VP_177</strong> : Indicateur de volume d'eau consommé par les abonnés non domestiques.</p>
-    <p><strong>aep_VP_178</strong> : Indicateur de volume d'eau consommé total.</p>
-    <p><strong>aep_VP_179</strong> : Indicateur de volume d'eau facturé total.</p>
-    <p><strong>aep_VP_190</strong> : Indicateur de volume d'eau exporté.</p>
-    <p><strong>aep_VP_191</strong> : Indicateur de volume d'eau prélevé.</p>
-    <p><strong>aep_VP_201</strong> : Indicateur de volume d'eau produit.</p>
-    <p><strong>aep_VP_228</strong> : Indicateur de volume d'eau non facturé.</p>
-    <p><strong>aep_VP_231</strong> : Indicateur de volume d'eau consommé non domestique.</p>
-    <p><strong>anc_D301_0</strong> : Indicateur de densité de population desservie en assainissement collectif.</p>
-    <p><strong>anc_DC_196</strong> : Indicateur de conformité des installations d'assainissement collectif.</p>
-    <p><strong>anc_DC_197</strong> : Indicateur de conformité des rejets d'eaux usées traitées.</p>
-    <p><strong>anc_P301_3</strong> : Indicateur de coût moyen du service d'assainissement collectif.</p>
-    <p><strong>anc_VP_166</strong> : Indicateur de volume d'eaux usées collectées.</p>
-    <p><strong>anc_VP_167</strong> : Indicateur de volume d'eaux usées traitées.</p>
-    <p><strong>anc_VP_168</strong> : Indicateur de volume d'eaux usées rejetées.</p>
-    <p><strong>anc_VP_169</strong> : Indicateur de volume d'eaux usées réutilisées.</p>
-    <p><strong>anc_VP_230</strong> : Indicateur de volume d'eaux usées non traitées.</p>
-    </div>
-    
+        <section class="texte">
+            <p>
+                Texte qui presente la page.<br><br>
+            </p>
+
+
+
+        <div>
+            <p><a href="{{url_for('index')}}">Retour a l'accueil</a></p>
+        <p><strong>ac_D201_0</strong> : Indicateur de consommation domestique d'eau potable par habitant.</p>
+        <p><strong>ac_D202_0</strong> : Indicateur de rendement du réseau de distribution d'eau potable.</p>
+        <p><strong>ac_D204_0</strong> : Indicateur de taux de conformité de la qualité de l'eau potable.</p>
+        <p><strong>ac_P201_1</strong> : Indicateur de prix moyen de l'eau potable pour un service de distribution.</p>
+        <p><strong>ac_P203_3</strong> : Indicateur de coût moyen de production de l'eau potable.</p>
+        <p><strong>ac_P204_3</strong> : Indicateur de coût moyen de distribution de l'eau potable.</p>
+        <p><strong>ac_P205_3</strong> : Indicateur de coût moyen de traitement de l'eau potable.</p>
+        <p><strong>ac_P258_1</strong> : Indicateur de taux de renouvellement des réseaux d'eau potable.</p>
+        <p><strong>ac_VP_023</strong> : Indicateur de volume produit d'eau potable.</p>
+        <p><strong>ac_VP_056</strong> : Indicateur de volume perdu par fuites dans le réseau d'eau potable.</p>
+        <p><strong>ac_VP_176</strong> : Indicateur de volume consommé par les abonnés domestiques.</p>
+        <p><strong>ac_VP_177</strong> : Indicateur de volume consommé par les abonnés non domestiques.</p>
+        <p><strong>ac_VP_178</strong> : Indicateur de volume consommé total.</p>
+        <p><strong>ac_VP_179</strong> : Indicateur de volume facturé total.</p>
+        <p><strong>ac_VP_186</strong> : Indicateur de volume d'eau importé.</p>
+        <p><strong>ac_VP_190</strong> : Indicateur de volume d'eau exporté.</p>
+        <p><strong>ac_VP_191</strong> : Indicateur de volume d'eau prélevé.</p>
+        <p><strong>ac_VP_199</strong> : Indicateur de volume d'eau traité.</p>
+        <p><strong>ac_VP_200</strong> : Indicateur de volume d'eau distribué.</p>
+        <p><strong>ac_VP_228</strong> : Indicateur de volume d'eau non facturé.</p>
+        <p><strong>ac_VP_229</strong> : Indicateur de volume d'eau consommé non domestique.</p>
+        <p><strong>aep_D101_0</strong> : Indicateur de densité de population desservie en eau potable.</p>
+        <p><strong>aep_D102_0</strong> : Indicateur de longueur du réseau de distribution d'eau potable.</p>
+        <p><strong>aep_D151_0</strong> : Indicateur de nombre de branchements d'eau potable.</p>
+        <p><strong>aep_DC_192</strong> : Indicateur de conformité des installations de traitement d'eau potable.</p>
+        <p><strong>aep_P101_1</strong> : Indicateur de coût d'exploitation du service d'eau potable.</p>
+        <p><strong>aep_P101_1a</strong> : Indicateur de coût d'exploitation par mètre cube distribué.</p>
+        <p><strong>aep_P101_1b</strong> : Indicateur de coût d'exploitation par abonné.</p>
+        <p><strong>aep_P102_1</strong> : Indicateur de coût d'investissement du service d'eau potable.</p>
+        <p><strong>aep_P102_1a</strong> : Indicateur de coût d'investissement par mètre cube distribué.</p>
+        <p><strong>aep_P102_1b</strong> : Indicateur de coût d'investissement par abonné.</p>
+        <p><strong>aep_P104_3</strong> : Indicateur de coût total du service d'eau potable.</p>
+        <p><strong>aep_P106_3</strong> : Indicateur de coût total par mètre cube distribué.</p>
+        <p><strong>aep_P107_2</strong> : Indicateur de coût total par abonné.</p>
+        <p><strong>aep_P108_3</strong> : Indicateur de coût total par habitant desservi.</p>
+        <p><strong>aep_P151_1</strong> : Indicateur de coût de maintenance du réseau d'eau potable.</p>
+        <p><strong>aep_P152_1</strong> : Indicateur de coût de renouvellement du réseau d'eau potable.</p>
+        <p><strong>aep_P155_1</strong> : Indicateur de coût de gestion des ressources en eau.</p>
+        <p><strong>aep_VP_056</strong> : Indicateur de volume d'eau non comptabilisé.</p>
+        <p><strong>aep_VP_059</strong> : Indicateur de volume d'eau utilisé pour l'entretien du réseau.</p>
+        <p><strong>aep_VP_060</strong> : Indicateur de volume d'eau utilisé pour les incendies.</p>
+        <p><strong>aep_VP_061</strong> : Indicateur de volume d'eau utilisé pour les services publics.</p>
+        <p><strong>aep_VP_063</strong> : Indicateur de volume d'eau utilisé pour les usages agricoles.</p>
+        <p><strong>aep_VP_177</strong> : Indicateur de volume d'eau consommé par les abonnés non domestiques.</p>
+        <p><strong>aep_VP_178</strong> : Indicateur de volume d'eau consommé total.</p>
+        <p><strong>aep_VP_179</strong> : Indicateur de volume d'eau facturé total.</p>
+        <p><strong>aep_VP_190</strong> : Indicateur de volume d'eau exporté.</p>
+        <p><strong>aep_VP_191</strong> : Indicateur de volume d'eau prélevé.</p>
+        <p><strong>aep_VP_201</strong> : Indicateur de volume d'eau produit.</p>
+        <p><strong>aep_VP_228</strong> : Indicateur de volume d'eau non facturé.</p>
+        <p><strong>aep_VP_231</strong> : Indicateur de volume d'eau consommé non domestique.</p>
+        <p><strong>anc_D301_0</strong> : Indicateur de densité de population desservie en assainissement collectif.</p>
+        <p><strong>anc_DC_196</strong> : Indicateur de conformité des installations d'assainissement collectif.</p>
+        <p><strong>anc_DC_197</strong> : Indicateur de conformité des rejets d'eaux usées traitées.</p>
+        <p><strong>anc_P301_3</strong> : Indicateur de coût moyen du service d'assainissement collectif.</p>
+        <p><strong>anc_VP_166</strong> : Indicateur de volume d'eaux usées collectées.</p>
+        <p><strong>anc_VP_167</strong> : Indicateur de volume d'eaux usées traitées.</p>
+        <p><strong>anc_VP_168</strong> : Indicateur de volume d'eaux usées rejetées.</p>
+        <p><strong>anc_VP_169</strong> : Indicateur de volume d'eaux usées réutilisées.</p>
+        <p><strong>anc_VP_230</strong> : Indicateur de volume d'eaux usées non traitées.</p>
+        </div>
+        </section>
+      <footer class="footer">
+        <p>Contactez-nous</p>
+        <div class="emails">
+            <a href="mailto:diyan-sathsara.hetti-arachchige@etu.u-pec.fr">Diyan HETTI</a>
+            <a href="mailto:isabelle.ye@etu.u-pec.fr">Isabelle YE</a>
+            <a href="mailto:sarah.lebik@etu.u-pec.fr">Sarah LEBIK</a>
+            <a href="mailto:mohamed.siffer@etu.u-pec.fr">Mohamed SIFFER</a>
+            <a href="mailto:rayane.ramdane@etu.u-pec.fr">Rayane RAMDANE</a>
+        </div>
+        <div class="logo-upec">
+            <img src="{{ url_for('static', filename='Logo_upec.png') }}" alt="LOGO UPEC" width="160">
+        </div>
+    </footer>
     
 </body>
 </html>

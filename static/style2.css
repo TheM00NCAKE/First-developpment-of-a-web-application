@@ -8,7 +8,7 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #e0f7fa;
+  background-color: #ffffff;
   color: #004d61;
 }
 
@@ -123,7 +123,7 @@ video {
 }
 
 .logo-upec img {
-    width: 300px;
+    width: 250px;
     height: auto;
 }
 
