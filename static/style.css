@@ -55,8 +55,12 @@ video {
   max-height: 400px; 
   object-fit: cover;
   display: block;
-  filter: brightness(75%);
 }
+
+.video_a_propos {
+  filter: brightness(50%);
+}
+
 
 .video-title {
   position: absolute;
@@ -132,6 +136,8 @@ video {
     margin-right: 700px;
 }
 
+
+
 .apropossae{
   border: solid;
   padding: 20px;
@@ -164,10 +170,6 @@ video {
   background-color: #f9f9f9;
   border-radius: 8px;
 }
-
-
-
- <!--A partir de la cest pour la carte d isabelle sur la page donnée indicateurs-->
 
 .regions {
     stroke: black;     
