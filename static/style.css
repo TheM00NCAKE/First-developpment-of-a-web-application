@@ -132,6 +132,40 @@ video {
     margin-right: 700px;
 }
 
+.apropossae{
+  border: solid;
+  padding: 20px;
+  margin: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+ 
+}
+
+.objectifs{
+  border: solid;
+  padding: 20px;
+  margin: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.competences{
+  border: solid;
+  padding: 20px;
+  margin: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.fonctionnalites{
+  border: solid;
+  padding: 20px;
+  margin: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+
 
  <!--A partir de la cest pour la carte d isabelle sur la page donnée indicateurs-->
 

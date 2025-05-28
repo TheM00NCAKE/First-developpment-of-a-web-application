@@ -1,6 +1,5 @@
 import sqlite3
 
-
 def connexion():
     return sqlite3.connect("Indicateur_des_services.db")
 
@@ -113,5 +112,3 @@ create_table_Collectivite()
 create_table_Commune()
 create_table_Indicateur()
 create_table_Descriptif()
-
-
