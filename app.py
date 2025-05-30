@@ -1,6 +1,12 @@
 from flask import Flask, render_template
 
 app = Flask(__name__)
+headings = ("N° de ligne", "Code service","Année","Service","Mode gestion","Collectivité","Commune","Indicateur","Valeur","Unité")
+data = (
+    ("1","74893", "2019", "Service1", "A deux", "Commune", "Alfortville", "D102", "94", "%"),
+    ("2","89426", "2018", "Service2", "Seul", "Plusieurs village" ,"Maison-Alfort" ,"VP.189" ,"4000" ,"m²"),
+    ("3","35783", "2017", "Service3", "Seul", "Commune" ,"Paris" ,"D.109" ,"45" ,"€")
+)
 
 @app.route("/")
 def index():    
