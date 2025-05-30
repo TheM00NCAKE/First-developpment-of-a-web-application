@@ -171,30 +171,51 @@ video {
   border-radius: 8px;
 }
 
+/*CSS de la carte de la France */
+
 .regions {
     stroke: black;     
     stroke-width: 1.2;  
-
+    shape-rendering: geometricPrecision;
+    text-rendering: geometricPrecision;
+    image-rendering: optimizeQuality;
 }
 .departements {
     stroke: #1f5eb9;   
     stroke-width: 0.3;    
 }
 
+.regions:hover:not(.Gua) {
+  fill: #b2d3fb;
+}
+
+.regions.Gua:hover {
+  fill: #b2d3fb; /* couleur de survol */
+}
+
+#contenu{
+  border-radius:3px;
+  position:relative;
+  margin-left:2%;
+  max-height:40em;
+  max-width:100%;
+}
 #FrReg{
     border-radius:3px;
     position:relative;
-    margin:auto;
+    margin-left:47%;
     max-height:38em;
     max-width:52%;
     overflow:hidden;
     box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
 }
 
-
+#header{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
 #titre{
-    font-family:impact;
     color:white;
     padding:15%;
     position: relative;
@@ -211,7 +232,6 @@ video {
     margin-top:-5%;
 }
 
-
 #bouton_dezoom{ 
     display:flex;
     position:absolute;
@@ -220,7 +240,7 @@ video {
     box-sizing: border-box;
     border-radius:3px;
     transform: translateY(-50px);
-    left:24%;
+    left:48%;
     width:60px;
     height:50px;
     background-color:#e2eafb;
@@ -228,3 +248,56 @@ video {
     cursor: pointer;
 }
 
+#bouton_dezoom:hover{
+    box-shadow:1px 1px 1px 1px #a7a7a9;
+}
+
+/*CSS du tableau */
+
+.table{
+    /* Style général du tableau */
+    background-color: #f5f5f5;
+    font-family: roboto;  /* Police utilisée */
+    border-collapse: collapse;  /* Fusion des bordures */
+    width: auto;
+    box-shadow: 0 5px 50px rgba(0,0,0,0.15);  /* Ombre portée */
+    cursor: pointer;
+    margin: 10px auto;  /* Centrage avec marge verticale */
+    /*border: 2px solid midnightblue;*/  /* Commenté */
+    border: 1px solid #ddd;  /* Bordure fine */
+}
+
+.table__header {
+    /* Style des cellules d'en-tête */
+    text-align: left;
+    background-color: midnightblue;
+    color: white;
+}
+
+.table__cell {
+    /* Style des cellules normales */
+    padding: 15px 20px;
+}
+
+.table__cell, .table__header{
+    /* Bordure pour chaque cellule */
+    border: 1px solid #c2c2c2;
+}
+
+.table__row:nth-child(even) {
+    /* Couleur différente pour les lignes paires */
+    background-color: #e8e8e8;
+}
+
+.table__row:last-of-type {
+    /* Bordure plus marquée pour la dernière ligne */
+    border-bottom: 2px solid midnightblue;
+}
+
+#tableau{
+  width:670px;
+  position:absolute;
+  max-width:55%;
+  overflow-y : scroll;
+  overflow-x : scroll;
+}
