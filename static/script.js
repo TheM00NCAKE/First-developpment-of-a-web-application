@@ -18,73 +18,125 @@ var style = {
 var TOrigin = { HautsDeFrance: '580px 0px', Normandie: '430px 50px', Bretagne: '210px 130px', GrandEst: '660px 100px', NouvelleAquitaine: '400px 420px', Occitanie: '500px 590px', IleDeFrance: '560px 100px', CentreValdeLoire: '500px 220px', PaysDeLaLoire: '360px 200px', BourgogneFrancheComté: '660px 200px', AuvergneRhôneAlpes: '660px 400px', ProvenceAlpesCôteDazur: '690px 500px', Corse: '900px 600px',Guyane_973:'0px 0px',Mayotte_976:'0px 90px',LaReunion_974:'0px 310px',Martinique_972:'0px 470px',Guadeloupe_972:'0px 600px'}; //x y
 var dezoom = {
     transform: 'scale(1)',
-    transition: 'transform 1 ease-out',
+    transition: 'transform 0.5s ease-out',
+    willChange: 'transform'
 };
+
 var deptss = $(); 
 //dict pour les couleurs de la carte
 var couleurs={color_region:'#f5f5fe',color_departement:'#f5f5fe',color_reg_mouseover:'#b2d3fb',color_reg_clique:'#cbcbfa',color_dept_mouseover:'#4472c4'};
+
+//////////////////////////:Code pour le tableau
+const compare = (ids, asc) => (row1, row2) => {
+  const tdValue = (row, ids) => row.children[ids].textContent;
+  const tri = (v1, v2) =>
+    v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2)
+      ? v1 - v2
+      : v1.toString().localeCompare(v2);
+
+  return tri(
+    tdValue(asc ? row1 : row2, ids),
+    tdValue(asc ? row2 : row1, ids)
+  );
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  const table = document.querySelector('table');
+  const tbody = table.querySelector('tbody');
+  const thx = table.querySelectorAll('th');
+  const trxb = tbody.querySelectorAll('tr');
+
+  thx.forEach((th, idx) => {
+    th.addEventListener('click', function () {
+      const asc = this.asc = !this.asc;
+      const sortedRows = Array.from(trxb).sort(compare(idx, asc));
+      sortedRows.forEach(row => tbody.appendChild(row));
+    });
+  });
+});
+/////////////////////////////Fin code tableau
+
 //quand le document est chargé : 
 $(document).ready(function () {
-    $(".regions").css('fill',couleurs['color_region']); //couleur region de base
-    $(".departements").css('fill', couleurs['color_departement']); //couleur de département (les depts sont superposés sur les régions)
+    const $carte = $('#carte');
     $('#depts').css('pointer-events', 'none'); //impossible d'interagir avec les depts pour l'instant
-    $('.regions').mouseover(function (e) {         
-        e.stopPropagation();  //parfois la gestion des évènements est bordélique, donc les function() exec plusieurs fois. Ca permet d'éviter ce problème
-        if (this.classList.contains('Gua')){ 
-            $('.regions').css('fill', couleurs['color_region']);
-            $('.Gua').css('fill',couleurs['color_reg_mouseover']);
-        } else {
-            $('.regions').css('fill', couleurs['color_region']); //les régions pas cliqués ne changent pas de couleurs
-            } $(this).css('fill', couleurs['color_reg_mouseover']); //couleur quand la souris passe sur une région
-         });
+    $('.Gua').on('mouseover', function () {
+        $('.Gua').css('fill', couleurs['color_reg_mouseover']);
+    });
+
+    $('.Gua').on('mouseout', function () {
+        $('.Gua').css('fill', ''); // remet la couleur par défaut du SVG
+    });
     $('#regs .regions').click(function (e) {   /*lorsqu'une zone de la carte de la France a été cliqué*/
         e.stopPropagation();
-        $('.regions').css('fill', couleurs['color_region']); 
+        $('.regions').css('fill', '');
         $(this).css('fill', couleurs['color_reg_clique']); //couleur de la région cliqué change
         region_clique = "#" + this.id;
         //id correspondant au "groupe" de départements cliqué (les depts de la région quoi)
         var depts='#Depts_'+this.id;
         deptss=$(depts).find('.departements'); //on récupère chaque département de l'id récupéré
         //application du css : zoom, ajout/enlève la possibilité de cliquer/mouseover sur certains endroits
-        $('#carte').css(style);
-        $('#carte').css('transform-origin', TOrigin[this.id]);
+        
+// Applique le zoom dans la prochaine frame
+    $carte.css('transform-origin', TOrigin[this.id]);
+    // Active le will-change juste avant le zoom (permet de notifier le navig qu'on veut zoomer : le nav se "prépare" -> latence diminué)
+    $carte.css('will-change', 'transform');
+    requestAnimationFrame(() => {
+        $carte.css(style);      //style appliqué
+    });
+    // Supprime will-change après la transition pour éviter le flou
+    setTimeout(() => {
+        $carte.css('will-change', 'auto');
+    }, 300); 
+
         $('#regs').css('pointer-events', 'none');
         $(deptss).css('pointer-events', 'auto');
         $(deptss).mouseover(function () {
         //le if pour l'instant est un bout de code inutile (prendre en compte que le else), à voir pour la suite avec la gestion des requêtes :)
         if (departement_clique != "") {
-            $('.departements').not(departement_clique).css('fill', couleurs['color_departement']); 
+            $('.departements').not(departement_clique).css('fill', '');
             $(departement_clique).css('fill',couleurs['color_dept_mouseover']); 
         } else {
-            $('.departements').css('fill', couleurs['color_departement']); //rien de spécial 
+            $('.departements').css('fill', '');
         }
         $(this).css('fill', couleurs['color_dept_mouseover']); //couleur de dept ou la souris passe dessus
         });
         });
-        $('#reg_OutreMer .regions').click(function (e) {   /*lorsqu'une zone de la carte d'Outre Mer a été cliqué*/
+        $('#reg_OutreMer .regions').click(function (e) {
             e.stopPropagation();
-            $('.regions').css('fill', couleurs['color_region']); 
-            if (this.classList.contains('Gua')){
-                $('.Gua').css('fill',couleurs['color_reg_clique']);
-                $('#carte').css(style);
-                $('#carte').css('transform-origin', TOrigin["Guadeloupe_972"]);
-            }else{
-                $(this).css('fill', couleurs['color_reg_clique']); 
-                //couleur de la région cliqué
+            $('.regions').css('fill', '');
+            const origin = this.classList.contains('Gua') ? TOrigin["Guadeloupe_972"] : TOrigin[this.id];
+
+            if (this.classList.contains('Gua')) {
+                $('.Gua').css('fill', couleurs['color_reg_clique']);
+            } else {
+                $(this).css('fill', couleurs['color_reg_clique']);
                 region_clique = "#" + this.id;
-                $('#carte').css(style);
-                $('#carte').css('transform-origin', TOrigin[this.id]);
             }
+
+            $carte.css('transform-origin', origin);
+            $carte.css('will-change', 'transform');
+
+            requestAnimationFrame(() => {
+                $carte.css(style);
+            });
+
+            setTimeout(() => {
+                $carte.css('will-change', 'auto');
+            }, 300);
+
             $('#regs').css('pointer-events', 'none');
         });
+
     });
     function dezooming() {
         //tout réinit à la normale (y'a peut être moyen de faire mieux...)
         $('#carte').css(dezoom);
         $('#regs').css('pointer-events', '');
         $('#depts').css('pointer-events', 'none');
-        $('.regions').css('fill', couleurs['color_region']);  //reinit couleurs de base
-        $('.departements').css('fill', couleurs['color_departement']);
+        $('.regions').css('fill', '');
+        $('.departements').css('fill', '');
         $(deptss).css('pointer-events', 'none');
         region_clique = "";
     }
+    
