@@ -107,7 +107,25 @@ def delete_row(table, column, value):
     except Exception as e:
         print(f"Erreur lors de la suppression dans '{table}': {e}")
 
+def get_all_data(table_name):
+    try:
+        with connexion() as conn:
+            cursor = conn.cursor()
+            # Requête SQL pour récupérer toutes les données
+            sql = f"SELECT * FROM {table_name};"
+            cursor.execute(sql)
+            rows = cursor.fetchall()
 
+            # Optionnel : Récupérer les noms des colonnes
+            column_names = [description[0] for description in cursor.description]
+
+            # Retourner les colonnes et les lignes
+            return {"columns": column_names, "rows": rows}
+    except Exception as e:
+        print(f"Erreur lors de la récupération des données de la table {table_name}: {e}")
+        return None
+
+    
 create_table_Collectivite()
 create_table_Commune()
 create_table_Indicateur()
