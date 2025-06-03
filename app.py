@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-import Indicateur_des_services as db
+import Indicateur_des_services.db as db
 
 app = Flask(__name__)
 headings = ("N° de ligne", "Code service","Année","Service","Mode gestion","Collectivité","Commune","Indicateur","Valeur","Unité")
