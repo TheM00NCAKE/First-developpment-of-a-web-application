@@ -1,8 +1,9 @@
 from flask import Flask, render_template
+from Model import *
 
 app = Flask(__name__)
-headings = ("N° de ligne", "Code service","Service","Mode gestion","Collectivité","Commune","Indicateur","Valeur")
-data = ()
+headings = ("Code indicateur","Nom Service","Mode gestion","Code commune","Nom commmune","Type collectivité","Indicateur")
+data = get_all_data()
 
 @app.route("/")
 def index():    

@@ -300,4 +300,5 @@ video {
   max-width:55%;
   overflow-y : scroll;
   overflow-x : scroll;
+  height: 500px;
 }

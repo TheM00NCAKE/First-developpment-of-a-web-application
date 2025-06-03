@@ -1,7 +1,10 @@
 import sqlite3
 
 def connexion():
-    return sqlite3.connect("Indicateur_des_services.db")
+    try:
+        return sqlite3.connect("Indicateur_des_services.db")
+    except:
+        print("CACA")
 
 def create_table_Indicateur():
     try:
@@ -107,26 +110,18 @@ def delete_row(table, column, value):
     except Exception as e:
         print(f"Erreur lors de la suppression dans '{table}': {e}")
 
-def get_all_data(table_name):
+def get_all_data():
     try:
         with connexion() as conn:
             cursor = conn.cursor()
             # Requête SQL pour récupérer toutes les données
-            sql = f"SELECT * FROM {table_name};"
+            sql = '''SELECT * FROM Descriptif'''
             cursor.execute(sql)
+            conn.commit()
             rows = cursor.fetchall()
-
-            # Optionnel : Récupérer les noms des colonnes
-            column_names = [description[0] for description in cursor.description]
-
-            # Retourner les colonnes et les lignes
-            return {"columns": column_names, "rows": rows}
+            return rows
     except Exception as e:
-        print(f"Erreur lors de la récupération des données de la table {table_name}: {e}")
+        print(f"Erreur lors de la récupération des données de la table descriptif ou tout: {e}")
         return None
 
-    
-create_table_Collectivite()
-create_table_Commune()
-create_table_Indicateur()
-create_table_Descriptif()
+
