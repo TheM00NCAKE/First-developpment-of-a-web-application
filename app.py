@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import Indicateur_des_services as db
 
 app = Flask(__name__)
 headings = ("N° de ligne", "Code service","Année","Service","Mode gestion","Collectivité","Commune","Indicateur","Valeur","Unité")
@@ -7,6 +8,8 @@ data = (
     ("2","89426", "2018", "Service2", "Seul", "Plusieurs village" ,"Maison-Alfort" ,"VP.189" ,"4000" ,"m²"),
     ("3","35783", "2017", "Service3", "Seul", "Commune" ,"Paris" ,"D.109" ,"45" ,"€")
 )
+
+tableau = request.args.get("tableau", "Demographie")
 
 @app.route("/")
 def index():    
