@@ -37,7 +37,12 @@
                     <li><a href="{{ url_for('Documentation') }}">Documentation</a></li>
                     <li><a href="{{ url_for('a_propos') }}">À propos</a></li>
                 </ul>
-            </div>     
+            </div>
+            <label class="ui-switch">
+            <input id="toggle" type="checkbox" onchange="mode_sombre()">
+            <div class="slider">
+            <div class="circle"></div>
+        </div>     
         </nav>
     </header>
         

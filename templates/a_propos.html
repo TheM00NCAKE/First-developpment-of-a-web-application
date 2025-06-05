@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>À propos - Indic'eau</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link id="theme" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
 <body>
     <header>
@@ -25,6 +26,11 @@
                 <li><a href="{{ url_for('Documentation') }}">Documentation</a></li>
                 <li><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
             </ul>
+            <label class="ui-switch">
+            <input id="toggle" type="checkbox" onchange="mode_sombre()">
+            <div class="slider">
+            <div class="circle"></div>
+            </div>
         </nav>
     </header>
 
