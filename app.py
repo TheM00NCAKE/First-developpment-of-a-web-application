@@ -3,7 +3,9 @@ from Model import *
 import sqlite3
 import pandas as pd
 from pretty_html_table import build_table
+
 app = Flask(__name__)
+
 def tableau(): 
     #Construit une table de données en fonction des choix de l'utilisateur
     cnx = sqlite3.connect('Indicateur_des_services.db')
@@ -15,8 +17,16 @@ def tableau():
     if df.empty:       #si la requête n'affiche rien, un message s'affiche pour confirmer à l'utilisateur que les données qu'il veut sélectionner n'existe pas
         x="<h1 style='text-align:center'>Informations indisponibles dans notre base de données</h1>"
     else:
-        x = build_table(df, color="blue_dark", padding="15px 20px", font_size="14px",text_align='center',even_bg_color="#f5f5f5",odd_bg_color="#e8e8e8")    #créer un tableau bleu claire plus joli avec la bibliothèque pretty_html_table
-        #x = x.replace({"<table":'<table style="color: black;""<th style='background-color: #305496'":"<th style='background-color: #191970'"})
+        x = build_table(df, color="blue_dark", padding="15px 20px", font_size="14px",text_align='center',even_bg_color="#e8e8e8",odd_bg_color="#f5f5f5",border_bottom_color="blue_dark")    #créer un tableau bleu claire plus joli avec la bibliothèque pretty_html_table
+        y = {
+            '<table': '<table id="tableau"',
+            '<tr style="text-align: right;"': '<tr style="border: 1px solid #1f2f90;"',
+            '<th style="background-color: #305496;' : '<th',
+        }
+
+        for cle, valeur in y.items():
+            x = x.replace(cle, valeur)
+
     cnx.close()
     return x
 
