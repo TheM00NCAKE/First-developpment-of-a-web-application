@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>À propos - Indic'eau</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-left">
+                <a href="https://www.hubeau.eaufrance.fr/" target="_blank" rel="noopener noreferrer">
+                    <img src="{{ url_for('static', filename='LOGO_HUBEAU.png') }}" alt="Logo Hub’Eau" width="130" />
+                </a>
+                <a href="https://www.eaufrance.fr/" target="_blank" rel="noopener noreferrer">
+                    <img src="{{ url_for('static', filename='eaufrance.png') }}" alt="Logo Eaufrance" width="130" />
+                </a>
+            </div>
+            <div class="navbar-title">
+                <h1>Indic'eau</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Accueil</a></li>
+                <li><a href="{{ url_for('Documentation') }}">Documentation</a></li>
+                <li><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Notre démarche</h2>
+            <p>
+                Cette plateforme a été conçue dans le cadre de notre première année de BUT Informatique. L'objectif principal est
+                de rendre accessibles les données publiques sur la qualité de l’eau en France, en exploitant les données ouvertes
+                de la plateforme Eaufrance et son API Hub’Eau.
+            </p>
+            <p>
+                Nous souhaitons offrir un outil clair, ergonomique et fiable, adapté aussi bien aux professionnels qu’au grand public,
+                pour suivre en temps réel la qualité de l’eau sur le territoire national.
+            </p>
+        </section>
+
+        <section class="methodes">
+            <h2>Méthode de travail</h2>
+            <p>
+                Le projet a impliqué plusieurs étapes : analyse des besoins, conception de la base de données relationnelle,
+                récupération et stockage des données statiques localement, et interrogation en temps réel de l’API Hub’Eau pour
+                les données dynamiques.
+            </p>
+            <p>
+                Le développement s’est fait avec Python et Flask, en suivant le modèle MVC pour séparer proprement les responsabilités
+                entre données, logique métier et présentation.
+            </p>
+            <p>
+                Enfin, nous avons réalisé des tests pour assurer la robustesse de l’application, notamment en cas d’indisponibilité
+                de l’API.
+            </p>
+        </section>
+
+        <section class="choix-techniques">
+            <h2>Choix techniques</h2>
+            <ul>
+                <li>Base de données locale pour les données statiques, afin d’optimiser les performances.</li>
+                <li>Utilisation de Flask comme framework backend, pour une architecture claire et modulaire.</li>
+                <li>Communication en temps réel avec l’API Hub’Eau pour afficher les indicateurs actuels de la qualité de l’eau.</li>
+                <li>Interface utilisateur simple, responsive et ergonomique.</li>
+                <li>Mise en place d’un système de filtrage par zones géographiques et points de mesure.</li>
+            </ul>
+        </section>
+
+        <section class="api-donnees">
+            <h2>API et données utilisées</h2>
+            <p>
+                L’API Hub’Eau est la source principale des données dynamiques. Elle fournit des indicateurs fiables et actualisés
+                sur la qualité de l’eau à différents points de mesure en France.
+            </p>
+            <p>
+                Les données statiques, comme les informations descriptives des points de mesure, sont stockées localement et
+                mises à jour régulièrement via un script automatisé.
+            </p>
+            <p>
+                Cette combinaison assure un bon compromis entre performance et fraîcheur des données.
+            </p>
+        </section>
+    </main>
+    
+        <div class="schema-er">
+  <h2>Schéma Entité-Relation de la base de données</h2>
+  <div class="schema-content">
+    <img src="{{ url_for('static', filename='schema_ER.jpg') }}" alt="Schéma ER de la base de données" />
+    <div class="schema-text">
+      <p>
+        Ce schéma illustre la structure de notre base de données relationnelle. Il présente les différentes entités (tables),
+        leurs attributs principaux, ainsi que les relations clés entre elles, permettant une gestion efficace des données
+        sur la qualité de l’eau.
+      </p>
+    </div>
+  </div>
+</div>
+
+    
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section footer-contacts">
+                <h4>Contactez-nous</h4>
+                <ul>
+                    <li><a href="mailto:diyan-sathsara.hetti-arachchige@etu.u-pec.fr">Diyan HETTI</a></li>
+                    <li><a href="mailto:isabelle.ye@etu.u-pec.fr">Isabelle YE</a></li>
+                    <li><a href="mailto:sarah.lebik@etu.u-pec.fr">Sarah LEBIK</a></li>
+                    <li><a href="mailto:mohamed.siffer@etu.u-pec.fr">Mohamed SIFFER</a></li>
+                    <li><a href="mailto:rayane.ramdane@etu.u-pec.fr">Rayane RAMDANE</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section footer-links">
+                <h4>Liens utiles</h4>
+                <ul>
+                    <li><a href="https://www.hubeau.eaufrance.fr/" target="_blank" rel="noopener noreferrer">Hub’Eau</a></li>
+                    <li><a href="https://www.eaufrance.fr/" target="_blank" rel="noopener noreferrer">Eaufrance</a></li>
+                    <li><a href="https://ofb.gouv.fr/" target="_blank" rel="noopener noreferrer">Office Français de la Biodiversité (OFB)</a></li>
+                    <li><a href="https://www.brgm.fr/" target="_blank" rel="noopener noreferrer">Bureau de Recherches Géologiques et Minières (BRGM)</a></li>
+                    <li><a href="https://www.api.gouv.fr/" target="_blank" rel="noopener noreferrer">API Gouvernementale</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Présentation</h4>
+                <p>
+                    Cette plateforme valorise les données publiques sur l’eau pour faciliter leur compréhension grâce à des
+                    visualisations interactives.
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-logos">
+            <img src="{{ url_for('static', filename='Logo_upec.png') }}" alt="Logo UPEC" title="Université Paris-Est Créteil" />
+            <img src="{{ url_for('static', filename='logo_OFB.png') }}" alt="Logo OFB" title="Office Français de la Biodiversité">
+            <img src="{{ url_for('static', filename='logo_BGRM.png') }}" alt="Logo BRGM" title="Bureau de Recherches Géologiques et Minières" />
+            <img src="{{ url_for('static', filename='logo-api.svg') }}" alt="Logo API" title="API Gouvernementale" />
+        </div>
+    </footer>
+</body>
+</html>

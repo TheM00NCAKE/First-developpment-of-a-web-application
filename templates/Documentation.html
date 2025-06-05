@@ -1,127 +1,183 @@
 <!DOCTYPE html>
-<html lang="fr>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentation </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    <title>Documentation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
     <header>
         <nav class="navbar">
-        <div class="logo-hubeau">
-            <img src="{{ url_for('static', filename='LOGO_HUBEAU.png') }}" alt="LOGO HUBEAU" width="130">
-        </div>
-        <div class="logo-eaufrance">
-            <img src="{{ url_for('static', filename='eaufrance.png') }}" alt="Eaufrance" width="130">
-        </div>
-        <div class="barre">   
-            <ul class="nav-links">
-                <li><a href="{{ url_for('index') }}">Accueil</a></li>
-                <li><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
-                <li><a href="{{ url_for('a_propos') }}">À propos</a></li>
-            </ul>
-        </div>     
+            <div class="navbar-left">
+                <a href="https://www.hubeau.eaufrance.fr/" target="_blank" rel="noopener noreferrer">
+                    <img src="{{ url_for('static', filename='LOGO_HUBEAU.png') }}" alt="LOGO HUBEAU" width="130">
+                </a>
+                <a href="https://www.eaufrance.fr/" target="_blank" rel="noopener noreferrer">
+                    <img src="{{ url_for('static', filename='eaufrance.png') }}" alt="Eaufrance" width="130">
+                </a>
+            </div>
+
+            <div class="navbar-title">
+                <h1>Indic'eau</h1>
+            </div>
+            
+            <div class="barre">   
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('index') }}">Accueil</a></li>
+                    <li><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
+                    <li><a href="{{ url_for('a_propos') }}">À propos</a></li>
+                </ul>
+            </div>     
         </nav>
     </header>
-        
-        <div class="video-container">
-            <video autoplay muted loop playsinline>
-                <source src="{{ url_for('static', filename='video_indicateur.mp4') }}" type="video/mp4">
-            </video>
-            <div class="video-title">Documentation</div>
-        </div>
 
-        <section class="texte">
-            <p>
-                Texte qui presente la page.<br><br>
-            </p>
-
-
-
-        <div>
-            <p><a href="{{url_for('index')}}">Retour a l'accueil</a></p>
-        <p><strong>ac_D201_0</strong> : Indicateur de consommation domestique d'eau potable par habitant.</p>
-        <p><strong>ac_D202_0</strong> : Indicateur de rendement du réseau de distribution d'eau potable.</p>
-        <p><strong>ac_D204_0</strong> : Indicateur de taux de conformité de la qualité de l'eau potable.</p>
-        <p><strong>ac_P201_1</strong> : Indicateur de prix moyen de l'eau potable pour un service de distribution.</p>
-        <p><strong>ac_P203_3</strong> : Indicateur de coût moyen de production de l'eau potable.</p>
-        <p><strong>ac_P204_3</strong> : Indicateur de coût moyen de distribution de l'eau potable.</p>
-        <p><strong>ac_P205_3</strong> : Indicateur de coût moyen de traitement de l'eau potable.</p>
-        <p><strong>ac_P258_1</strong> : Indicateur de taux de renouvellement des réseaux d'eau potable.</p>
-        <p><strong>ac_VP_023</strong> : Indicateur de volume produit d'eau potable.</p>
-        <p><strong>ac_VP_056</strong> : Indicateur de volume perdu par fuites dans le réseau d'eau potable.</p>
-        <p><strong>ac_VP_176</strong> : Indicateur de volume consommé par les abonnés domestiques.</p>
-        <p><strong>ac_VP_177</strong> : Indicateur de volume consommé par les abonnés non domestiques.</p>
-        <p><strong>ac_VP_178</strong> : Indicateur de volume consommé total.</p>
-        <p><strong>ac_VP_179</strong> : Indicateur de volume facturé total.</p>
-        <p><strong>ac_VP_186</strong> : Indicateur de volume d'eau importé.</p>
-        <p><strong>ac_VP_190</strong> : Indicateur de volume d'eau exporté.</p>
-        <p><strong>ac_VP_191</strong> : Indicateur de volume d'eau prélevé.</p>
-        <p><strong>ac_VP_199</strong> : Indicateur de volume d'eau traité.</p>
-        <p><strong>ac_VP_200</strong> : Indicateur de volume d'eau distribué.</p>
-        <p><strong>ac_VP_228</strong> : Indicateur de volume d'eau non facturé.</p>
-        <p><strong>ac_VP_229</strong> : Indicateur de volume d'eau consommé non domestique.</p>
-        <p><strong>aep_D101_0</strong> : Indicateur de densité de population desservie en eau potable.</p>
-        <p><strong>aep_D102_0</strong> : Indicateur de longueur du réseau de distribution d'eau potable.</p>
-        <p><strong>aep_D151_0</strong> : Indicateur de nombre de branchements d'eau potable.</p>
-        <p><strong>aep_DC_192</strong> : Indicateur de conformité des installations de traitement d'eau potable.</p>
-        <p><strong>aep_P101_1</strong> : Indicateur de coût d'exploitation du service d'eau potable.</p>
-        <p><strong>aep_P101_1a</strong> : Indicateur de coût d'exploitation par mètre cube distribué.</p>
-        <p><strong>aep_P101_1b</strong> : Indicateur de coût d'exploitation par abonné.</p>
-        <p><strong>aep_P102_1</strong> : Indicateur de coût d'investissement du service d'eau potable.</p>
-        <p><strong>aep_P102_1a</strong> : Indicateur de coût d'investissement par mètre cube distribué.</p>
-        <p><strong>aep_P102_1b</strong> : Indicateur de coût d'investissement par abonné.</p>
-        <p><strong>aep_P104_3</strong> : Indicateur de coût total du service d'eau potable.</p>
-        <p><strong>aep_P106_3</strong> : Indicateur de coût total par mètre cube distribué.</p>
-        <p><strong>aep_P107_2</strong> : Indicateur de coût total par abonné.</p>
-        <p><strong>aep_P108_3</strong> : Indicateur de coût total par habitant desservi.</p>
-        <p><strong>aep_P151_1</strong> : Indicateur de coût de maintenance du réseau d'eau potable.</p>
-        <p><strong>aep_P152_1</strong> : Indicateur de coût de renouvellement du réseau d'eau potable.</p>
-        <p><strong>aep_P155_1</strong> : Indicateur de coût de gestion des ressources en eau.</p>
-        <p><strong>aep_VP_056</strong> : Indicateur de volume d'eau non comptabilisé.</p>
-        <p><strong>aep_VP_059</strong> : Indicateur de volume d'eau utilisé pour l'entretien du réseau.</p>
-        <p><strong>aep_VP_060</strong> : Indicateur de volume d'eau utilisé pour les incendies.</p>
-        <p><strong>aep_VP_061</strong> : Indicateur de volume d'eau utilisé pour les services publics.</p>
-        <p><strong>aep_VP_063</strong> : Indicateur de volume d'eau utilisé pour les usages agricoles.</p>
-        <p><strong>aep_VP_177</strong> : Indicateur de volume d'eau consommé par les abonnés non domestiques.</p>
-        <p><strong>aep_VP_178</strong> : Indicateur de volume d'eau consommé total.</p>
-        <p><strong>aep_VP_179</strong> : Indicateur de volume d'eau facturé total.</p>
-        <p><strong>aep_VP_190</strong> : Indicateur de volume d'eau exporté.</p>
-        <p><strong>aep_VP_191</strong> : Indicateur de volume d'eau prélevé.</p>
-        <p><strong>aep_VP_201</strong> : Indicateur de volume d'eau produit.</p>
-        <p><strong>aep_VP_228</strong> : Indicateur de volume d'eau non facturé.</p>
-        <p><strong>aep_VP_231</strong> : Indicateur de volume d'eau consommé non domestique.</p>
-        <p><strong>anc_D301_0</strong> : Indicateur de densité de population desservie en assainissement collectif.</p>
-        <p><strong>anc_DC_196</strong> : Indicateur de conformité des installations d'assainissement collectif.</p>
-        <p><strong>anc_DC_197</strong> : Indicateur de conformité des rejets d'eaux usées traitées.</p>
-        <p><strong>anc_P301_3</strong> : Indicateur de coût moyen du service d'assainissement collectif.</p>
-        <p><strong>anc_VP_166</strong> : Indicateur de volume d'eaux usées collectées.</p>
-        <p><strong>anc_VP_167</strong> : Indicateur de volume d'eaux usées traitées.</p>
-        <p><strong>anc_VP_168</strong> : Indicateur de volume d'eaux usées rejetées.</p>
-        <p><strong>anc_VP_169</strong> : Indicateur de volume d'eaux usées réutilisées.</p>
-        <p><strong>anc_VP_230</strong> : Indicateur de volume d'eaux usées non traitées.</p>
-        </div>
-        </section>
-      <footer class="footer">
-        <p>Contactez-nous</p>
-        <div class="emails">
-            <a href="mailto:diyan-sathsara.hetti-arachchige@etu.u-pec.fr">Diyan HETTI</a>
-            <a href="mailto:isabelle.ye@etu.u-pec.fr">Isabelle YE</a>
-            <a href="mailto:sarah.lebik@etu.u-pec.fr">Sarah LEBIK</a>
-            <a href="mailto:mohamed.siffer@etu.u-pec.fr">Mohamed SIFFER</a>
-            <a href="mailto:rayane.ramdane@etu.u-pec.fr">Rayane RAMDANE</a>
-        </div>
-
-    </footer>
-
-    <div class="logo-upec">
-            <img src="{{ url_for('static', filename='Logo_upec.png') }}" alt="LOGO UPEC" width="120" height="120">
-            <img src="{{ url_for('static', filename='logo_OFB.jpg') }}" alt="LOGO OFB" width="120">
-            <img src="{{ url_for('static', filename='logo_BGRM.png') }}" alt="LOGO BGRM" width="300">
-            <img src="{{ url_for('static', filename='logo-api.svg') }}" alt="LOGO API" width="250">
+    <div class="video-container">
+        <video autoplay muted loop playsinline>
+            <source src="{{ url_for('static', filename='video_indicateur.mp4') }}" type="video/mp4">
+        </video>
+        <div class="video-title">Documentation</div>
     </div>
-    
+
+     <h1 id="top">Indicateurs des Services d’Eau</h1>
+
+  <nav id="nav-eau">
+  <ul>
+    <li><a href="#aep">🔵 AEP</a></li>
+    <li><a href="#ac">🟢 Assainissement Collectif</a></li>
+    <li><a href="#anc">🟡 Assainissement Non Collectif</a></li>
+  </ul>
+</nav>
+
+  <h2 id="aep">🔵 AEP - Alimentation en Eau Potable</h2>
+  <table>
+    <thead>
+      <tr><th>Indicateur</th><th>Description</th><th>Unité</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>D101.0</td><td>Nombre total d'habitants desservis par le service d’eau potable</td><td>Habitants</td></tr>
+      <tr><td>D102.0</td><td>Prix du service de distribution d’eau par mètre cube</td><td>€/m³</td></tr>
+      <tr><td>D151.0</td><td>Délai maximal pour effectuer un branchement</td><td>Jours</td></tr>
+      <tr><td>DC.192</td><td>Part de l’eau provenant de ressources souterraines</td><td>%</td></tr>
+      <tr><td>P101.1</td><td>Taux de conformité microbiologique de l’eau distribuée</td><td>%</td></tr>
+      <tr><td>P101.1a</td><td>Nombre total de prélèvements microbiologiques effectués</td><td>Nombre</td></tr>
+      <tr><td>P101.1b</td><td>Nombre de prélèvements non conformes sur le plan microbiologique</td><td>Nombre</td></tr>
+      <tr><td>P102.1</td><td>Taux de conformité physico-chimique de l’eau</td><td>%</td></tr>
+      <tr><td>P102.1a</td><td>Nombre de prélèvements physico-chimiques réalisés</td><td>Nombre</td></tr>
+      <tr><td>P102.1b</td><td>Nombre de prélèvements physico-chimiques non conformes</td><td>Nombre</td></tr>
+      <tr><td>P104.3</td><td>Rendement du réseau de distribution</td><td>%</td></tr>
+      <tr><td>P106.3</td><td>Volume d’eau perdu par km de réseau et par jour</td><td>m³/km/j</td></tr>
+      <tr><td>P107.2</td><td>Taux de renouvellement des canalisations</td><td>%</td></tr>
+      <tr><td>P108.3</td><td>Part du réseau bénéficiant de mesures de protection</td><td>%</td></tr>
+      <tr><td>P151.1</td><td>Nombre d’interruptions imprévues pour 1 000 abonnés</td><td>/1000 abonnés</td></tr>
+      <tr><td>P152.1</td><td>Taux de respect des délais de branchement</td><td>%</td></tr>
+      <tr><td>P155.1</td><td>Nombre de réclamations pour 1 000 abonnés</td><td>/1000 abonnés</td></tr>
+      <tr><td>P258.1</td><td>Niveau de connaissance du patrimoine du réseau</td><td>Indice</td></tr>
+      <tr><td>VP.56</td><td>Nombre total d’abonnés</td><td>Nombre</td></tr>
+      <tr><td>VP.59</td><td>Volume total d’eau produit</td><td>m³</td></tr>
+      <tr><td>VP.60</td><td>Volume importé depuis un autre réseau</td><td>m³</td></tr>
+      <tr><td>VP.61</td><td>Volume exporté vers un autre réseau</td><td>m³</td></tr>
+      <tr><td>VP.63</td><td>Volume domestique comptabilisé</td><td>m³</td></tr>
+      <tr><td>VP.177</td><td>Facture annuelle pour 120 m³ (prestataire privé)</td><td>€</td></tr>
+      <tr><td>VP.178</td><td>Facture annuelle pour 120 m³ (collectivité)</td><td>€</td></tr>
+      <tr><td>VP.179</td><td>Montant des taxes dans la facture</td><td>€</td></tr>
+      <tr><td>VP.190</td><td>Part fixe annuelle (prestataire privé)</td><td>€/an</td></tr>
+      <tr><td>VP.191</td><td>Part fixe annuelle (collectivité)</td><td>€/an</td></tr>
+      <tr><td>VP.201</td><td>Volume pour usage non domestique</td><td>m³</td></tr>
+      <tr><td>VP.228</td><td>Densité d’abonnés par km de réseau</td><td>ab/km</td></tr>
+      <tr><td>VP.231</td><td>Consommation moyenne par abonné</td><td>m³/ab</td></tr>
+    </tbody>
+  </table>
+  <p><a href="#top">⬆️ Retour en haut</a></p>
+
+  <h2 id="ac">🟢 Assainissement Collectif</h2>
+  <table>
+    <thead>
+      <tr><th>Indicateur</th><th>Description</th><th>Unité</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>D201.0</td><td>Habitants bénéficiant du service d’assainissement collectif</td><td>Habitants</td></tr>
+      <tr><td>D202.0</td><td>Habitants raccordés à une station d’épuration</td><td>Habitants</td></tr>
+      <tr><td>D204.0</td><td>Coût annuel pour 120 m³ consommés</td><td>€</td></tr>
+      <tr><td>P201.1</td><td>Taux de couverture du service</td><td>%</td></tr>
+      <tr><td>P203.3</td><td>Niveau de connaissance du patrimoine du réseau</td><td>Indice</td></tr>
+      <tr><td>P204.3</td><td>Taux de renouvellement annuel du réseau</td><td>%</td></tr>
+      <tr><td>P205.3</td><td>Performance des stations d’épuration</td><td>Indice</td></tr>
+      <tr><td>VP.023</td><td>Demandes d’indemnisation</td><td>Nombre</td></tr>
+      <tr><td>VP.056</td><td>Nombre total d’abonnés</td><td>Nombre</td></tr>
+      <tr><td>VP.176</td><td>Charge organique en entrée de station (DBO5)</td><td>kg</td></tr>
+      <tr><td>VP.186</td><td>Pollution collectée estimée</td><td>kg</td></tr>
+      <tr><td>VP.199</td><td>Longueur de réseaux unitaires</td><td>km</td></tr>
+      <tr><td>VP.200</td><td>Longueur de réseaux séparatifs</td><td>km</td></tr>
+      <tr><td>VP.229</td><td>Ratio habitants desservis / abonnés</td><td>-</td></tr>
+    </tbody>
+  </table>
+  <p><a href="#top">⬆️ Retour en haut</a></p>
+
+  <h2 id="anc">🟡 Assainissement Non Collectif</h2>
+  <table>
+    <thead>
+      <tr><th>Indicateur</th><th>Description</th><th>Unité</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>D301.0</td><td>Habitants desservis par un dispositif ANC</td><td>Habitants</td></tr>
+      <tr><td>DC.196</td><td>Tarif moyen d’un contrôle d’installation</td><td>€</td></tr>
+      <tr><td>DC.197</td><td>Recettes totales issues des contrôles</td><td>€</td></tr>
+      <tr><td>P301.3</td><td>Taux de conformité des dispositifs ANC</td><td>%</td></tr>
+      <tr><td>VP.166</td><td>Nombre d’installations conformes</td><td>Nombre</td></tr>
+      <tr><td>VP.167</td><td>Nombre total d’installations contrôlées</td><td>Nombre</td></tr>
+      <tr><td>VP.168</td><td>Zones ANC officiellement délimitées</td><td>Oui/Non</td></tr>
+      <tr><td>VP.169</td><td>Existence d’un règlement ANC validé</td><td>Oui/Non</td></tr>
+      <tr><td>VP.230</td><td>Taux de couverture du territoire par ANC</td><td>%</td></tr>
+    </tbody>
+  </table>
+  <p><a href="#top">⬆️ Retour en haut</a></p>
+
+
+    <footer class="footer">
+    <div class="footer-container">
+
+        <div class="footer-section footer-contacts">
+            <h4>Contactez-nous</h4>
+            <ul>
+                <li><a href="mailto:diyan-sathsara.hetti-arachchige@etu.u-pec.fr">Diyan HETTI</a></li>
+                <li><a href="mailto:isabelle.ye@etu.u-pec.fr">Isabelle YE</a></li>
+                <li><a href="mailto:sarah.lebik@etu.u-pec.fr">Sarah LEBIK</a></li>
+                <li><a href="mailto:mohamed.siffer@etu.u-pec.fr">Mohamed SIFFER</a></li>
+                <li><a href="mailto:rayane.ramdane@etu.u-pec.fr">Rayane RAMDANE</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section footer-links">
+            <h4>Liens utiles</h4>
+            <ul>
+                <li><a href="https://www.hubeau.eaufrance.fr/" target="_blank" rel="noopener noreferrer">Hub’Eau</a></li>
+                <li><a href="https://www.eaufrance.fr/" target="_blank" rel="noopener noreferrer">Eaufrance</a></li>
+                <li><a href="https://ofb.gouv.fr/" target="_blank" rel="noopener noreferrer">Office Français de la Biodiversité (OFB)</a></li>
+                <li><a href="https://www.brgm.fr/" target="_blank" rel="noopener noreferrer">Bureau de Recherches Géologiques et Minières (BRGM)</a></li>
+                <li><a href="https://www.api.gouv.fr/" target="_blank" rel="noopener noreferrer">API Gouvernementale</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>Présentation</h4>
+            <p>
+                Cette plateforme valorise les données publiques sur l’eau pour faciliter leur compréhension grâce à des visualisations interactives.  
+            </p>
+        </div>
+    </div>
+
+    <div class="footer-logos">
+        <img src="{{ url_for('static', filename='Logo_upec.png') }}" alt="Logo UPEC" title="Université Paris-Est Créteil">
+        <img src="{{ url_for('static', filename='logo_OFB.png') }}" alt="Logo OFB" title="Office Français de la Biodiversité">
+        <img src="{{ url_for('static', filename='logo_BGRM.png') }}" alt="Logo BRGM" title="Bureau de Recherches Géologiques et Minières">
+        <img src="{{ url_for('static', filename='logo-api.svg') }}" alt="Logo API" title="API Gouvernementale">
+    </div>
+</footer>
+
+</body>
+</html>
+
 </body>
 </html>

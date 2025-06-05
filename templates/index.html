@@ -11,22 +11,29 @@
 <body>
 
     <header>
-        <nav class="navbar">
-        <div class="logo-hubeau">
-            <img src="{{ url_for('static', filename='LOGO_HUBEAU.png') }}" alt="LOGO HUBEAU" width="130">
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="https://www.hubeau.eaufrance.fr/" target="_blank" rel="noopener noreferrer">
+                <img src="{{ url_for('static', filename='LOGO_HUBEAU.png') }}" alt="LOGO HUBEAU" width="130">
+            </a>
+            <a href="https://www.eaufrance.fr/" target="_blank" rel="noopener noreferrer">
+                <img src="{{ url_for('static', filename='eaufrance.png') }}" alt="Eaufrance" width="130">
+            </a>
         </div>
-        <div class="logo-eaufrance">
-            <img src="{{ url_for('static', filename='eaufrance.png') }}" alt="Eaufrance" width="130">
+
+        <div class="navbar-title">
+            <h1>Indic'eau</h1>
         </div>
-        <div class="barre">   
-            <ul class="nav-links">
-                <li><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
-                <li><a href="{{ url_for('Documentation') }}">Documentation</a></li>
-                <li><a href="{{ url_for('a_propos') }}">À propos</a></li>
-            </ul>
-        </div>     
-        </nav>
-    </header>
+
+
+        <ul class="nav-links">
+            <li><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
+            <li><a href="{{ url_for('Documentation') }}">Documentation</a></li>
+            <li><a href="{{ url_for('a_propos') }}">À propos</a></li>
+        </ul>
+    </nav>
+</header>
+
         <div class="video-container">
             <video autoplay muted loop playsinline>
                 <source src="{{ url_for('static', filename='video_index.mp4') }}" type="video/mp4">
@@ -35,31 +42,66 @@
         </div>
 
         <section class="texte">
-            <p>
-                Bienvenue sur cette plateforme créée dans le cadre de notre projet étudiant, dédiée à la valorisation des données issues de l’API des indicateurs des services de l’eau.<br><br>
-                Notre objectif est de faciliter la compréhension de ces données grâce à des visualisations claires et interactives : graphiques, cartes et tableaux dynamiques.<br><br>
-                Découvrez la page <strong>Données indicateurs</strong> pour explorer différents types d'informations liées aux indicateurs, la page <strong>Documentation</strong> pour mieux comprendre les indicateurs, et la page <strong>À propos</strong> 
-                pour en savoir plus sur notre base de données ainsi que notre démarche.<br><br>
-            </p>
-        </section>
-    <footer class="footer">
-        <p>Contactez-nous</p>
-        <div class="emails">
-            <a href="mailto:diyan-sathsara.hetti-arachchige@etu.u-pec.fr">Diyan HETTI</a>
-            <a href="mailto:isabelle.ye@etu.u-pec.fr">Isabelle YE</a>
-            <a href="mailto:sarah.lebik@etu.u-pec.fr">Sarah LEBIK</a>
-            <a href="mailto:mohamed.siffer@etu.u-pec.fr">Mohamed SIFFER</a>
-            <a href="mailto:rayane.ramdane@etu.u-pec.fr">Rayane RAMDANE</a>
-        </div>
-    
-    </footer>
+    <p>
+        Bienvenue sur <strong>Indic'eau</strong>, une plateforme interactive conçue dans le cadre de notre projet étudiant à l'IUT de Créteil-Vitry. Ce site a pour vocation de <strong>valoriser les données ouvertes issues de l’API des indicateurs des services publics de l’eau</strong>, mises à disposition par le portail gouvernemental Hub’Eau.
+        <br><br>
+        Face à la complexité et à la richesse de ces données, notre objectif est de <strong>rendre l'information accessible et compréhensible pour tous</strong>, qu’il s’agisse de citoyens curieux, d’étudiants, d’enseignants ou de professionnels. Nous avons donc développé des outils de <strong>visualisation modernes et intuitifs</strong> permettant d’explorer les données à travers :
+        <ul>
+            <li>des <strong>cartes dynamiques</strong>, pour une lecture géographique des indicateurs,</li>
+            <li>des <strong>graphes interactifs</strong>, qui facilitent la comparaison et le suivi des évolutions,</li>
+            <li>et des <strong>tableaux synthétiques</strong> pour une analyse précise et structurée.</li>
+        </ul>
+        <br>
+        La page <strong>Données indicateurs</strong> vous permet de <strong>naviguer entre différents indicateurs clés</strong>, tels que le taux de conformité des eaux, les volumes facturés ou encore les performances des réseaux, tout en les situant dans leur contexte territorial.
+        <br><br>
+        La page <strong>Documentation</strong> vous fournit un <strong>éclairage complet sur la signification, le calcul et la source de chaque indicateur</strong>, afin d’en garantir une lecture rigoureuse et fiable.
+        <br><br>
+        Enfin, la page <strong>À propos</strong> vous présente <strong>notre démarche, notre méthode de travail et les choix techniques effectués</strong> dans la création de cette plateforme, ainsi que des informations sur l’API et les données utilisées.
+        <br><br>
+        Nous espérons que cette plateforme vous permettra de <strong>mieux comprendre les enjeux liés à la gestion de l’eau en France</strong> et contribuera à <strong>sensibiliser le public à l’importance de la transparence et de la qualité des services publics de l’eau</strong>.
+    </p>
+</section>
 
-    <div class="logo-upec">
-            <img src="{{ url_for('static', filename='Logo_upec.png') }}" alt="LOGO UPEC" width="120" height="120">
-            <img src="{{ url_for('static', filename='logo_OFB.jpg') }}" alt="LOGO OFB" width="120">
-            <img src="{{ url_for('static', filename='logo_BGRM.png') }}" alt="LOGO BGRM" width="300">
-            <img src="{{ url_for('static', filename='logo-api.svg') }}" alt="LOGO API" width="250">
+   <footer class="footer">
+    <div class="footer-container">
+
+        <div class="footer-section footer-contacts">
+            <h4>Contactez-nous</h4>
+            <ul>
+                <li><a href="mailto:diyan-sathsara.hetti-arachchige@etu.u-pec.fr">Diyan HETTI</a></li>
+                <li><a href="mailto:isabelle.ye@etu.u-pec.fr">Isabelle YE</a></li>
+                <li><a href="mailto:sarah.lebik@etu.u-pec.fr">Sarah LEBIK</a></li>
+                <li><a href="mailto:mohamed.siffer@etu.u-pec.fr">Mohamed SIFFER</a></li>
+                <li><a href="mailto:rayane.ramdane@etu.u-pec.fr">Rayane RAMDANE</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section footer-links">
+            <h4>Liens utiles</h4>
+            <ul>
+                <li><a href="https://www.hubeau.eaufrance.fr/" target="_blank" rel="noopener noreferrer">Hub’Eau</a></li>
+                <li><a href="https://www.eaufrance.fr/" target="_blank" rel="noopener noreferrer">Eaufrance</a></li>
+                <li><a href="https://ofb.gouv.fr/" target="_blank" rel="noopener noreferrer">Office Français de la Biodiversité (OFB)</a></li>
+                <li><a href="https://www.brgm.fr/" target="_blank" rel="noopener noreferrer">Bureau de Recherches Géologiques et Minières (BRGM)</a></li>
+                <li><a href="https://www.api.gouv.fr/" target="_blank" rel="noopener noreferrer">API Gouvernementale</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>Présentation</h4>
+            <p>
+                Cette plateforme valorise les données publiques sur l’eau pour faciliter leur compréhension grâce à des visualisations interactives.  
+            </p>
+        </div>
     </div>
+
+    <div class="footer-logos">
+        <img src="{{ url_for('static', filename='Logo_upec.png') }}" alt="Logo UPEC" title="Université Paris-Est Créteil">
+        <img src="{{ url_for('static', filename='logo_OFB.png') }}" alt="Logo OFB" title="Office Français de la Biodiversité">
+        <img src="{{ url_for('static', filename='logo_BGRM.png') }}" alt="Logo BRGM" title="Bureau de Recherches Géologiques et Minières">
+        <img src="{{ url_for('static', filename='logo-api.svg') }}" alt="Logo API" title="API Gouvernementale">
+    </div>
+</footer>
 
 </body>
 </html>
