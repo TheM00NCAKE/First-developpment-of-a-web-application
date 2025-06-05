@@ -35,17 +35,18 @@ def tableau_by_search(filtrage):
     cnx = sqlite3.connect('Indicateur_des_services.db')
     #requête qui permet de construire n'importe quel requête (provenant de soit Démographie, Honoraires ou Prescriptions) en fonction de paramètres
     requete = f"""
-        SELECT * from Descriptif where 
+        SELECT * from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune where 
         code_indicateur LIKE ?
+        OR nom_commune LIKE ?
         OR code_service LIKE ?
         OR nom_service LIKE ?
         OR numero_siren LIKE ?
         OR mode_gestion LIKE ?
-        OR code_commune LIKE ?
+        OR Descriptif.code_commune LIKE ?
         OR numero_collectivite LIKE ?
         limit 10;
     """
-    df = pd.read_sql_query(requete, cnx, params=(filtrage, filtrage, filtrage, filtrage, filtrage, filtrage, filtrage))
+    df = pd.read_sql_query(requete, cnx, params=(filtrage, filtrage, filtrage, filtrage, filtrage, filtrage, filtrage,filtrage))
     if df.empty:       #si la requête n'affiche rien, un message s'affiche pour confirmer à l'utilisateur que les données qu'il veut sélectionner n'existe pas
         x="<h1 style='text-align:center'>Informations indisponibles dans notre base de données</h1>"
     else:
@@ -60,7 +61,7 @@ def tableau_by_search(filtrage):
             x = x.replace(cle, valeur)
 
     cnx.close()
-    return x   
+    return x  
 
 @app.route("/")
 def index():    
