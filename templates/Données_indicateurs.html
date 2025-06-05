@@ -50,7 +50,10 @@
 
     <br><br><br><br>
     <div id="contenu">
-        <div id="barre_recherche"><img src="static/barretest.png"></div>
+    <div id="contenu">
+        <form action="/Donnnées_indicateurs" method="get">
+            <input type="text" placeholder="Ajouter un filtre" required id="barre_filtrage" name="search">
+        </form>
         <div id="tableau_contenu">{{ table | safe }}</div>
         <div id="jauge"><img src="static/jauge.png"></div>
         <div id="FrReg">
