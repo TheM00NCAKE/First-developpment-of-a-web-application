@@ -140,3 +140,16 @@ $(document).ready(function () {
         region_clique = "";
     }
     
+function mode_sombre() {
+    const styleClair = "/static/style.css";
+    const styleSombre = "/static/style_sombre.css";
+
+    const etat = document.getElementById("toggle").checked;
+    const linkCSS = document.getElementById("theme");
+
+    if (etat) {
+        linkCSS.href = styleSombre;
+    } else {
+        linkCSS.href = styleClair;
+    }
+}
