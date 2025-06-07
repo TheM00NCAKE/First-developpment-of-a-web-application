@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil</title>
     <link id="theme" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
 <body>
@@ -42,20 +44,20 @@
             <video autoplay muted loop playsinline>
                 <source src="{{ url_for('static', filename='video_index.mp4') }}" type="video/mp4">
             </video>
-            <div class="video-title">Accueil</div>
+            <div class="video-title">Bienvenue sur Indic'eau</div>
         </div>
 
         <section class="texte">
     <p>
         Bienvenue sur <strong>Indic'eau</strong>, une plateforme interactive conçue dans le cadre de notre projet étudiant à l'IUT de Créteil-Vitry. Ce site a pour vocation de <strong>valoriser les données ouvertes issues de l’API des indicateurs des services publics de l’eau</strong>, mises à disposition par le portail gouvernemental Hub’Eau.
         <br><br>
-        Face à la complexité et à la richesse de ces données, notre objectif est de <strong>rendre l'information accessible et compréhensible pour tous</strong>, qu’il s’agisse de citoyens curieux, d’étudiants, d’enseignants ou de professionnels. Nous avons donc développé des outils de <strong>visualisation modernes et intuitifs</strong> permettant d’explorer les données à travers :
+        Face à la complexité et à la richesse de ces données, notre objectif est de <strong>rendre l'information accessible et compréhensible pour tous</strong>, qu’il s’agisse de citoyens curieux, d’étudiants, d’enseignants ou de professionnels. Nous avons donc développé des outils de <strong>visualisation modernes et intuitifs</strong> permettant d’explorer les données à travers :</p>
         <ul>
             <li>des <strong>cartes dynamiques</strong>, pour une lecture géographique des indicateurs,</li>
             <li>des <strong>graphes interactifs</strong>, qui facilitent la comparaison et le suivi des évolutions,</li>
             <li>et des <strong>tableaux synthétiques</strong> pour une analyse précise et structurée.</li>
         </ul>
-        <br>
+        <p>
         La page <strong>Données indicateurs</strong> vous permet de <strong>naviguer entre différents indicateurs clés</strong>, tels que le taux de conformité des eaux, les volumes facturés ou encore les performances des réseaux, tout en les situant dans leur contexte territorial.
         <br><br>
         La page <strong>Documentation</strong> vous fournit un <strong>éclairage complet sur la signification, le calcul et la source de chaque indicateur</strong>, afin d’en garantir une lecture rigoureuse et fiable.
