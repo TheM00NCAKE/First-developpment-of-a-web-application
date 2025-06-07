@@ -12,19 +12,19 @@ var departement_clique = ""; //sert à rien pour l'instant
 //style css permettant de faire un zoom
 var style = {
     transform: 'scale(2.5)',
-    transition: 'transform 0.3s ease-in',
+    transition: 'transform 0.2s ease-in',
 };
 //dict contenant les coordonnées du point d'origine du zoom de chaque région 
 var TOrigin = { HautsDeFrance: '580px 0px', Normandie: '430px 50px', Bretagne: '210px 130px', GrandEst: '660px 100px', NouvelleAquitaine: '400px 420px', Occitanie: '500px 590px', IleDeFrance: '560px 100px', CentreValdeLoire: '500px 220px', PaysDeLaLoire: '360px 200px', BourgogneFrancheComté: '660px 200px', AuvergneRhôneAlpes: '660px 400px', ProvenceAlpesCôteDazur: '690px 500px', Corse: '900px 600px',Guyane_973:'0px 0px',Mayotte_976:'0px 90px',LaReunion_974:'0px 310px',Martinique_972:'0px 470px',Guadeloupe_972:'0px 600px'}; //x y
 var dezoom = {
     transform: 'scale(1)',
-    transition: 'transform 0.5s ease-out',
+    transition: 'transform 0.1s ease-out',
     willChange: 'transform'
 };
-
+var test='<div id="load"><div id="square"></div><div id="square2"></div><div id="cercle"><div class="ball"></div></div><div id="cercle2"><div class="ball"></div></div></div>';
 var deptss = $(); 
 //dict pour les couleurs de la carte
-var couleurs={color_region:'#f5f5fe',color_departement:'#f5f5fe',color_reg_mouseover:'#b2d3fb',color_reg_clique:'#cbcbfa',color_dept_mouseover:'#4472c4'};
+var couleurs={color_region:'#f5f5fe',color_departement:'#f5f5fe',color_reg_mouseover:'#b2d3fb',color_reg_clique:'#cbcbfa',color_dept_clique:'#4472c4',color_dept_mouseover:'#94baff'};
 
 //////////////////////////:Code pour le tableau
 const compare = (ids, asc) => (row1, row2) => {
@@ -39,8 +39,7 @@ const compare = (ids, asc) => (row1, row2) => {
     tdValue(asc ? row2 : row1, ids)
   );
 };
-
-document.addEventListener('DOMContentLoaded', () => {
+function tri(){
   const table = document.querySelector('table');
   const tbody = table.querySelector('tbody');
   const thx = table.querySelectorAll('th');
@@ -53,6 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
       sortedRows.forEach(row => tbody.appendChild(row));
     });
   });
+}
+document.addEventListener('DOMContentLoaded', () => {
+  tri();
 });
 /////////////////////////////Fin code tableau
 
@@ -76,6 +78,14 @@ $(document).ready(function () {
         var depts='#Depts_'+this.id;
         deptss=$(depts).find('.departements'); //on récupère chaque département de l'id récupéré
         //application du css : zoom, ajout/enlève la possibilité de cliquer/mouseover sur certains endroits
+        document.getElementById('tableau_contenu').innerHTML=test;
+        fetch(`/Données_indicateurs?zone=${encodeURIComponent(this.id)}`)
+        .then(resp => resp.text())
+        .then(html => {
+            document.getElementById('tableau_contenu').innerHTML = html;
+            tri();
+        });
+
         
 // Applique le zoom dans la prochaine frame
     $carte.css('transform-origin', TOrigin[this.id]);
@@ -95,11 +105,23 @@ $(document).ready(function () {
         //le if pour l'instant est un bout de code inutile (prendre en compte que le else), à voir pour la suite avec la gestion des requêtes :)
         if (departement_clique != "") {
             $('.departements').not(departement_clique).css('fill', '');
-            $(departement_clique).css('fill',couleurs['color_dept_mouseover']); 
+            $(departement_clique).css('fill',couleurs['color_dept_clique']); 
         } else {
             $('.departements').css('fill', '');
         }
         $(this).css('fill', couleurs['color_dept_mouseover']); //couleur de dept ou la souris passe dessus
+        });
+        $(deptss).click(function(){
+            $(deptss).css('fill', '');
+            $(this).css('fill', couleurs['color_dept_clique']); //couleur de la région cliqué change
+            departement_clique="#"+this.id;
+            document.getElementById('tableau_contenu').innerHTML=test;
+            fetch(`/Données_indicateurs?zone=${encodeURIComponent(this.id)}`)
+            .then(resp => resp.text())
+            .then(html => {
+            document.getElementById('tableau_contenu').innerHTML = html;
+            tri()
+        });
         });
         });
         $('#reg_OutreMer .regions').click(function (e) {
@@ -109,6 +131,12 @@ $(document).ready(function () {
 
             if (this.classList.contains('Gua')) {
                 $('.Gua').css('fill', couleurs['color_reg_clique']);
+                fetch(`/Données_indicateurs?zone=Guadeloupe`)
+                .then(resp => resp.text())
+                .then(html => {
+                    document.getElementById('tableau_contenu').innerHTML = html;
+                    tri()
+                });
             } else {
                 $(this).css('fill', couleurs['color_reg_clique']);
                 region_clique = "#" + this.id;
@@ -138,9 +166,10 @@ $(document).ready(function () {
         $('.departements').css('fill', '');
         $(deptss).css('pointer-events', 'none');
         region_clique = "";
+        departement_clique = "";
     }
-    
-function mode_sombre() {
+
+    function mode_sombre() {
     const styleClair = "/static/style.css";
     const styleSombre = "/static/style_sombre.css";
 
