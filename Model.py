@@ -4,7 +4,7 @@ def connexion():
     try:
         return sqlite3.connect("Indicateur_des_services.db")
     except:
-        print("CACA")
+        print("Connexion impossible")
 
 def create_table_Indicateur():
     try:
