@@ -1,14 +1,10 @@
 /*///////////////////////////
-CE CODE EST UN PEU DEGUEU JE SAIS, JE COMPTE LE FINIR D'ABORD 
-ET APRES L'OPTIMISER. SI VOUS AVEZ DES QUESTIONS, N'HESITEZ PAS A 
-DEMANDER. -- . .-. -.-. .. (-.-. / - / .. ... .- -... . .-.. .-.. .)
-
 Petite parenthèse : la Guadeloupe est une région "spéciale" dans le code : 
 Chaque région est défini par un seul polygone <path> dans un groupe <g (avec un id)>, mais la Guadeloupe est composé de plusieurs polygones 
 différents. Le code était censé spécifique à un seul polygone pour chaque évènement, mais vu que j'y arrive pas MDR, il y a des lignes 
 spécifiques pour la région de la Guadeloupe (identifié par ses polygones de classe régions ET 'Gua')*/
 var region_clique = "";
-var departement_clique = ""; //sert à rien pour l'instant
+var departement_clique = ""; 
 //style css permettant de faire un zoom
 var style = {
     transform: 'scale(2.5)',
@@ -21,6 +17,7 @@ var dezoom = {
     transition: 'transform 0.1s ease-out',
     willChange: 'transform'
 };
+/*HTML pour faire apparaître le symbole de chargement */
 var test='<div id="load"><div id="square"></div><div id="square2"></div><div id="cercle"><div class="ball"></div></div><div id="cercle2"><div class="ball"></div></div></div>';
 var deptss = $(); 
 //dict pour les couleurs de la carte
@@ -39,6 +36,9 @@ const compare = (ids, asc) => (row1, row2) => {
     tdValue(asc ? row2 : row1, ids)
   );
 };
+function getannee(){
+    return document.getElementById('annee').value;
+}
 function tri(){
   const table = document.querySelector('table');
   const tbody = table.querySelector('tbody');
@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //quand le document est chargé : 
 $(document).ready(function () {
+    document.getElementById('annee').value='2019';
     const $carte = $('#carte');
     $('#depts').css('pointer-events', 'none'); //impossible d'interagir avec les depts pour l'instant
     $('.Gua').on('mouseover', function () {
@@ -79,7 +80,8 @@ $(document).ready(function () {
         deptss=$(depts).find('.departements'); //on récupère chaque département de l'id récupéré
         //application du css : zoom, ajout/enlève la possibilité de cliquer/mouseover sur certains endroits
         document.getElementById('tableau_contenu').innerHTML=test;
-        fetch(`/Données_indicateurs?zone=${encodeURIComponent(this.id)}`)
+        var annee_choisi=getannee();
+        fetch(`/Données_indicateurs?zone=${encodeURIComponent(this.id)}&annee=${encodeURIComponent(annee_choisi)}`)
         .then(resp => resp.text())
         .then(html => {
             document.getElementById('tableau_contenu').innerHTML = html;
@@ -116,7 +118,8 @@ $(document).ready(function () {
             $(this).css('fill', couleurs['color_dept_clique']); //couleur de la région cliqué change
             departement_clique="#"+this.id;
             document.getElementById('tableau_contenu').innerHTML=test;
-            fetch(`/Données_indicateurs?zone=${encodeURIComponent(this.id)}`)
+            var annee_choisi=getannee()
+            fetch(`/Données_indicateurs?zone=${encodeURIComponent(this.id)}&annee=${encodeURIComponent(annee_choisi)}`)
             .then(resp => resp.text())
             .then(html => {
             document.getElementById('tableau_contenu').innerHTML = html;
@@ -167,6 +170,17 @@ $(document).ready(function () {
         $(deptss).css('pointer-events', 'none');
         region_clique = "";
         departement_clique = "";
+    }
+    function chercher(){
+    var motcle=document.getElementById('barre_filtrage').value;
+    var annee_choisi=getannee();
+    document.getElementById('tableau_contenu').innerHTML=test;
+    fetch(`/Données_indicateurs?search=${encodeURIComponent(motcle)}&annee=${encodeURIComponent(annee_choisi)}`)
+        .then(resp => resp.text())
+        .then(html => {
+        document.getElementById('tableau_contenu').innerHTML = html;
+        tri()
+    });
     }
 
     function mode_sombre() {
