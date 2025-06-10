@@ -197,7 +197,7 @@ main section ul {
 
 video {
   width: 100%;
-  max-height: 610px;
+  max-height: 645px;
   object-fit: cover;
   display: block;
   filter: brightness(75%);
