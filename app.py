@@ -39,6 +39,8 @@ def tableau_by_search(filtrage,an):
             OR numero_collectivite LIKE ? limit 1000;
         """
         df = pd.read_sql_query(requete, cnx, params=(filtrage, filtrage, filtrage, filtrage, filtrage, filtrage, filtrage,filtrage))
+        if df.empty:
+            return "<h1 style='text-align:center'>Informations indisponibles dans notre base de données</h1>"
         #récupérer tt les codes communes de notre requête df
         liste = df['code_commune'].unique().tolist()
         #récupérer tt les couples de code_service et code_indicateur de façon unique. 
@@ -140,7 +142,7 @@ def Documentation():
 
 @app.route('/Données_indicateurs', methods=['GET'])
 def Données_indicateurs():
-    load=0
+    load=1
     search = request.args.get("search")
     zone = request.args.get("zone")
     annee = request.args.get("annee")
@@ -148,15 +150,15 @@ def Données_indicateurs():
     try:
         if search:
             dtframe=tableau_by_search(search,annee)
-            test_indicateur=test(search,dtframe) 
         elif zone:
             dtframe = tableau_map_clique(zone, annee)
         else:
-            load=1
+            load=0
             dtframe=tableau_start()
-        if dtframe.empty:       #si la requête n'affiche rien, un message s'affiche pour confirmer à l'utilisateur que les données qu'il veut sélectionner n'existe pas
-            tableau="<h1 style='text-align:center'>Informations indisponibles dans notre base de données</h1>"
+        if isinstance(dtframe,str):       #si la requête n'affiche rien, un message en str s'affiche
+            return dtframe
         else:
+            test_indicateur= test(search,dtframe) if search in docs_dicts.dict_indicateurs.keys() or search in docs_dicts.dict_indicateurs.values() else ""
             tableau = build_table(dtframe, color="blue_dark", padding="15px 20px", font_size="14px",text_align='center',even_bg_color="#e8e8e8",odd_bg_color="#f5f5f5",border_bottom_color="blue_dark")    #créer un tableau bleu claire plus joli avec la bibliothèque pretty_html_table
             change_css = {
                 '<table': '<table id="tableau"',
@@ -165,7 +167,7 @@ def Données_indicateurs():
             }
             for cle, valeur in change_css.items():
                 tableau = tableau.replace(cle, valeur)
-        if load==0: 
+        if load==1: 
             return tableau + "|" + test_indicateur
         else :
             return render_template('Données_indicateurs.html', table=tableau)
