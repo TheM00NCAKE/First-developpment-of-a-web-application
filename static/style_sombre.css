@@ -7,63 +7,55 @@
 body {
   font-family: 'Poppins', sans-serif;
   background-color: #1e2a38;
-  color: #f1f1f1;
+  color: #f1f1f1
+  
 }
 
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #1e2a38;
-  color: white;
-  padding: 10px 30px;
-  position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1e2a38;
+    color: white;
+    padding: 10px 30px;
+    position: relative;
 }
 
 .navbar-left {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 .navbar-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.navbar-title h1 {
-  margin: 0;
-  font-size: 28px;
-  color: #ffffff;
-  font-family: 'Georgia', serif;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-  letter-spacing: 2px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .nav-links {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-  padding-left: 40%;
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding-left: 40%;
 }
 
 .nav-links li a {
-  text-decoration: none;
-  color: #f1f1f1;
-  font-weight: bold;
-  transition: color 0.3s;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s;
 }
 
 .nav-links li a:hover {
-  color: #90caf9;
+    color: #90caf9;
 }
 
 .texte {
   border: 1px solid #333;
   padding: 25px 30px;
-  margin: 20px auto;
-  max-width: 900px;
+  margin: 130px auto;
+  max-width: 1200px;
   background-color: #273648;
   border-radius: 8px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -94,19 +86,19 @@ body {
 }
 
 main {
-  max-width: 1400px;
+  max-width: 1400px;   /* plus large */
   margin: 40px auto;
   padding: 0 20px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 35px 50px;
+  gap: 35px 50px;      /* plus d’espace entre colonnes */
 }
 
 main section {
   background: #1f1f2e;
   border-radius: 12px;
-  padding: 30px 25px;
-  box-shadow: 0 4px 12px rgba(50, 100, 200, 0.1);
+  padding: 30px 25px;  /* un peu moins de padding horizontal pour plus de largeur utile */
+  box-shadow: 0 4px 12px rgba(50, 100, 200, 0.15);
   color: #eeeeee;
   transition: box-shadow 0.3s ease;
   width: 100%;
@@ -136,8 +128,6 @@ main section ul {
   margin-top: 10px;
   color: #bbbbbb;
 }
-
-
 .schema-er {
   background-color: #1a1f2a; 
   padding: 60px 40px;
@@ -160,6 +150,13 @@ main section ul {
   padding-bottom: 8px;
 }
 
+.schema-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
 
 .schema-content img {
   max-width: 600px;
@@ -192,7 +189,7 @@ main section ul {
 
 video {
   width: 100%;
-  max-height: 610px;
+  max-height: 645px;
   object-fit: cover;
   display: block;
   filter: brightness(50%);
@@ -203,7 +200,7 @@ video {
   top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: "Georgia", serif;
+  font-family: "Raleway";
   color: #fff;
   font-size: 4rem;
   z-index: 2;
@@ -219,10 +216,16 @@ h1 {
 }
 
 h2 {
+  font-weight: 600;
+  font-size: 1.8rem;
   color: #64b5f6;
+  margin: 3rem 0 1rem 0;
+  padding-left: 14px;
+  border-radius: 6px;
 }
 
-table { 
+/* Tableau */
+table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
@@ -243,22 +246,20 @@ thead th {
   font-weight: bold;
 }
 
-
 tbody tr:nth-child(even) {
   background-color: #2c2c2c;
+}
+
+tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #444;
 }
 
 tbody tr:hover {
   background-color: #37474f;
 }
 
-tbody td {
-  padding: 10px;
-  color: #f1f1f1;
-  border-bottom: 1px solid #444;
-}
-
-
+/* Retour en haut */
 p a {
   display: inline-block;
   margin-top: 15px;
@@ -270,7 +271,6 @@ p a {
 p a:hover {
   text-decoration: underline;
 }
-
 
 h1#top {
   font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -284,9 +284,10 @@ h1#top {
   letter-spacing: 1.2px;
   border-bottom: 3px solid #03a9f4;
   border-radius: 6px;
-  background: #2a2b2c;
+  background: #e3f2fd;
   box-shadow: 0 3px 8px rgba(3, 169, 244, 0.2);
 }
+
 
 
 #nav-eau ul {
@@ -306,7 +307,6 @@ h1#top {
   padding: 8px 18px;
   border-radius: 8px;
   transition: background-color 0.25s ease, color 0.25s ease;
-  
 }
 
 
@@ -315,11 +315,11 @@ h1#top {
 }
 
 #nav-eau ul li a[href="#ac"] {
-  color: #81c784;
+  color: #28a745;
 }
 
 #nav-eau ul li a[href="#anc"] {
-  color: #ffd54f;
+  color: #ffc107;
 }
 
 
@@ -397,36 +397,223 @@ h1#top {
   transform: scale(1.05);
 }
 
-/* Carte de France */
+
+/*CSS de la carte de la France */
+
 .regions {
-  stroke: #ffffff;
+    stroke: #ffffff;
+    stroke-width: 1.2;  
+    shape-rendering: geometricPrecision;
+    text-rendering: geometricPrecision;
+    image-rendering: optimizeQuality;
 }
 .departements {
-  stroke: #64b5f6;
+  stroke: #27445c;
+  stroke-width: 0.3;    
 }
 
-.regions:hover:not(.Gua),
-.regions.Gua:hover {
+.regions:hover:not(.Gua),.regions.Gua:hover {
   fill: #37474f;
 }
 
-/* Carte */
-#tableau_contenu {
+#contenu{
+  border-radius:3px;
+  position:relative;
+  margin-left:2%;
+  max-height:40em;
+  max-width:100%;
+}
+#FrReg{
+    border-radius:3px;
+    position:relative;
+    margin-left:47%;
+    max-height:38em;
+    max-width:52%;
+    overflow:hidden;
+    box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-bottom:5%;
+}
+
+#header{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+#titre{
+    color:white;
+    padding:15%;
+    position: relative;
+    text-align:center;
+    font-size:70px;
+}
+
+#libelle{
+    font-family:Playfair Display, serif;
+    position:relative;
+    text-align:center;
+    color:white;
+    font-size:25px;
+    margin-top:-5%;
+}
+
+#bouton_dezoom{ 
+    display:flex;
+    position:absolute;
+    justify-content:center;
+    align-items:center;
+    box-sizing: border-box;
+    border-radius:3px;
+    transform: translateY(-125px);
+    left:48%;
+    width:60px;
+    height:50px;
+    background-color:#3a3a3a;
+    border: 1px solid #7aa7c7;
+    cursor: pointer;
+}
+
+#bouton_dezoom:hover{
+    box-shadow:1px 1px 1px 1px #a7a7a9;
+}
+
+/*CSS du tableau */
+#carte{
   background-color: #1e1e2f;
-  color: #eee;
+  color: #ffffff;
+
 }
 
-#tableau th {
-  background-color: #1f2f90 !important;
-  color: white;
+#barre_recherche{
+  width:670px;
+  max-height:5em;
+  position:absolute;
+  display:flex;
+  justify-content:center;
+}
+#tableau_contenu{
+  margin-top:5%;
+  width:670px;
+  position:absolute;
+  max-height:20em;
+  overscroll-behavior: none;
+  overflow-y : scroll;
+  overflow-x : scroll;
+  box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+#jauge{
+  margin-top:30%;
+  width:670px;
+  max-height:13em;
+  position:absolute;
+  display:flex;
+  justify-content:center;
 }
 
+#tableau{
+    /* Style général du tableau */
+    margin-top:0;
+    background-color: #f5f5f5;
+    font-family: roboto;  /* Police utilisée */
+    border-collapse: collapse;  /* Fusion des bordures */
+    cursor: pointer;
+    /*border: 2px solid midnightblue;*/  /* Commenté */
+    border: 1px solid #ddd;  /* Bordure fine */
+}
+
+#tableau, #tableau th, #tableau td {
+    border-radius: 0;
+}
+
+#tableau th{
+    background-color: #1e1e2f !important;
+}
 #tableau td{
-  color: #eee;
+  color: #000000;
   font-weight: 500;
   border: 1px solid #c2c2c2;
 }
 
+.regions{
+  fill:rgb(47, 47, 47);
+}
+
+.departements{
+  fill:rgb(47, 47, 47);
+}
+
+#BandeVerticale{
+  fill: #284f74;
+}
+
+/* Tablettes et écrans moyens */
+@media (max-width: 900px) {
+  .navbar {
+    padding: 1rem 1.5rem;
+  }
+
+  .nav-links {
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .footer-container {
+    flex-direction: column; /* Empile verticalement le footer */
+    align-items: center;
+    gap: 20px;
+  }
+
+  .footer-section {
+    min-width: 100%;
+    max-width: 400px;
+  }
+}
+
+/* Petits écrans (smartphones) */
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column; /* Nav empilée verticalement */
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .nav-links li a {
+    font-size: 1rem;
+  }
+
+  .footer-container {
+    
+    padding: 0 10px;
+  }
+
+  .footer-section {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  video {
+    max-height: 200px;
+  }
+
+  .video-title {
+    font-size: 2rem;
+    top: 40%;
+  }
+
+  .apropossae,
+  .objectifs,
+  .competences,
+  .fonctionnalites,
+  .texte {
+    margin: 10px 5px;
+    padding: 15px;
+  }
+}
 
 
 .ui-switch {
@@ -510,4 +697,90 @@ h1#top {
   opacity: 1;
   width: 0;
   height: 0;
+}
+
+/*chargement*/
+
+#load{
+  width:670px;
+  height:20em;
+  max-height:20em;
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+#square,#square2{
+  top:100px;
+  left:44%;/*280px; */
+}
+
+#cercle,#cercle2{
+  top:112.5px;
+  left:45.9%/*302.5px;*/
+}
+#square{
+ width: 100px;
+ height: 100px;
+ max-height:20em;
+ background-color: rgb(51, 194, 246);
+ position: absolute;
+ border-radius: 50%;
+ animation: rotater 2s infinite;
+ color:white;
+}
+
+#square2{
+ width: 100px;
+ height: 100px;
+ background-color: rgb(0, 106, 255);
+ position: absolute;
+ border-radius: 50%;
+ opacity: 0.25;
+ animation: fadeIn 2s infinite;
+ color:white;
+}
+
+#cercle{
+ width: 75px;
+ height: 75px;
+ background-color: rgb(255, 255, 255);
+ position: absolute;
+ border-radius: 50%;
+ color:white;
+ animation: rotater 2s infinite;
+}
+
+#cercle2{
+ width: 75px;
+ height: 75px;
+ background-color: rgb(255, 255, 255);
+ position: absolute;
+ border-radius: 50%;
+ color:white;
+ animation: rotater 2s infinite;
+ animation-delay: 0.6s;
+}
+
+.ball{
+ width: 15px;
+ height: 15px;
+ top:-3px;
+ border-radius: 50%;
+ position: absolute;
+ background-color: rgb(255, 255, 255);
+}
+
+
+
+@keyframes rotater{ 
+ 0% {transform: rotate(0deg)}
+ 100% {transform:rotate(365deg);}
+}
+
+@keyframes fadeIn{
+ 0% {opacity: 0;} 
+ 50%{opacity: 1;}
+ 100% {opacity: 0;}
 }
