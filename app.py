@@ -7,33 +7,17 @@ import pandas as pd
 from pretty_html_table import build_table
 import docs_dicts
 
-#ma mere mange du couscous
 app = Flask(__name__)
 
-def tableau(): 
-    #Construit une table de données en fonction des choix de l'utilisateur
+def tableau_start(): 
     cnx = sqlite3.connect('Indicateur_des_services.db')
-    #requête qui permet de construire n'importe quel requête (provenant de soit Démographie, Honoraires ou Prescriptions) en fonction de paramètres
     requete = f"""
         SELECT * from Descriptif limit 10;  
     """
     #soit on garde cette requête comme étant une "démo" du tableau, ou on l'enlève et y'a rien quand on est sur la page au début
     df = pd.read_sql_query(requete, cnx)
-    if df.empty:       #si la requête n'affiche rien, un message s'affiche pour confirmer à l'utilisateur que les données qu'il veut sélectionner n'existe pas
-        x="<h1 style='text-align:center'>Informations indisponibles dans notre base de données</h1>"
-    else:
-        x = build_table(df, color="blue_dark", padding="15px 20px", font_size="14px",text_align='center',even_bg_color="#e8e8e8",odd_bg_color="#f5f5f5",border_bottom_color="blue_dark")    #créer un tableau bleu claire plus joli avec la bibliothèque pretty_html_table
-        y = {
-            '<table': '<table id="tableau"',
-            '<tr style="text-align: right;"': '<tr style="border: 1px solid #104c76;"',
-            '<th style="background-color: #305496;' : '<th',
-        }
-
-        for cle, valeur in y.items():
-            x = x.replace(cle, valeur)
-
     cnx.close()
-    return x
+    return df
 
 def tableau_by_search(filtrage,an):
     cnx = sqlite3.connect('Indicateur_des_services.db')
@@ -44,8 +28,8 @@ def tableau_by_search(filtrage,an):
     try :
         #requête qui permet de construire n'importe quel requête en fonction de paramètres
         requete = f"""
-            SELECT code_indicateur,code_service, nom_service,numero_siren,mode_gestion,Descriptif.code_commune, nom_commune,numero_collectivite from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune where 
-            code_indicateur LIKE ?
+            SELECT code_indicateur,code_service, nom_service,numero_siren,mode_gestion,Descriptif.code_commune, nom_commune,numero_collectivite 
+            from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune where code_indicateur LIKE ?
             OR nom_commune LIKE ?
             OR code_service LIKE ?
             OR nom_service LIKE ?
@@ -69,7 +53,7 @@ def tableau_by_search(filtrage,an):
             url=f'https://hubeau.eaufrance.fr/api/v0/indicateurs_services/communes?annee={an}&code_commune={urllib.parse.quote(codes)}&format=json&size=1000'
             reponse = requests.get(url)
             reponse2 = reponse.json()
-            #{code service : {indicateur : valeur, indicateur:valeur...}}
+            #{code service : {indicateur : valeur, indicateur:valeur...}} 
             data = {list(commune.values())[2][0]: list(commune.values())[5] for commune in reponse2['data']} 
             for ligne in liste_infos: 
                 code_service = ligne[0]
@@ -80,21 +64,10 @@ def tableau_by_search(filtrage,an):
                         df.loc[(df['code_service']==code_service) & (df['code_indicateur']==code_indicateur), 'valeur'] = data[code_service][code_indicateur]
             #ajout au fur et à mesure des infos sur df_total :D
             df_total = pd.concat([df_total,df], ignore_index=True)
-        if df_total.empty:       #si la requête n'affiche rien, un message s'affiche pour confirmer à l'utilisateur que les données qu'il veut sélectionner n'existe pas
-            x="<h1 style='text-align:center'>Informations indisponibles dans notre base de données</h1>"
-        else:
-            x = build_table(df_total, color="blue_dark", padding="15px 20px", font_size="14px",text_align='center',even_bg_color="#e8e8e8",odd_bg_color="#f5f5f5",border_bottom_color="blue_dark")    #créer un tableau bleu claire plus joli avec la bibliothèque pretty_html_table
-            y = {
-                '<table': '<table id="tableau"',
-                '<tr style="text-align: right;"': '<tr style="border: 1px solid #104c76;"',
-                '<th style="background-color: #305496;' : '<th',
-            }
-
-            for cle, valeur in y.items():
-                x = x.replace(cle, valeur)
+        
 
         cnx.close()
-        return x
+        return df_total
     except Exception as e:
         return f'une erreur est survenue : {reponse2}. Mince alors...'
 
@@ -139,20 +112,19 @@ def tableau_map_clique(zone_clique,an):
                         #print(code_service,code_indicateur,data[code_service][code_indicateur])
                         df.loc[(df['code_service']==code_service) & (df['code_indicateur']==code_indicateur), 'valeur'] = data[code_service][code_indicateur]
             df_total = pd.concat([df_total,df], ignore_index=True)
-        x = build_table(df_total, color="blue_dark", padding="15px 20px", font_size="14px",text_align='center',even_bg_color="#e8e8e8",odd_bg_color="#f5f5f5",border_bottom_color="blue_dark")    #créer un tableau bleu claire plus joli avec la bibliothèque pretty_html_table
-        y = {
-            '<table': '<table id="tableau"',
-            '<tr style="text-align: right;"': '<tr style="border: 1px solid #104c76;"',
-            '<th style="background-color: #305496;' : '<th',
-        }
-        for cle, valeur in y.items():
-            x = x.replace(cle, valeur)
-
         cnx.close()
-        return x
+        return df_total
     except Exception as e :
         return(f"Erreur lors du chargement des données : {e}")
             
+def test(search,tableau):
+    maxi=tableau['valeur'].max(skipna=True)
+    mini=tableau['valeur'].min(skipna=True)
+    moy=tableau['valeur'].mean(skipna=True)
+    pourcent=(moy/maxi)*100
+    if search in docs_dicts.dict_indicateurs.keys() or search in docs_dicts.dict_indicateurs.values():
+        return f"""<p>Ceci est un placeholder pour la jauge de l'indicateur {search} ! Voilà. La valeur maximum de cet indicateur est de {maxi}, et la valeur minimum est {mini}. 
+        La moyenne sur ces données est de {moy}, à peu près {round(pourcent, 2)}% de la valeur maximale"""
 
 @app.route("/")
 def index():    
@@ -168,16 +140,35 @@ def Documentation():
 
 @app.route('/Données_indicateurs', methods=['GET'])
 def Données_indicateurs():
+    load=0
     search = request.args.get("search")
     zone = request.args.get("zone")
     annee = request.args.get("annee")
+    test_indicateur=""
     try:
         if search:
-            return tableau_by_search(search,annee)
+            dtframe=tableau_by_search(search,annee)
+            test_indicateur=test(search,dtframe) 
         elif zone:
-            return tableau_map_clique(zone, annee)
+            dtframe = tableau_map_clique(zone, annee)
         else:
-            return render_template('Données_indicateurs.html', table=tableau()) 
+            load=1
+            dtframe=tableau_start()
+        if dtframe.empty:       #si la requête n'affiche rien, un message s'affiche pour confirmer à l'utilisateur que les données qu'il veut sélectionner n'existe pas
+            tableau="<h1 style='text-align:center'>Informations indisponibles dans notre base de données</h1>"
+        else:
+            tableau = build_table(dtframe, color="blue_dark", padding="15px 20px", font_size="14px",text_align='center',even_bg_color="#e8e8e8",odd_bg_color="#f5f5f5",border_bottom_color="blue_dark")    #créer un tableau bleu claire plus joli avec la bibliothèque pretty_html_table
+            change_css = {
+                '<table': '<table id="tableau"',
+                '<tr style="text-align: right;"': '<tr style="border: 1px solid #104c76;"',
+                '<th style="background-color: #305496;' : '<th',
+            }
+            for cle, valeur in change_css.items():
+                tableau = tableau.replace(cle, valeur)
+        if load==0: 
+            return tableau + "|" + test_indicateur
+        else :
+            return render_template('Données_indicateurs.html', table=tableau)
     except Exception as e:
         return(f"Erreur lors du chargement des données : {e}")
     
