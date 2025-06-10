@@ -1,3 +1,6 @@
+import sqlite3
+import pandas as pd
+
 ANC = ['D301.0','habitants desservis par un dispositif anc habitants','DC.196',"tarif moyen d'un contrôle d'installation",'DC.197','recettes totales issues des contrôles',
     'P301.3','taux de conformité des dispositifs anc','VP.166',"nombre d'installations conformes",'VP.167',"nombre total d'installations contrôlées",
     'VP.168','zones anc officiellement délimitées','VP.169',"existence d'un règlement anc validé",'VP.230',"taux de couverture du territoire par anc"]
@@ -90,3 +93,10 @@ dict_depts={"Guadeloupe":["97122","97119","97117","97116","97113","97102"],
             "Ain": ["01415", "01411", "01379", "01366", "01342", "01310", "01297", "01280", "01262", "01219", "01216", "01208", "01194", "01166", "01157", "01142", "01089", "01049", "01047", "01034", "01030", "01027", "01010"],
             "Val-d'Oise": ["95637", "95607", "95582", "95572", "95563", "95510", "95500", "95491", "95488", "95476", "95450", "95424", "95422"]
 }
+
+dict_indicateurs={}
+cnx = sqlite3.connect('Indicateur_des_services.db')
+requete="""select code_indicateur,nom_indicateur from Indicateur;"""
+x=pd.read_sql_query(requete,cnx)
+for i in range (0,53):
+    dict_indicateurs[x['code_indicateur'][i]]=x['nom_indicateur'][i]
