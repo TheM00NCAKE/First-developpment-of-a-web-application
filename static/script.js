@@ -122,8 +122,10 @@ $(document).ready(function () {
             fetch(`/Données_indicateurs?zone=${encodeURIComponent(this.id)}&annee=${encodeURIComponent(annee_choisi)}`)
             .then(resp => resp.text())
             .then(html => {
-            document.getElementById('tableau_contenu').innerHTML = html;
-            tri()
+                const parts = html.split("|");
+                document.getElementById('tableau_contenu').innerHTML = parts[0];
+                document.getElementById('jauge').innerHTML = parts[1];
+                tri()
         });
         });
         });
@@ -137,7 +139,9 @@ $(document).ready(function () {
                 fetch(`/Données_indicateurs?zone=Guadeloupe`)
                 .then(resp => resp.text())
                 .then(html => {
-                    document.getElementById('tableau_contenu').innerHTML = html;
+                    const parts = html.split("|");
+                    document.getElementById('tableau_contenu').innerHTML = parts[0];
+                    document.getElementById('jauge').innerHTML = parts[1];
                     tri()
                 });
             } else {
@@ -178,7 +182,9 @@ $(document).ready(function () {
     fetch(`/Données_indicateurs?search=${encodeURIComponent(motcle)}&annee=${encodeURIComponent(annee_choisi)}`)
         .then(resp => resp.text())
         .then(html => {
-        document.getElementById('tableau_contenu').innerHTML = html;
+        const parts = html.split("|");
+        document.getElementById('tableau_contenu').innerHTML = parts[0];
+        document.getElementById('jauge').innerHTML = parts[1];
         tri()
     });
     }
