@@ -7,6 +7,7 @@ import pandas as pd
 from pretty_html_table import build_table
 import docs_dicts
 
+#ma mere mange du couscous
 app = Flask(__name__)
 
 def tableau(): 
