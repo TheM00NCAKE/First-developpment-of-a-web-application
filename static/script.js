@@ -53,6 +53,26 @@ function tri(){
     });
   });
 }
+var url="";
+//fonction pour envoyer les données sur flask 
+function envoie(zone_ou_search,id){
+        document.getElementById('tableau_contenu').innerHTML=test;
+        var annee_choisi=getannee()
+        if (id=='gua'){
+            url=`/Données_indicateurs?zone=Guadeloupe&annee=${encodeURIComponent(annee_choisi)}`;
+        }else{
+            url=`/Données_indicateurs?${encodeURIComponent(zone_ou_search)}=${encodeURIComponent(id)}&annee=${encodeURIComponent(annee_choisi)}`
+        }
+        fetch(url)
+        .then(resp => resp.text())
+        .then(html => {
+            const parts = html.split("|");
+            document.getElementById('tableau_contenu').innerHTML = parts[0];
+            document.getElementById('jauge').innerHTML = parts[1];
+            tri()
+        });
+    }
+
 document.addEventListener('DOMContentLoaded', () => {
   tri();
 });
@@ -79,56 +99,39 @@ $(document).ready(function () {
         var depts='#Depts_'+this.id;
         deptss=$(depts).find('.departements'); //on récupère chaque département de l'id récupéré
         //application du css : zoom, ajout/enlève la possibilité de cliquer/mouseover sur certains endroits
-        document.getElementById('tableau_contenu').innerHTML=test;
-        var annee_choisi=getannee();
-        fetch(`/Données_indicateurs?zone=${encodeURIComponent(this.id)}&annee=${encodeURIComponent(annee_choisi)}`)
-        .then(resp => resp.text())
-        .then(html => {
-            document.getElementById('tableau_contenu').innerHTML = html;
-            tri();
-        });
+        envoie("zone",this.id);
 
-        
-// Applique le zoom dans la prochaine frame
-    $carte.css('transform-origin', TOrigin[this.id]);
-    // Active le will-change juste avant le zoom (permet de notifier le navig qu'on veut zoomer : le nav se "prépare" -> latence diminué)
-    $carte.css('will-change', 'transform');
-    requestAnimationFrame(() => {
-        $carte.css(style);      //style appliqué
-    });
-    // Supprime will-change après la transition pour éviter le flou
-    setTimeout(() => {
-        $carte.css('will-change', 'auto');
-    }, 300); 
+    // Applique le zoom dans la prochaine frame
+        $carte.css('transform-origin', TOrigin[this.id]);
+        // Active le will-change juste avant le zoom (permet de notifier le navig qu'on veut zoomer : le nav se "prépare" -> latence diminué)
+        $carte.css('will-change', 'transform');
+        requestAnimationFrame(() => {
+            $carte.css(style);      //style appliqué
+        });
+        // Supprime will-change après la transition pour éviter le flou
+        setTimeout(() => {
+            $carte.css('will-change', 'auto');
+        }, 300); 
 
         $('#regs').css('pointer-events', 'none');
         $(deptss).css('pointer-events', 'auto');
         $(deptss).mouseover(function () {
         //le if pour l'instant est un bout de code inutile (prendre en compte que le else), à voir pour la suite avec la gestion des requêtes :)
-        if (departement_clique != "") {
-            $('.departements').not(departement_clique).css('fill', '');
-            $(departement_clique).css('fill',couleurs['color_dept_clique']); 
-        } else {
-            $('.departements').css('fill', '');
-        }
-        $(this).css('fill', couleurs['color_dept_mouseover']); //couleur de dept ou la souris passe dessus
-        });
-        $(deptss).click(function(){
-            $(deptss).css('fill', '');
-            $(this).css('fill', couleurs['color_dept_clique']); //couleur de la région cliqué change
-            departement_clique="#"+this.id;
-            document.getElementById('tableau_contenu').innerHTML=test;
-            var annee_choisi=getannee()
-            fetch(`/Données_indicateurs?zone=${encodeURIComponent(this.id)}&annee=${encodeURIComponent(annee_choisi)}`)
-            .then(resp => resp.text())
-            .then(html => {
-                const parts = html.split("|");
-                document.getElementById('tableau_contenu').innerHTML = parts[0];
-                document.getElementById('jauge').innerHTML = parts[1];
-                tri()
-        });
-        });
-        });
+            if (departement_clique != "") {
+                $('.departements').not(departement_clique).css('fill', '');
+                $(departement_clique).css('fill',couleurs['color_dept_clique']); 
+            } else {
+                $('.departements').css('fill', '');
+            }
+            $(this).css('fill', couleurs['color_dept_mouseover']); //couleur de dept ou la souris passe dessus
+            });
+            $(deptss).click(function(){
+                $(deptss).css('fill', '');
+                $(this).css('fill', couleurs['color_dept_clique']); //couleur de la région cliqué change
+                departement_clique="#"+this.id;
+                envoie("zone",this.id);
+            });
+            });
         $('#reg_OutreMer .regions').click(function (e) {
             e.stopPropagation();
             $('.regions').css('fill', '');
@@ -136,14 +139,7 @@ $(document).ready(function () {
 
             if (this.classList.contains('Gua')) {
                 $('.Gua').css('fill', couleurs['color_reg_clique']);
-                fetch(`/Données_indicateurs?zone=Guadeloupe`)
-                .then(resp => resp.text())
-                .then(html => {
-                    const parts = html.split("|");
-                    document.getElementById('tableau_contenu').innerHTML = parts[0];
-                    document.getElementById('jauge').innerHTML = parts[1];
-                    tri()
-                });
+                envoie("zone","gua");
             } else {
                 $(this).css('fill', couleurs['color_reg_clique']);
                 region_clique = "#" + this.id;
@@ -177,16 +173,7 @@ $(document).ready(function () {
     }
     function chercher(){
     var motcle=document.getElementById('barre_filtrage').value;
-    var annee_choisi=getannee();
-    document.getElementById('tableau_contenu').innerHTML=test;
-    fetch(`/Données_indicateurs?search=${encodeURIComponent(motcle)}&annee=${encodeURIComponent(annee_choisi)}`)
-        .then(resp => resp.text())
-        .then(html => {
-        const parts = html.split("|");
-        document.getElementById('tableau_contenu').innerHTML = parts[0];
-        document.getElementById('jauge').innerHTML = parts[1];
-        tri()
-    });
+    envoie("search",motcle);
     }
 
     function mode_sombre() {
