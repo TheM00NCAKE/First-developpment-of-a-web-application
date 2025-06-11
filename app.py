@@ -19,7 +19,7 @@ def tableau_start():
     cnx.close()
     return df
 
-def tableau_by_search(filtrage,an):
+def tableau_by_search(filtrage,an,service,Lservice):
     cnx = sqlite3.connect('Indicateur_des_services.db')
     df_total=pd.DataFrame()
     #Notifier à l'utilisateur quand il choisi des infos tout simplement pas dispo sur l'API du tout (ANC>2017)
@@ -29,16 +29,17 @@ def tableau_by_search(filtrage,an):
         #requête qui permet de construire n'importe quel requête en fonction de paramètres
         requete = f"""
             SELECT code_indicateur,code_service, nom_service,numero_siren,mode_gestion,Descriptif.code_commune, nom_commune,numero_collectivite 
-            from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune where code_indicateur LIKE ?
+            from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune where nom_service LIKE ? AND 
+            (code_indicateur LIKE ?
             OR nom_commune LIKE ?
             OR code_service LIKE ?
-            OR nom_service LIKE ?
             OR numero_siren LIKE ?
             OR mode_gestion LIKE ?
             OR Descriptif.code_commune LIKE ?
-            OR numero_collectivite LIKE ? limit 1000;
+            OR numero_collectivite LIKE ?) limit 700;
         """
-        df = pd.read_sql_query(requete, cnx, params=(filtrage, filtrage, filtrage, filtrage, filtrage, filtrage, filtrage,filtrage))
+        df = pd.read_sql_query(requete, cnx, params=(Lservice,filtrage, filtrage, filtrage, filtrage, filtrage, filtrage, filtrage))
+        
         if df.empty:
             return "<h1 style='text-align:center'>Informations indisponibles dans notre base de données</h1>"
         #récupérer tt les codes communes de notre requête df
@@ -52,7 +53,7 @@ def tableau_by_search(filtrage,an):
             #On fait donc une liste de 200 communes à chaque fois et on les mets dans les URL. 
             codes=','.join(liste[element:element+200])
             #urllib.parse.quote permet de bien 'traduire' les ',' en %2C dans les URL (qui signifie les ',', mais sont pas sous forme de ',')
-            url=f'https://hubeau.eaufrance.fr/api/v0/indicateurs_services/communes?annee={an}&code_commune={urllib.parse.quote(codes)}&format=json&size=1000'
+            url=f'https://hubeau.eaufrance.fr/api/v0/indicateurs_services/communes?annee={an}&code_commune={urllib.parse.quote(codes)}&format=json&size=1000&type_service={service}'
             reponse = requests.get(url)
             reponse2 = reponse.json()
             #{code service : {indicateur : valeur, indicateur:valeur...}} 
@@ -60,21 +61,18 @@ def tableau_by_search(filtrage,an):
             for ligne in liste_infos: 
                 code_service = ligne[0]
                 code_indicateur = ligne[1]
-                if code_service in data: 
-                    if code_indicateur in data[code_service]:  #data[code_service] contient tt les clés vals de chaque indicateur 
+                if code_service in data and code_indicateur in data[code_service]:  #data[code_service] contient tt les clés vals de chaque indicateur 
                         #localise toutes les lignes qui cochent cette condition (concerne les services avec bcp de communes) et leur attribue la val de l'indicateur
-                        df.loc[(df['code_service']==code_service) & (df['code_indicateur']==code_indicateur), 'valeur'] = data[code_service][code_indicateur]
+                    df.loc[(df['code_service']==code_service) & (df['code_indicateur']==code_indicateur), 'valeur'] = data[code_service][code_indicateur]
             #ajout au fur et à mesure des infos sur df_total :D
-            df_total = pd.concat([df_total,df], ignore_index=True)
-        
-
+            df_total = pd.concat([df_total,df])
         cnx.close()
         return df_total
     except Exception as e:
         return f'une erreur est survenue : {reponse2}. Mince alors...'
 
 #même idée, mais là c'est quand on clique sur la map
-def tableau_map_clique(zone_clique,an):
+def tableau_map_clique(zone_clique,an,service,Lservice):
     cnx = sqlite3.connect('Indicateur_des_services.db')
     df_total = pd.DataFrame()
     codes_communes=[]
@@ -92,7 +90,7 @@ def tableau_map_clique(zone_clique,an):
                             #requête qui permet de construire n'importe quel requête (provenant de soit Démographie, Honoraires ou Prescriptions) en fonction de paramètres
             requete = f"""
             SELECT code_indicateur,code_service, nom_service,numero_siren,mode_gestion,Descriptif.code_commune, nom_commune,numero_collectivite from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune where 
-            Descriptif.code_commune in ({truc}) limit 5000;
+            Descriptif.code_commune in ({truc}) limit 3000;
             """
             df=pd.read_sql_query(requete, cnx, params=codes_communes)
         liste = df['code_commune'].unique().tolist()
@@ -100,7 +98,7 @@ def tableau_map_clique(zone_clique,an):
         df['valeur'] = None
         for element in range (0,len(liste),200):
             codes=','.join(liste[element:element+200])
-            url=f'https://hubeau.eaufrance.fr/api/v0/indicateurs_services/communes?annee={an}&code_commune={urllib.parse.quote(codes)}&format=json&size=1000'
+            url=f'https://hubeau.eaufrance.fr/api/v0/indicateurs_services/communes?annee={an}&code_commune={urllib.parse.quote(codes)}&format=json&size=1000&type_service={service}'
             reponse = requests.get(url)
             reponse2 = reponse.json()
             data = {list(commune.values())[2][0]: list(commune.values())[5] for commune in reponse2['data']} #{code service : {indicateur : valeur, indicateur:valeur...}}
@@ -109,10 +107,9 @@ def tableau_map_clique(zone_clique,an):
             for ligne in liste_infos: 
                 code_service = ligne[0]
                 code_indicateur = ligne[1]
-                if code_service in data: 
-                    if code_indicateur in data[code_service]:  #data[code_service] contient tt les clés vals de chaque indicateur 
+                if code_service in data and code_indicateur in data[code_service]:  #data[code_service] contient tt les clés vals de chaque indicateur 
                         #print(code_service,code_indicateur,data[code_service][code_indicateur])
-                        df.loc[(df['code_service']==code_service) & (df['code_indicateur']==code_indicateur), 'valeur'] = data[code_service][code_indicateur]
+                    df.loc[(df['code_service']==code_service) & (df['code_indicateur']==code_indicateur), 'valeur'] = data[code_service][code_indicateur]
             df_total = pd.concat([df_total,df], ignore_index=True)
         cnx.close()
         return df_total
@@ -120,13 +117,15 @@ def tableau_map_clique(zone_clique,an):
         return(f"Erreur lors du chargement des données : {e}")
             
 def test(search,tableau):
-    maxi=tableau['valeur'].max(skipna=True)
-    mini=tableau['valeur'].min(skipna=True)
-    moy=tableau['valeur'].mean(skipna=True)
-    pourcent=(moy/maxi)*100
     if search in docs_dicts.dict_indicateurs.keys() or search in docs_dicts.dict_indicateurs.values():
+        maxi=tableau['valeur'].max(skipna=True)
+        mini=tableau['valeur'].min(skipna=True)
+        moy=tableau['valeur'].mean(skipna=True)
+        pourcent=(moy/maxi)*100
         return f"""<p>Ceci est un placeholder pour la jauge de l'indicateur {search} ! Voilà. La valeur maximum de cet indicateur est de {maxi}, et la valeur minimum est {mini}. 
         La moyenne sur ces données est de {moy}, à peu près {round(pourcent, 2)}% de la valeur maximale"""
+    else :
+        return "<p>rien à signaler...</p>"
 
 @app.route("/")
 def index():    
@@ -146,19 +145,21 @@ def Données_indicateurs():
     search = request.args.get("search")
     zone = request.args.get("zone")
     annee = request.args.get("annee")
+    service = request.args.get("service")
+    Lservice = request.args.get("Lservice")
     test_indicateur=""
     try:
         if search:
-            dtframe=tableau_by_search(search,annee)
+            dtframe=tableau_by_search(search,annee,service,Lservice)
         elif zone:
-            dtframe = tableau_map_clique(zone, annee)
+            dtframe = tableau_map_clique(zone, annee,service,Lservice)
         else:
             load=0
             dtframe=tableau_start()
         if isinstance(dtframe,str):       #si la requête n'affiche rien, un message en str s'affiche
             return dtframe
         else:
-            test_indicateur= test(search,dtframe) if search in docs_dicts.dict_indicateurs.keys() or search in docs_dicts.dict_indicateurs.values() else ""
+            test_indicateur= test(search,dtframe)
             tableau = build_table(dtframe, color="blue_dark", padding="15px 20px", font_size="14px",text_align='center',even_bg_color="#e8e8e8",odd_bg_color="#f5f5f5",border_bottom_color="blue_dark")    #créer un tableau bleu claire plus joli avec la bibliothèque pretty_html_table
             change_css = {
                 '<table': '<table id="tableau"',
