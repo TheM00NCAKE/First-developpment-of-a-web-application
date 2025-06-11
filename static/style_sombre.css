@@ -11,11 +11,13 @@ body {
   
 }
 
+/**Barre de nav**/
+
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #1e2a38;
+    background-color: #004466;
     color: white;
     padding: 10px 30px;
     position: relative;
@@ -44,12 +46,39 @@ body {
     text-decoration: none;
     color: white;
     font-weight: bold;
-    transition: color 0.3s;
+    transition: 0.5s ease;
+    background: transparent;
+    border: none;
+    padding: 1em 1em;
+    position: relative;
+
+}
+
+.nav-links li a:before{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: #ffffff;
+  transition: 0.5s ease;
 }
 
 .nav-links li a:hover {
-    color: #90caf9;
+  color: #d5d5d5;
+  transition-delay: 0.5s;
 }
+
+.nav-links li a:hover::before {
+  width: 100%;
+}
+
+.nav-links li a:hover::after {
+  height: 100%;
+  transition-delay: 0.4s;
+  color: aliceblue;
+}s
 
 .texte {
   border: 1px solid #333;
