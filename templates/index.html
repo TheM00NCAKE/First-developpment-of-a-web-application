@@ -10,7 +10,6 @@
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
 <body>
-
     <header>
     <nav class="navbar">
         <div class="navbar-left">
@@ -23,7 +22,9 @@
         </div>
 
         <div class="navbar-title">
-             <img src="{{ url_for('static', filename='logo_indiceau.png') }}" alt="LOGO HUBEAU" width="200">
+            <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='logo_indiceau.png') }}" alt="LOGO HUBEAU" width="200">
+            </a>
         </div>
 
 

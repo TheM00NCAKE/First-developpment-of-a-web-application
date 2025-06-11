@@ -20,9 +20,13 @@
                     <img src="{{ url_for('static', filename='eaufrance.png') }}" alt="Logo Eaufrance" width="130" />
                 </a>
             </div>
+
             <div class="navbar-title">
-             <img src="{{ url_for('static', filename='logo_indiceau.png') }}" alt="LOGO HUBEAU" width="200">
+                <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='logo_indiceau.png') }}" alt="LOGO HUBEAU" width="200">
+                </a>
             </div>
+            
             <ul class="nav-links">
                 <li><a href="{{ url_for('index') }}">Accueil</a></li>
                 <li><a href="{{ url_for('Documentation') }}">Documentation</a></li>
