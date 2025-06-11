@@ -57,7 +57,6 @@
             <div class="video-title">Données indicateurs</div>
         </div>
 
-    <br><br><br><br>
     <div id="contenu">
         <div id="barre_recherche">
             <select id="annee" onchange="getannee()" name="annee">
@@ -73,6 +72,11 @@
                 <option value="2010">2010</option>
                 <option value="2009">2009</option>
                 <option value="2008">2008</option>
+            </select>
+            <select id="service" onchange="getservice()" name="service">
+                <option value="AEP:eau potable" selected>AEP</option>
+                <option value="AC:assainissement collectif">AC</option>
+                <option value="ANC:assainissement non collectif">ANC</option>
             </select>
             <input type="text" placeholder="Ajouter un filtre" required id="barre_filtrage" name="search" autocomplete="off">
             <div id="recherche" style='width:30px; height:30px;' onclick="chercher()"><img  style='width:30px; height:30px;' src="static/favicon.gif"></div>
