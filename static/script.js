@@ -39,6 +39,10 @@ const compare = (ids, asc) => (row1, row2) => {
 function getannee(){
     return document.getElementById('annee').value;
 }
+function getservice(){
+    return document.getElementById('service').value;
+}
+
 function tri(){
   const table = document.querySelector('table');
   const tbody = table.querySelector('tbody');
@@ -56,13 +60,15 @@ function tri(){
 var url="";
 //fonction pour envoyer les données sur flask 
 function envoie(zone_ou_search,id){
-        document.getElementById('tableau_contenu').innerHTML=test;
-        var annee_choisi=getannee()
-        if (id=='gua'){
-            url=`/Données_indicateurs?zone=Guadeloupe&annee=${encodeURIComponent(annee_choisi)}`;
-        }else{
-            url=`/Données_indicateurs?${encodeURIComponent(zone_ou_search)}=${encodeURIComponent(id)}&annee=${encodeURIComponent(annee_choisi)}`
-        }
+    document.getElementById('tableau_contenu').innerHTML=test;
+    var annee_choisi=getannee();
+    var service=getservice();
+    service_choisi=service.split(':');
+    if (id=='gua'){
+        url=`/Données_indicateurs?zone=Guadeloupe&annee=${encodeURIComponent(annee_choisi)}`;
+    }else{
+        url=`/Données_indicateurs?${encodeURIComponent(zone_ou_search)}=${encodeURIComponent(id)}&annee=${encodeURIComponent(annee_choisi)}&service=${encodeURIComponent(service_choisi[0])}&Lservice=${encodeURIComponent(service_choisi[1])}`;
+    }
         fetch(url)
         .then(resp => resp.text())
         .then(html => {
