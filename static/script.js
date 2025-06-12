@@ -20,9 +20,8 @@ var dezoom = {
 /*HTML pour faire apparaître le symbole de chargement */
 var test='<div id="load"><div id="square"></div><div id="square2"></div><div id="cercle"><div class="ball"></div></div><div id="cercle2"><div class="ball"></div></div></div>';
 var deptss = $(); 
-//dict pour les couleurs de la carte
 var couleurs={color_region:'#f5f5fe',color_departement:'#f5f5fe',color_reg_mouseover:'#b2d3fb',color_reg_clique:'#cbcbfa',color_dept_clique:'#4472c4',color_dept_mouseover:'#94baff'};
-
+var url="";
 //////////////////////////:Code pour le tableau
 const compare = (ids, asc) => (row1, row2) => {
   const tdValue = (row, ids) => row.children[ids].textContent;
@@ -36,12 +35,6 @@ const compare = (ids, asc) => (row1, row2) => {
     tdValue(asc ? row2 : row1, ids)
   );
 };
-function getannee(){
-    return document.getElementById('annee').value;
-}
-function getservice(){
-    return document.getElementById('service').value;
-}
 
 function tri(){
   const table = document.querySelector('table');
@@ -57,17 +50,18 @@ function tri(){
     });
   });
 }
-var url="";
+
 //fonction pour envoyer les données sur flask 
-function envoie(zone_ou_search,id){
+function envoie(zone,id){
     document.getElementById('tableau_contenu').innerHTML=test;
-    var annee_choisi=getannee();
-    var service=getservice();
+    var annee_choisi=document.getElementById('annee').value;
+    var service=document.getElementById('service').value;
+    var search=document.getElementById('barre_filtrage').value;
     service_choisi=service.split(':');
     if (id=='gua'){
         url=`/Données_indicateurs?zone=Guadeloupe&annee=${encodeURIComponent(annee_choisi)}`;
     }else{
-        url=`/Données_indicateurs?${encodeURIComponent(zone_ou_search)}=${encodeURIComponent(id)}&annee=${encodeURIComponent(annee_choisi)}&service=${encodeURIComponent(service_choisi[0])}&Lservice=${encodeURIComponent(service_choisi[1])}`;
+        url=`/Données_indicateurs?zone=${encodeURIComponent(zone)}&search=${encodeURIComponent(search)}&annee=${encodeURIComponent(annee_choisi)}&service=${encodeURIComponent(service_choisi[0])}&Lservice=${encodeURIComponent(service_choisi[1])}`;
     }
         fetch(url)
         .then(resp => resp.text())
@@ -78,6 +72,13 @@ function envoie(zone_ou_search,id){
             tri()
         });
     }
+function avant_envoie(){
+    if(departement_clique!="") {
+        envoie(departement_clique.slice(1),"");     
+    }else if (region_clique!=""){
+        envoie(region_clique.slice(1),"");
+    }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   tri();
@@ -105,7 +106,7 @@ $(document).ready(function () {
         var depts='#Depts_'+this.id;
         deptss=$(depts).find('.departements'); //on récupère chaque département de l'id récupéré
         //application du css : zoom, ajout/enlève la possibilité de cliquer/mouseover sur certains endroits
-        envoie("zone",this.id);
+        envoie(this.id,"");
 
     // Applique le zoom dans la prochaine frame
         $carte.css('transform-origin', TOrigin[this.id]);
@@ -135,7 +136,7 @@ $(document).ready(function () {
                 $(deptss).css('fill', '');
                 $(this).css('fill', couleurs['color_dept_clique']); //couleur de la région cliqué change
                 departement_clique="#"+this.id;
-                envoie("zone",this.id);
+                envoie(this.id,"");
             });
             });
         $('#reg_OutreMer .regions').click(function (e) {
@@ -145,27 +146,23 @@ $(document).ready(function () {
 
             if (this.classList.contains('Gua')) {
                 $('.Gua').css('fill', couleurs['color_reg_clique']);
-                envoie("zone","gua");
+                envoie("","gua");
             } else {
                 $(this).css('fill', couleurs['color_reg_clique']);
                 region_clique = "#" + this.id;
             }
-
             $carte.css('transform-origin', origin);
             $carte.css('will-change', 'transform');
-
             requestAnimationFrame(() => {
                 $carte.css(style);
             });
-
             setTimeout(() => {
                 $carte.css('will-change', 'auto');
             }, 300);
-
             $('#regs').css('pointer-events', 'none');
         });
-
     });
+
     function dezooming() {
         //tout réinit à la normale (y'a peut être moyen de faire mieux...)
         $('#carte').css(dezoom);
@@ -177,18 +174,12 @@ $(document).ready(function () {
         region_clique = "";
         departement_clique = "";
     }
-    function chercher(){
-    var motcle=document.getElementById('barre_filtrage').value;
-    envoie("search",motcle);
-    }
 
     function mode_sombre() {
     const styleClair = "/static/style.css";
     const styleSombre = "/static/style_sombre.css";
-
     const etat = document.getElementById("toggle").checked;
     const linkCSS = document.getElementById("theme");
-
     if (etat) {
         linkCSS.href = styleSombre;
     } else {
