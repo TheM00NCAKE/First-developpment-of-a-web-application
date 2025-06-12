@@ -59,7 +59,7 @@
 
     <div id="contenu">
         <div id="barre_recherche">
-            <select id="annee" onchange="getannee()" name="annee">
+            <select id="annee" onchange="avant_envoie()" name="annee">
                 <option value="2019" selected>2019</option>
                 <option value="2018">2018</option>
                 <option value="2017">2017</option>
@@ -73,13 +73,13 @@
                 <option value="2009">2009</option>
                 <option value="2008">2008</option>
             </select>
-            <select id="service" onchange="getservice()" name="service">
-                <option value="AEP:eau potable" selected>AEP</option>
+            <select id="service" onchange="avant_envoie()" name="service">
+                <option value="AEP:eau potable" selected >AEP</option>
                 <option value="AC:assainissement collectif">AC</option>
                 <option value="ANC:assainissement non collectif">ANC</option>
             </select>
             <input type="text" placeholder="Ajouter un filtre" required id="barre_filtrage" name="search" autocomplete="off">
-            <div id="recherche" style='width:30px; height:30px;' onclick="chercher()"><img  style='width:30px; height:30px;' src="static/favicon.gif"></div>
+            <div id="recherche" style='width:30px; height:30px;' onclick='envoie("","")'><img  style='width:30px; height:30px;' src="static/favicon.gif"></div>
         </div>
         <div id="tableau_contenu">{{ table | safe }}</div>
         <div id="jauge"><img src="static/jauge.png"></div>
