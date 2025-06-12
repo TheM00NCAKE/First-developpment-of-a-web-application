@@ -49,7 +49,7 @@ body {
     transition: 0.5s ease;
     background: transparent;
     border: none;
-    padding: 1em 1em;
+    padding: 1em 1.5em;
     position: relative;
 
 }
@@ -73,6 +73,8 @@ body {
 .nav-links li a:hover::before {
   width: 100%;
 }
+
+
 
 .nav-links li a:hover::after {
   height: 100%;
@@ -448,6 +450,7 @@ h1#top {
 }
 
 #contenu{
+  margin-top:5%;
   border-radius:3px;
   position:relative;
   margin-left:2%;
@@ -537,7 +540,6 @@ h1#top {
   display:flex;
   justify-content:center;
 }
-
 
 #tableau{
     /* Style général du tableau */
