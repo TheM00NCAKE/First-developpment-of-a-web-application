@@ -8,7 +8,6 @@ body {
   font-family: 'Poppins', sans-serif;
   background-color: #fff;
   color: #004d61;
-  
 }
 
 /**Barre de nav**/
@@ -72,8 +71,6 @@ body {
 .nav-links li a:hover::before {
   width: 100%;
 }
-
-
 
 .nav-links li a:hover::after {
   height: 100%;
@@ -160,6 +157,7 @@ main section ul {
   margin-top: 10px;
   color: #1a2e4d;
 }
+
 .schema-er {
   background-color: #ebf5ff; /* bleu très clair / gris clair */
   padding: 60px 40px;
@@ -276,7 +274,7 @@ thead th {
   padding: 12px;
   text-align: left;
   font-weight: bold;
-  background-color: #007ACC;
+  background-color:#007bff;
 }
 
 tbody tr:nth-child(even) {
@@ -321,8 +319,6 @@ h1#top {
   box-shadow: 0 3px 8px rgba(3, 169, 244, 0.2);
 }
 
-
-
 #nav-eau ul {
   display: flex;
   justify-content: center;
@@ -332,7 +328,6 @@ h1#top {
   list-style: none;
 }
 
-
 #nav-eau ul li a {
   text-decoration: none;
   font-size: 1.2rem;
@@ -341,7 +336,6 @@ h1#top {
   border-radius: 8px;
   transition: background-color 0.25s ease, color 0.25s ease;
 }
-
 
 #nav-eau ul li a[href="#aep"] {
   color: #007bff;
@@ -354,7 +348,6 @@ h1#top {
 #nav-eau ul li a[href="#anc"] {
   color: #ffc107;
 }
-
 
 .footer {
   background: linear-gradient(135deg, #e3f2fd, #f0f9ff);
@@ -440,6 +433,7 @@ h1#top {
     text-rendering: geometricPrecision;
     image-rendering: optimizeQuality;
 }
+
 .departements {
     stroke: #1f5eb9;   
     stroke-width: 0.3;    
@@ -457,6 +451,7 @@ h1#top {
   max-height:40em;
   max-width:100%;
 }
+
 #FrReg{
     border-radius:3px;
     position:relative;
@@ -473,6 +468,7 @@ h1#top {
     justify-content:center;
     align-items:center;
 }
+
 #titre{
     color:white;
     padding:15%;
@@ -522,6 +518,7 @@ h1#top {
   display:flex;
   justify-content:center;
 }
+
 #tableau_contenu{
   margin-top:5%;
   width:670px;
@@ -532,6 +529,7 @@ h1#top {
   overflow-x : scroll;
   box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
 #jauge{
   margin-top:30%;
   width:670px;
@@ -553,6 +551,7 @@ h1#top {
     /*border: 2px solid midnightblue;*/  /* Commenté */
     border: 1px solid #ddd;  /* Bordure fine */
 }
+
 #tableau thead{
   background-color:#104c76;
 }
@@ -758,6 +757,7 @@ table tr:nth-child(odd) {
   top:112.5px;
   left:45.9%/*302.5px;*/
 }
+
 #square{
  width: 100px;
  height: 100px;
@@ -809,8 +809,6 @@ table tr:nth-child(odd) {
  position: absolute;
  background-color: rgb(255, 255, 255);
 }
-
-
 
 @keyframes rotater{ 
  0% {transform: rotate(0deg)}
