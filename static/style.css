@@ -439,7 +439,7 @@ h1#top {
     stroke-width: 0.3;    
 }
 
-.regions:hover:not(.Gua),.regions.Gua:hover {
+.regions:hover:not(.Gua):hover {
   fill: #b2d3fb; /* couleur de survol */
 }
 
