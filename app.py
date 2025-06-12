@@ -42,7 +42,7 @@ def tableau_by_search(filtrage,an,zone,service,Lservice):
                 OR Descriptif.code_commune LIKE ?
                 OR numero_collectivite LIKE ?) limit 1500;
             """
-            df = pd.read_sql_query(requete, cnx, params=(Lservice,filtrage, filtrage, filtrage, filtrage, filtrage, filtrage, filtrage))
+            df = pd.read_sql_query(requete, cnx, params=(Lservice,filtrage, filtrage, filtrage, filtrage, filtrage, filtrage, filtrage)) 
         else :
             codes_communes=[]
             if zone in docs_dicts.dict_regions :
@@ -54,19 +54,27 @@ def tableau_by_search(filtrage,an,zone,service,Lservice):
                 return "<h1 style='text-align:center'>Informations indisponibles dans notre base de données</h1>"
             if codes_communes:
                 truc = ','.join(['?'] * len(codes_communes))
-                                #requête qui permet de construire n'importe quel requête (provenant de soit Démographie, Honoraires ou Prescriptions) en fonction de paramètres
-                requete = f"""
-                SELECT Descriptif.code_indicateur,code_service, nom_service,numero_siren,mode_gestion,Descriptif.code_commune, nom_commune,numero_collectivite,unite from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune
-                join Indicateur on Descriptif.code_indicateur=Indicateur.code_indicateur where 
-                (nom_service LIKE ? AND Descriptif.code_commune in ({truc})) OR
-                (Descriptif.code_indicateur LIKE ?
-                OR nom_commune LIKE ?
-                OR code_service LIKE ?
-                OR mode_gestion LIKE ?
-                OR numero_collectivite LIKE ?) limit 5000;
+                if filtrage and zone :
+                    requete = f"""
+                    SELECT Descriptif.code_indicateur,code_service, nom_service,numero_siren,mode_gestion,Descriptif.code_commune, nom_commune,type_collectivite unite from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune
+                    join Indicateur on Descriptif.code_indicateur=Indicateur.code_indicateur join Collectivite on Descriptif.numero_collectivite = 
+                    Collectivite.numero_collectivite where 
+                    (nom_service LIKE ? AND Descriptif.code_commune in ({truc})) OR
+                    (Descriptif.code_indicateur LIKE ?
+                    OR nom_commune LIKE ?
+                    OR code_service LIKE ?
+                    OR mode_gestion LIKE ?
+                    OR numero_collectivite LIKE ?) limit 5000;
                 """
-                df=pd.read_sql_query(requete, cnx, params=(Lservice,*codes_communes,filtrage, filtrage, filtrage, filtrage, filtrage))
-                print(len(df))
+                    df=pd.read_sql_query(requete, cnx, params=(Lservice,*codes_communes,filtrage, filtrage, filtrage, filtrage, filtrage))
+                else : 
+                    requete = f"""
+                    SELECT Descriptif.code_indicateur,code_service, nom_service,numero_siren,mode_gestion,Descriptif.code_commune, nom_commune,type_collectivite,unite from Descriptif 
+                    join Commune on Descriptif.code_commune=Commune.code_commune join Indicateur on Descriptif.code_indicateur=Indicateur.code_indicateur 
+                    join Collectivite on Descriptif.numero_collectivite = Collectivite.numero_collectivite
+                    where nom_service LIKE ? AND Descriptif.code_commune in ({truc}) limit 5000;"""
+                    df=pd.read_sql_query(requete, cnx, params=(Lservice,*codes_communes))
+                #print(df)
         if df.empty:
             return "<h1 style='text-align:center'>Informations indisponibles dans notre base de données</h1>"
         #récupérer tt les codes communes de notre requête df
@@ -124,7 +132,13 @@ def Documentation():
 
 @app.route('/Données_indicateurs', methods=['GET'])
 def Données_indicateurs():
-    load=1
+    dtframe=tableau_start()
+    tableau=dtframe.to_html(classes="tableau",index=False)
+    tableau = tableau.replace('<table ', '<table id="tableau" ') 
+    return render_template('Données_indicateurs.html', table=tableau)
+
+@app.route('/Update_tableau', methods=['GET'])
+def Update_tableau():
     search = request.args.get("search")
     zone = request.args.get("zone")
     annee = request.args.get("annee")
@@ -135,18 +149,14 @@ def Données_indicateurs():
         if search or zone:
             dtframe=tableau_by_search(search,annee,zone,service,Lservice)
         else:
-            load=0
             dtframe=tableau_start()
         if isinstance(dtframe,str):       #si la requête n'affiche rien, un message en str s'affiche
             return dtframe
         else:
             test_indicateur= test(search,dtframe,annee)
             tableau=dtframe.to_html(classes="tableau",index=False)
-            tableau = tableau.replace('<table ', '<table id="tableau" ')
-        if load==1: 
-            return tableau + "|" + test_indicateur
-        else :
-            return render_template('Données_indicateurs.html', table=tableau)
+            tableau = tableau.replace('<table ', '<table id="tableau" ') 
+        return tableau + "|" + test_indicateur
     except Exception as e:
         return(f"Erreur lors du chargement des données : {e}")
     
