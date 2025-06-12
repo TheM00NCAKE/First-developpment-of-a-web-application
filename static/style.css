@@ -49,9 +49,8 @@ body {
     transition: 0.5s ease;
     background: transparent;
     border: none;
-    padding: 1em 1.5em;
+    padding: 1em 1em;
     position: relative;
-
 }
 
 .nav-links li a:before{
@@ -277,6 +276,7 @@ thead th {
   padding: 12px;
   text-align: left;
   font-weight: bold;
+  background-color: #007ACC;
 }
 
 tbody tr:nth-child(even) {
