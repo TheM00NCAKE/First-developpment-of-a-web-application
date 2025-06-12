@@ -538,15 +538,28 @@ h1#top {
   justify-content:center;
 }
 
+
 #tableau{
     /* Style général du tableau */
     margin-top:0;
+    text-align:center;
     background-color: #f5f5f5;
     font-family: roboto;  /* Police utilisée */
     border-collapse: collapse;  /* Fusion des bordures */
     cursor: pointer;
+    font-size:14px;
     /*border: 2px solid midnightblue;*/  /* Commenté */
     border: 1px solid #ddd;  /* Bordure fine */
+}
+#tableau thead{
+  background-color:#104c76;
+}
+table tr:nth-child(even) {
+    background-color: #e8e8e8; /* couleur pour les lignes paires */
+}
+
+table tr:nth-child(odd) {
+    background-color: #f5f5f5; /* couleur pour les lignes paires */
 }
 
 #tableau, #tableau th, #tableau td {
@@ -556,9 +569,15 @@ h1#top {
 #tableau th{
   background-color:#104c76 !important;
 }
+
+#tableau tr{
+  border: 1px solid #104c76;
+  text-align:center;
+}
+
 #tableau td{
   color:black;
-  font-weight: 500;
+  font-weight: 400;
   border: 1px solid #c2c2c2;
 }
 
