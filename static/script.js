@@ -20,7 +20,7 @@ var dezoom = {
 /*HTML pour faire apparaître le symbole de chargement */
 var test='<div id="load"><div id="square"></div><div id="square2"></div><div id="cercle"><div class="ball"></div></div><div id="cercle2"><div class="ball"></div></div></div>';
 var deptss = $(); 
-var couleurs={color_region:'#f5f5fe',color_departement:'#f5f5fe',color_reg_mouseover:'#b2d3fb',color_reg_clique:'#cbcbfa',color_dept_clique:'#4472c4',color_dept_mouseover:'#94baff'};
+var couleurs={color_region:'#f5f5fe',color_departement:'#f5f5fe',color_reg_mouseover:'#b2d3fb',color_reg_clique:'#cbcbfa',color_dept_clique:'#4472c4',color_dept_mouseover:'#94baff', color_nuit:'#37474f'};
 var url="";
 //////////////////////////:Code pour le tableau
 const compare = (ids, asc) => (row1, row2) => {
@@ -59,9 +59,9 @@ function envoie(zone,id){
     var search=document.getElementById('barre_filtrage').value;
     service_choisi=service.split(':');
     if (id=='gua'){
-        url=`/Données_indicateurs?zone=Guadeloupe&annee=${encodeURIComponent(annee_choisi)}`;
+        url=`/Update_tableau?zone=Guadeloupe&annee=${encodeURIComponent(annee_choisi)}`;
     }else{
-        url=`/Données_indicateurs?zone=${encodeURIComponent(zone)}&search=${encodeURIComponent(search)}&annee=${encodeURIComponent(annee_choisi)}&service=${encodeURIComponent(service_choisi[0])}&Lservice=${encodeURIComponent(service_choisi[1])}`;
+        url=`/Update_tableau?zone=${encodeURIComponent(zone)}&search=${encodeURIComponent(search)}&annee=${encodeURIComponent(annee_choisi)}&service=${encodeURIComponent(service_choisi[0])}&Lservice=${encodeURIComponent(service_choisi[1])}`;
     }
         fetch(url)
         .then(resp => resp.text())
@@ -91,7 +91,13 @@ $(document).ready(function () {
     const $carte = $('#carte');
     $('#depts').css('pointer-events', 'none'); //impossible d'interagir avec les depts pour l'instant
     $('.Gua').on('mouseover', function () {
-        $('.Gua').css('fill', couleurs['color_reg_mouseover']);
+        const etat = document.getElementById("toggle").checked;
+        if (etat) {
+        var x=couleurs['color_nuit'];
+        }else{
+        var x=couleurs['color_reg_mouseover'];
+        }
+        $('.Gua').css('fill', x);
     });
 
     $('.Gua').on('mouseout', function () {
