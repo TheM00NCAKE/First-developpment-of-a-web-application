@@ -14,7 +14,7 @@
     <header>
         <nav class="navbar">
             <div class="navbar-left">
-                <a href="https://hubeau.eaufrance.fr/" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.hubeau.eaufrance.fr/" target="_blank" rel="noopener noreferrer">
                     <img src="{{ url_for('static', filename='LOGO_HUBEAU.png') }}" alt="LOGO HUBEAU" width="130">
                 </a>
                 <a href="https://www.eaufrance.fr/" target="_blank" rel="noopener noreferrer">
@@ -23,11 +23,9 @@
             </div>
 
         <div class="navbar-title">
-            <a href="{{ url_for('index') }}">
-              <img src="{{ url_for('static', filename='logo_indiceau.png') }}" alt="LOGO HUBEAU" width="200">
-            </a>
+             <img src="{{ url_for('static', filename='logo_indiceau.png') }}" alt="LOGO HUBEAU" width="200">
         </div>
-            
+           
                 <ul class="nav-links">
                     <li><a href="{{ url_for('index') }}">Accueil</a></li>
                     <li><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
@@ -55,6 +53,8 @@
     <li><a href="#aep">🔵 AEP</a></li>
     <li><a href="#ac">🟢 Assainissement Collectif</a></li>
     <li><a href="#anc">🟡 Assainissement Non Collectif</a></li>
+    <li><a href="#collectivite">⚙️Collectivite</a></li>
+
   </ul>
 </nav>
 
@@ -142,6 +142,32 @@
   </table>
   <p><a href="#top">⬆️ Retour en haut</a></p>
 
+  <section id="collectivite">
+  <h2>⚙️ Collectivité</h2>
+  <table>
+    <thead>
+      <tr><th>Numéro collectivité</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Un syndicat intercommunal à vocation unique regroupe des communes pour gérer ensemble un service spécifique,
+         comme l’eau</td></tr>
+      <tr><td>2</td><td>Collectivité locale responsable de la distribution et/ou de l’assainissement de l’eau sur son territoire</td></tr>
+      <tr><td>3</td><td>Ensemble de communes gérées collectivement coordonnant les services d’eau et d’assainissement</td></tr>
+      <tr><td>4</td><td>Syndicat intercommunal gérant plusieurs services liés à l’eau au sein d’un territoire partagé</td></tr>
+      <tr><td>5</td><td>Structure intercommunale regroupant plusieurs collectivités pour gérer conjointement des services liés à l’eau</td></tr>
+      <tr><td>6</td><td>Groupement de communes urbanisées coordonnant ensemble la gestion des services d’eau</td></tr>
+      <tr><td>7</td><td>Structure départementale qui gère et coordonne les services d’eau sur son territoire</td></tr>
+      <tr><td>8</td><td>Grande entité urbaine gérant les services d’eau et d’assainissement à l’échelle métropolitaine</td></tr>
+      <tr><td>9</td><td>Organisme public gérant localement les services d’eau et d’assainissement sur un territoire défini</td></tr>
+      <tr><td>10</td><td>Regroupement de communes urbaines coordonnant les services d’eau et d’assainissement</td></tr>
+      <tr><td>11</td><td>Territoire administratif chargé de gérer et coordonner les services d’eau et d’assainissement</td></tr>
+
+    </tbody>
+  </table>
+  <p><a href="#top">⬆️ Retour en haut</a></p>
+</section>
+
+
 
     <footer class="footer">
     <div class="footer-container">
@@ -183,9 +209,6 @@
         <img src="{{ url_for('static', filename='logo-api.svg') }}" alt="Logo API" title="API Gouvernementale">
     </div>
 </footer>
-
-</body>
-</html>
 
 </body>
 </html>
