@@ -36,6 +36,7 @@ def tableau_by_search(filtrage,an,zone,service,Lservice):
                 Collectivite.numero_collectivite where 
                 nom_service LIKE ? AND 
                 (Descriptif.code_indicateur LIKE ?
+                OR nom_indicateur LIKE ?
                 OR nom_commune LIKE ?
                 OR code_service LIKE ?
                 OR numero_siren LIKE ?
@@ -43,7 +44,7 @@ def tableau_by_search(filtrage,an,zone,service,Lservice):
                 OR Descriptif.code_commune LIKE ?
                 OR type_collectivite LIKE ?) limit 1500;
             """
-            df = pd.read_sql_query(requete, cnx, params=(f"{Lservice}%",*[f"{filtrage}%"]*7)) 
+            df = pd.read_sql_query(requete, cnx, params=(f"{Lservice}%",*[f"{filtrage}%"]*8)) 
         else :
             codes_communes=[]
             if zone in docs_dicts.dict_regions :
@@ -62,12 +63,13 @@ def tableau_by_search(filtrage,an,zone,service,Lservice):
                     Collectivite.numero_collectivite where 
                     (nom_service LIKE ? AND Descriptif.code_commune in ({truc})) AND
                     (Descriptif.code_indicateur LIKE ?
+                    OR nom_indicateur LIKE ?
                     OR nom_commune LIKE ?
                     OR code_service LIKE ?
                     OR mode_gestion LIKE ?
                     OR type_collectivite LIKE ?) limit 5000;
                 """
-                    df=pd.read_sql_query(requete, cnx, params=(f"{Lservice}%",*codes_communes,*[f"{filtrage}%"] * 5))
+                    df=pd.read_sql_query(requete, cnx, params=(f"{Lservice}%",*codes_communes,*[f"{filtrage}%"] * 6))
                 else : 
                     requete = f"""
                     SELECT Descriptif.code_indicateur,code_service,nom_service,Descriptif.code_commune,nom_commune, numero_siren,mode_gestion,type_collectivite,unite from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune
@@ -75,7 +77,6 @@ def tableau_by_search(filtrage,an,zone,service,Lservice):
                     Collectivite.numero_collectivite
                     where nom_service LIKE ? AND Descriptif.code_commune in ({truc}) limit 5000;"""
                     df=pd.read_sql_query(requete, cnx, params=(f"{Lservice}%",*codes_communes))
-                print(df)
         if df.empty:
             return "<h1 style='text-align:center'>Informations indisponibles dans notre base de données</h1>"
         #récupérer tt les codes communes de notre requête df
@@ -108,16 +109,15 @@ def tableau_by_search(filtrage,an,zone,service,Lservice):
     except Exception as e:
         return f'une erreur est survenue : {e}. Mince alors...'
 
-def test(search,tableau,annee):
+def test(search,tableau):
     if search in docs_dicts.dict_indicateurs.keys() or search in docs_dicts.dict_indicateurs.values():
         maxi=tableau['valeur'].max(skipna=True)
         mini=tableau['valeur'].min(skipna=True)
         moy=tableau['valeur'].mean(skipna=True)
         pourcent=(moy/maxi)*100
-        return f"""<p>Ceci est un placeholder pour la jauge de l'indicateur {search} en {annee} ! Voilà. La valeur maximum de cet indicateur est de {maxi}, et la valeur minimum est {mini}. 
-        La moyenne sur ces données est de {moy}, à peu près {round(pourcent, 2)}% de la valeur maximale"""
+        return str(pourcent)
     else :
-        return "<p>rien à signaler...</p>"
+        return ""
 
 @app.route("/")
 def index():    
@@ -154,7 +154,7 @@ def Update_tableau():
         if isinstance(dtframe,str):       #si la requête n'affiche rien, un message en str s'affiche
             return dtframe
         else:
-            test_indicateur= test(search,dtframe,annee)
+            test_indicateur= test(search,dtframe)
             tableau=dtframe.to_html(classes="tableau",index=False)
             tableau = tableau.replace('<table ', '<table id="tableau" ') 
         return tableau + "|" + test_indicateur
