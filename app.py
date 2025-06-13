@@ -11,9 +11,9 @@ app = Flask(__name__)
 def tableau_start(): 
     cnx = sqlite3.connect('Indicateur_des_services.db')
     requete = f"""
-        SELECT code_indicateur,code_service, nom_service,mode_gestion,Descriptif.code_commune, nom_commune,type_collectivite from Descriptif 
-        join Commune on Descriptif.code_commune=Commune.code_commune join Collectivite on Descriptif.numero_collectivite=Collectivite.numero_collectivite
-        limit 10;  
+        SELECT Descriptif.code_indicateur,code_service,nom_service,Descriptif.code_commune,nom_commune, numero_siren,mode_gestion,type_collectivite,unite from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune
+        join Indicateur on Descriptif.code_indicateur=Indicateur.code_indicateur join Collectivite on Descriptif.numero_collectivite = 
+        Collectivite.numero_collectivite limit 10;  
     """
     #soit on garde cette requête comme étant une "démo" du tableau, ou on l'enlève et y'a rien quand on est sur la page au début
     df = pd.read_sql_query(requete, cnx)
@@ -31,8 +31,9 @@ def tableau_by_search(filtrage,an,zone,service,Lservice):
                 return "<h1 style='text-align:center'>Les ANC ne sont plus enregistrés à partir de 2018.</h1>"
             #requête qui permet de construire n'importe quel requête en fonction de paramètres
             requete = f"""
-                SELECT Descriptif.code_indicateur,code_service, nom_service,numero_siren,mode_gestion,Descriptif.code_commune, nom_commune,numero_collectivite,unite from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune
-                join Indicateur on Descriptif.code_indicateur=Indicateur.code_indicateur where 
+                SELECT Descriptif.code_indicateur,code_service,nom_service,Descriptif.code_commune,nom_commune, numero_siren,mode_gestion,type_collectivite,unite from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune
+                join Indicateur on Descriptif.code_indicateur=Indicateur.code_indicateur join Collectivite on Descriptif.numero_collectivite = 
+                Collectivite.numero_collectivite where 
                 nom_service LIKE ? AND 
                 (Descriptif.code_indicateur LIKE ?
                 OR nom_commune LIKE ?
@@ -40,9 +41,9 @@ def tableau_by_search(filtrage,an,zone,service,Lservice):
                 OR numero_siren LIKE ?
                 OR mode_gestion LIKE ?
                 OR Descriptif.code_commune LIKE ?
-                OR numero_collectivite LIKE ?) limit 1500;
+                OR type_collectivite LIKE ?) limit 1500;
             """
-            df = pd.read_sql_query(requete, cnx, params=(Lservice,filtrage, filtrage, filtrage, filtrage, filtrage, filtrage, filtrage)) 
+            df = pd.read_sql_query(requete, cnx, params=(f"{Lservice}%",*[f"{filtrage}%"]*7)) 
         else :
             codes_communes=[]
             if zone in docs_dicts.dict_regions :
@@ -56,25 +57,25 @@ def tableau_by_search(filtrage,an,zone,service,Lservice):
                 truc = ','.join(['?'] * len(codes_communes))
                 if filtrage and zone :
                     requete = f"""
-                    SELECT Descriptif.code_indicateur,code_service, nom_service,numero_siren,mode_gestion,Descriptif.code_commune, nom_commune,type_collectivite unite from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune
+                    SELECT Descriptif.code_indicateur,code_service,nom_service,Descriptif.code_commune,nom_commune, numero_siren,mode_gestion,type_collectivite,unite from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune
                     join Indicateur on Descriptif.code_indicateur=Indicateur.code_indicateur join Collectivite on Descriptif.numero_collectivite = 
                     Collectivite.numero_collectivite where 
-                    (nom_service LIKE ? AND Descriptif.code_commune in ({truc})) OR
+                    (nom_service LIKE ? AND Descriptif.code_commune in ({truc})) AND
                     (Descriptif.code_indicateur LIKE ?
                     OR nom_commune LIKE ?
                     OR code_service LIKE ?
                     OR mode_gestion LIKE ?
-                    OR numero_collectivite LIKE ?) limit 5000;
+                    OR type_collectivite LIKE ?) limit 5000;
                 """
-                    df=pd.read_sql_query(requete, cnx, params=(Lservice,*codes_communes,filtrage, filtrage, filtrage, filtrage, filtrage))
+                    df=pd.read_sql_query(requete, cnx, params=(f"{Lservice}%",*codes_communes,*[f"{filtrage}%"] * 5))
                 else : 
                     requete = f"""
-                    SELECT Descriptif.code_indicateur,code_service, nom_service,numero_siren,mode_gestion,Descriptif.code_commune, nom_commune,type_collectivite,unite from Descriptif 
-                    join Commune on Descriptif.code_commune=Commune.code_commune join Indicateur on Descriptif.code_indicateur=Indicateur.code_indicateur 
-                    join Collectivite on Descriptif.numero_collectivite = Collectivite.numero_collectivite
+                    SELECT Descriptif.code_indicateur,code_service,nom_service,Descriptif.code_commune,nom_commune, numero_siren,mode_gestion,type_collectivite,unite from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune
+                    join Indicateur on Descriptif.code_indicateur=Indicateur.code_indicateur join Collectivite on Descriptif.numero_collectivite = 
+                    Collectivite.numero_collectivite
                     where nom_service LIKE ? AND Descriptif.code_commune in ({truc}) limit 5000;"""
-                    df=pd.read_sql_query(requete, cnx, params=(Lservice,*codes_communes))
-                #print(df)
+                    df=pd.read_sql_query(requete, cnx, params=(f"{Lservice}%",*codes_communes))
+                print(df)
         if df.empty:
             return "<h1 style='text-align:center'>Informations indisponibles dans notre base de données</h1>"
         #récupérer tt les codes communes de notre requête df
