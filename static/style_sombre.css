@@ -505,7 +505,7 @@ h1#top {
     align-items:center;
     box-sizing: border-box;
     border-radius:3px;
-    transform: translateY(-28px);
+    transform: translateY(52px);
     left:48%;
     width:60px;
     height:50px;
@@ -521,6 +521,12 @@ h1#top {
 /*CSS du tableau */
 #carte{
   background-color: #1e1e2f;
+}
+
+.search{
+  margin:2%;
+  display:flex;
+  justify-content:center;
 }
 
 .search-container {
@@ -614,10 +620,9 @@ h1#top {
   }
 }
 #tableau_contenu{
-  margin-top:5%;
   width:670px;
   position:absolute;
-  max-height:20em;
+  max-height:32em;
   overscroll-behavior: none;
   overflow-y : scroll;
   overflow-x : scroll;
@@ -625,9 +630,9 @@ h1#top {
 }
 
 #jauge{
-  margin-top:30%;
+  margin-top:35%;
   width:670px;
-  max-height:13em;
+  max-height:5em;
   position:absolute;
   display:flex;
   justify-content:center;
