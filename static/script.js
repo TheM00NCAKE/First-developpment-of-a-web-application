@@ -72,10 +72,12 @@ function envoie(zone,id){
             tri()
         });
     }
-function avant_envoie(){
+function avant_envoie(x){
     if(departement_clique!="") {
         envoie(departement_clique.slice(1),"");     
     }else if (region_clique!=""){
+        envoie(region_clique.slice(1),"");
+    }else if (x=='a'){
         envoie(region_clique.slice(1),"");
     }
 }
