@@ -54,6 +54,7 @@ function tri(){
 //fonction pour envoyer les données sur flask 
 function envoie(zone,id){
     document.getElementById('tableau_contenu').innerHTML=test;
+    document.getElementById('jauge').innerHTML="";
     var annee_choisi=document.getElementById('annee').value;
     var service=document.getElementById('service').value;
     var search=document.getElementById('barre_filtrage').value;
@@ -68,7 +69,10 @@ function envoie(zone,id){
         .then(html => {
             const parts = html.split("|");
             document.getElementById('tableau_contenu').innerHTML = parts[0];
-            document.getElementById('jauge').innerHTML = parts[1];
+            if (id=="b"){
+                var data= parseFloat(parts[1]);
+                jauge([data]);
+            }
             tri()
         });
     }
@@ -78,7 +82,7 @@ function avant_envoie(x){
     }else if (region_clique!=""){
         envoie(region_clique.slice(1),"");
     }else if (x=='a'){
-        envoie(region_clique.slice(1),"");
+        envoie(region_clique.slice(1),"b");
     }
 }
 
@@ -86,7 +90,60 @@ document.addEventListener('DOMContentLoaded', () => {
   tri();
 });
 /////////////////////////////Fin code tableau
-
+function jauge(val){
+    if (!isNaN(val)){
+        // set the gauge type
+        var gauge = anychart.gauges.linear();
+        // set the data for the gauge
+        gauge.data(val);
+        // set the layout
+        gauge.layout('horizontal');
+        // create a color scale
+        var scaleBarColorScale = anychart.scales.ordinalColor().ranges(
+        [{from: 0,to: 25,color: ['#D81E05', '#EB7A02']},
+        {from: 25,to: 50,color: ['#EB7A02', '#FFD700']},
+        {from: 50,to: 75,color: ['#FFD700', '#CAD70b']},
+        {from: 75,to: 100,color: ['#CAD70b', '#2AD62A']}]);
+        // create a Scale Bar
+        var scaleBar = gauge.scaleBar(0);
+        // set the height and offset of the Scale Bar (both as percentages of the gauge height)
+        scaleBar.width('30%');
+        scaleBar.offset('63.9%');
+        // use the color scale (defined earlier) as the color scale of the Scale Bar
+        scaleBar.colorScale(scaleBarColorScale);
+        // add a marker pointer
+        var marker = gauge.marker(0);
+        // set the offset of the pointer as a percentage of the gauge width
+        marker.offset('87%');
+        // set the marker type
+        marker.type('triangle-up');
+        // set the zIndex of the marker
+        marker.zIndex(10);
+        marker.width(30);
+        // configure the scale
+        var scale = gauge.scale();
+        scale.minimum(0);
+        scale.maximum(100);
+        scale.ticks().interval(10);
+        // configure the axis
+        var axis = gauge.axis();
+        axis.stroke('black');
+        axis.minorTicks(true);
+        axis.ticks().length(20);
+        axis.ticks().stroke('black');
+        axis.minorTicks().stroke('black');
+        axis.width('2%');
+        axis.offset('90%');
+        axis.orientation('top');
+        // format axis labels
+        axis.labels().format('{%value}%');
+        axis.labels().fontColor('black');
+        gauge.padding([0, 50]);
+        gauge.container('jauge');
+        gauge.draw();
+        document.getElementsByClassName('anychart-credits')[0].innerHTML="";
+        }
+}
 //quand le document est chargé : 
 $(document).ready(function () {
     document.getElementById('annee').value='2019';
@@ -181,6 +238,7 @@ $(document).ready(function () {
         $(deptss).css('pointer-events', 'none');
         region_clique = "";
         departement_clique = "";
+        document.getElementById('jauge').innerHTML="";
     }
 
     function mode_sombre() {
