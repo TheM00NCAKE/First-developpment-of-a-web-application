@@ -520,7 +520,7 @@ h1#top {
     align-items:center;
     box-sizing: border-box;
     border-radius:3px;
-    transform: translateY(-125px);
+    transform: translateY(4px);
     left:48%;
     width:60px;
     height:50px;
@@ -538,6 +538,11 @@ h1#top {
   background-color:white;
 }
 
+.search{
+  margin:2%;
+  display:flex;
+  justify-content:center;
+}
 .search-container {
   background: rgba(255, 255, 255, 0.25);
   border-radius: 20px;
@@ -631,10 +636,9 @@ h1#top {
 
 
 #tableau_contenu{
-  margin-top:5%;
   width:670px;
   position:absolute;
-  max-height:28em;
+  max-height:32em;
   overscroll-behavior: none;
   overflow-y : scroll;
   overflow-x : scroll;
