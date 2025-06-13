@@ -628,13 +628,6 @@ h1#top {
   }
 }
 
-#barre_recherche{
-  width:670px;
-  max-height:5em;
-  position:absolute;
-  display:flex;
-  justify-content:center;
-}
 
 #tableau_contenu{
   margin-top:5%;
@@ -670,14 +663,13 @@ h1#top {
 }
 
 #tableau thead{
-
   background-color:#104c76;
 }
-table tr:nth-child(even) {
+#tableau table tr:nth-child(even) {
     background-color: #e8e8e8; /* couleur pour les lignes paires */
 }
 
-table tr:nth-child(odd) {
+#tableau table tr:nth-child(odd) {
     background-color: #f5f5f5; /* couleur pour les lignes paires */
 }
 
@@ -687,7 +679,7 @@ table tr:nth-child(odd) {
 }
 
 #tableau th{
-  background-color:#104c76 !important;
+  background-color:#104c76;
 }
 
 #tableau tr{
