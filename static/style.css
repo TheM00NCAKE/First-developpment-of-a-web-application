@@ -475,7 +475,7 @@ h1#top {
   border-radius:3px;
   position:relative;
   margin-left:2%;
-  max-height:40em;
+  max-height:43em;
   max-width:100%;
 }
 
@@ -520,7 +520,7 @@ h1#top {
     align-items:center;
     box-sizing: border-box;
     border-radius:3px;
-    transform: translateY(-28px);
+    transform: translateY(-125px);
     left:48%;
     width:60px;
     height:50px;
@@ -537,6 +537,7 @@ h1#top {
 #carte{
   background-color:white;
 }
+
 .search-container {
   background: rgba(255, 255, 255, 0.25);
   border-radius: 20px;
@@ -633,7 +634,7 @@ h1#top {
   margin-top:5%;
   width:670px;
   position:absolute;
-  max-height:20em;
+  max-height:28em;
   overscroll-behavior: none;
   overflow-y : scroll;
   overflow-x : scroll;
@@ -641,9 +642,9 @@ h1#top {
 }
 
 #jauge{
-  margin-top:30%;
+  margin-top:35%;
   width:670px;
-  max-height:13em;
+  max-height:5em;
   position:absolute;
   display:flex;
   justify-content:center;
@@ -852,8 +853,8 @@ h1#top {
 
 #load{
   width:670px;
-  height:20em;
-  max-height:20em;
+  height:28em;
+  max-height:28em;
   position:relative;
   display:flex;
   justify-content:center;
@@ -861,12 +862,12 @@ h1#top {
 }
 
 #square,#square2{
-  top:100px;
+  top:180px;
   left:44%;/*280px; */
 }
 
 #cercle,#cercle2{
-  top:112.5px;
+  top:192.5px;
   left:45.9%/*302.5px;*/
 }
 
