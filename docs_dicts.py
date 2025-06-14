@@ -106,6 +106,7 @@ for regions, departements in dict_regions.items():
     for depts in departements :
         for communes in dict_depts[depts]:
             tab_reg.at[index, 'code_commune']=communes
+            tab_reg.at[index,'departement']=depts
             tab_reg.at[index, 'region']=regions
             index+=1
 con.register('tab_reg', tab_reg)
