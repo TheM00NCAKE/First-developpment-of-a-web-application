@@ -1,5 +1,6 @@
 import sqlite3
 import pandas as pd
+import duckdb as duck
 
 ANC = ['D301.0','habitants desservis par un dispositif anc habitants','DC.196',"tarif moyen d'un contrôle d'installation",'DC.197','recettes totales issues des contrôles',
     'P301.3','taux de conformité des dispositifs anc','VP.166',"nombre d'installations conformes",'VP.167',"nombre total d'installations contrôlées",
@@ -20,10 +21,6 @@ dict_regions = {
     "PaysDeLaLoire": ["MaineEtLoire", "Sarthe"],
     "ProvenceAlpesCôteDazur": ["HautesAlpes", "AlpesMaritimes"],
     "Guadeloupe": ["Guadeloupe"],
-    "Martinique": ["Martinique"],
-    "Guyane": ["Guyane"],
-    "La Réunion": ["La Réunion"],
-    "Mayotte": ["Mayotte"]
 }
 
 dict_depts={"Guadeloupe":["97122","97119","97117","97116","97113","97102"],
@@ -100,3 +97,15 @@ requete="""select code_indicateur,nom_indicateur from Indicateur;"""
 x=pd.read_sql_query(requete,cnx)
 for i in range (0,53):
     dict_indicateurs[x['code_indicateur'][i]]=x['nom_indicateur'][i]
+
+
+con = duck.connect()
+tab_reg=pd.DataFrame()
+index=0
+for regions, departements in dict_regions.items():
+    for depts in departements :
+        for communes in dict_depts[depts]:
+            tab_reg.at[index, 'code_commune']=communes
+            tab_reg.at[index, 'region']=regions
+            index+=1
+con.register('tab_reg', tab_reg)
