@@ -74,8 +74,15 @@ function envoie(zone,id){
                 jauge([data]);
             }
             tri()
-        });
-    }
+            if ((id=="")||(id=="gua")){
+            fetch('/static/graph_data_region.json')
+                .then(resp => resp.json())
+                .then(data => {
+                    graphiques(data.noms, data.valeurs);
+                });
+            }
+    });
+}
 function avant_envoie(x){
     if(departement_clique!="") {
         envoie(departement_clique.slice(1),"");     
@@ -172,7 +179,6 @@ $(document).ready(function () {
         deptss=$(depts).find('.departements'); //on récupère chaque département de l'id récupéré
         //application du css : zoom, ajout/enlève la possibilité de cliquer/mouseover sur certains endroits
         envoie(this.id,"");
-
     // Applique le zoom dans la prochaine frame
         $carte.css('transform-origin', TOrigin[this.id]);
         // Active le will-change juste avant le zoom (permet de notifier le navig qu'on veut zoomer : le nav se "prépare" -> latence diminué)
@@ -251,4 +257,29 @@ $(document).ready(function () {
     } else {
         linkCSS.href = styleClair;
     }
+}
+let barChart = null;
+
+function graphiques(labels, values) {
+    const barCanvas = document.getElementById("barCanvas");
+    if (barChart) {
+        barChart.destroy();
+    }
+    barChart = new Chart(barCanvas, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Valeur de l'indicateur JSPQUOi",
+                data: values,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
 }
