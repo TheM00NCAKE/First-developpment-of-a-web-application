@@ -6,6 +6,7 @@ import sqlite3
 import pandas as pd
 import docs_dicts
 import duckdb as duck
+import math
 
 app = Flask(__name__)
 
@@ -126,15 +127,38 @@ def test(search,tableau):
             con = duck.connect()
             con.register('tableau', tableau)
             con.register('tab_reg', docs_dicts.tab_reg)
-            resultat = con.execute("""select avg(valeur) as moy, region from tableau join tab_reg on
+            resultat = con.execute("""select avg(valeur) as moyenne, region from tableau join tab_reg on
             tableau.code_commune=tab_reg.code_commune group by region""").fetchdf()
             print(resultat)
             con.close()
-            return str(pourcent)
+            return str(pourcent) 
         else :
             return "100"
     else :
         return ""
+
+import json
+
+def constr_graphe(tableau):
+    con = duck.connect()
+    con.register('tableau', tableau)
+    con.register('tab_reg', docs_dicts.tab_reg)
+    resultat = con.execute("""
+        select avg(valeur) as moyenne, unite, code_indicateur from tableau join tab_reg on tableau.code_commune = tab_reg.code_commune
+        group by code_indicateur, unite""").fetchdf()
+    noms = [f"{ligne['code_indicateur']}_{ligne['unite']}" for _, ligne in resultat.iterrows()]
+    vals = resultat['moyenne'].tolist()
+    valeurs=[-1 if math.isnan(val) else val for val in vals]
+    data = {"noms": noms,"valeurs": valeurs}
+    print(data)
+    with open("static/graph_data_region.json", "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    print('c bon')
+
+
+def recup_val():
+    with open("static/graph_data_region.js", "r", encoding="utf-8") as f:
+        return 
 
 @app.route("/")
 def index():    
@@ -171,10 +195,12 @@ def Update_tableau():
         if isinstance(dtframe,str):       #si la requête n'affiche rien, un message en str s'affiche
             return dtframe
         else:
+            if zone : 
+                constr_graphe(dtframe)
             test_indicateur= test(search,dtframe)
             tableau=dtframe.to_html(classes="tableau",index=False)
             tableau = tableau.replace('<table ', '<table id="tableau" ') 
-        return tableau + "|" + test_indicateur
+        return tableau + "|" + test_indicateur 
     except Exception as e:
         return(f"Erreur lors du chargement des données : {e}")
     
