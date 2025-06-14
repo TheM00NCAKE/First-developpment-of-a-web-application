@@ -5,6 +5,7 @@ import urllib.parse
 import sqlite3
 import pandas as pd
 import docs_dicts
+import duckdb as duck
 
 app = Flask(__name__)
 
@@ -42,9 +43,10 @@ def tableau_by_search(filtrage,an,zone,service,Lservice):
                 OR numero_siren LIKE ?
                 OR mode_gestion LIKE ?
                 OR Descriptif.code_commune LIKE ?
-                OR type_collectivite LIKE ?) limit 1500;
+                OR type_collectivite LIKE ?) limit 5000;
             """
             df = pd.read_sql_query(requete, cnx, params=(f"{Lservice}%",*[f"{filtrage}%"]*8)) 
+            print(len(df))
         else :
             codes_communes=[]
             if zone in docs_dicts.dict_regions :
@@ -86,11 +88,15 @@ def tableau_by_search(filtrage,an,zone,service,Lservice):
         liste_infos = df[['code_service','code_indicateur']].drop_duplicates().values.tolist()
         df.insert(column='valeur', loc=8,value=None)
         #Le but est d'exécuter plusieurs URL pour récupérer les infos de TOUT. Problème : communes max par url : 200
-        for element in range (0,len(liste),200):
+        l_liste_200_ou_1 = range(1) if filtrage in docs_dicts.dict_indicateurs.keys() or filtrage in docs_dicts.dict_indicateurs.values() else range (0,len(liste),200)
+        for element in l_liste_200_ou_1 :
             #On fait donc une liste de 200 communes à chaque fois et on les mets dans les URL. 
             codes=','.join(liste[element:element+200])
+            if filtrage in docs_dicts.dict_indicateurs.keys() or filtrage in docs_dicts.dict_indicateurs.values():
+                url=f'https://hubeau.eaufrance.fr/api/v0/indicateurs_services/communes?annee={an}&format=json&size=5000&type_service={service}'
+            else :
             #urllib.parse.quote permet de bien 'traduire' les ',' en %2C dans les URL (qui signifie les ',', mais sont pas sous forme de ',')
-            url=f'https://hubeau.eaufrance.fr/api/v0/indicateurs_services/communes?annee={an}&code_commune={urllib.parse.quote(codes)}&format=json&size=1000&type_service={service}'
+                url=f'https://hubeau.eaufrance.fr/api/v0/indicateurs_services/communes?annee={an}&code_commune={urllib.parse.quote(codes)}&format=json&size=1000&type_service={service}'
             reponse = requests.get(url)
             reponse2 = reponse.json()
             #{code service : {indicateur : valeur, indicateur:valeur...}} 
@@ -113,9 +119,20 @@ def test(search,tableau):
     if search in docs_dicts.dict_indicateurs.keys() or search in docs_dicts.dict_indicateurs.values():
         maxi=tableau['valeur'].max(skipna=True)
         mini=tableau['valeur'].min(skipna=True)
-        moy=tableau['valeur'].mean(skipna=True)
-        pourcent=(moy/maxi)*100
-        return str(pourcent)
+        if maxi!=mini:
+            moy=tableau['valeur'].mean(skipna=True)
+            val_comparaison=maxi-mini
+            pourcent=(moy/val_comparaison)*100
+            con = duck.connect()
+            con.register('tableau', tableau)
+            con.register('tab_reg', docs_dicts.tab_reg)
+            resultat = con.execute("""select avg(valeur) as moy, region from tableau join tab_reg on
+            tableau.code_commune=tab_reg.code_commune group by region""").fetchdf()
+            print(resultat)
+            con.close()
+            return str(pourcent)
+        else :
+            return "100"
     else :
         return ""
 
