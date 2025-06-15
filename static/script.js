@@ -74,13 +74,11 @@ function envoie(zone,id){
                 jauge([data]);
             }
             tri()
-            if ((id=="")||(id=="gua")){
             fetch('/static/graph_data_region.json')
                 .then(resp => resp.json())
                 .then(data => {
-                    graphiques(data.noms, data.valeurs);
+                    graphiques(data.noms, data.valeurs,Object.keys(data.evolution),Object.values(data.evolution));
                 });
-            }
     });
 }
 function avant_envoie(x){
@@ -259,19 +257,24 @@ $(document).ready(function () {
     }
 }
 let barChart = null;
+let lineChart = null;
 
-function graphiques(labels, values) {
+function graphiques(labels1, values1,labels2,values2) {
     const barCanvas = document.getElementById("barCanvas");
+    const lineCanvas = document.getElementById("lineCanvas");
     if (barChart) {
         barChart.destroy();
     }
+    if (lineChart){
+        lineChart.destroy();
+    };
     barChart = new Chart(barCanvas, {
         type: "bar",
         data: {
-            labels: labels,
+            labels: labels1,
             datasets: [{
-                label: "Valeur de l'indicateur JSPQUOi",
-                data: values,
+                label: "Valeur de l'indicateur",
+                data: values1,
                 borderWidth: 1
             }]
         },
@@ -282,4 +285,25 @@ function graphiques(labels, values) {
             }
         }
     });
+    if (labels2!="rien"){
+        lineChart = new Chart(lineCanvas, {
+        type: "line",
+        data: {
+            labels: labels2,
+            datasets: [{
+                label: "Evolution par année whatever",
+                data: values2,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
 }
