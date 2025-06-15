@@ -335,7 +335,19 @@ h2 {
   margin-bottom: 20px;
 }
 
-#barCanvas {
+#graphique{
+  margin-top: 5%;
+  max-height: 300px;
+  width: 100%; 
+  display: flex;
+  justify-content: space-around; 
+  box-sizing: border-box;
+}
+#barCanvas{
+  max-width: 50%;
+  height: 300px; /* hauteur fixe */
+}
+#lineCanvas {
   max-width: 40%;
   height: 300px; /* hauteur fixe */
 }
@@ -949,4 +961,3 @@ h1#top {
  50%{opacity: 1;}
  100% {opacity: 0;}
 }
-
