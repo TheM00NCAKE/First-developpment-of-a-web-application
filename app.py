@@ -7,20 +7,9 @@ import pandas as pd
 import docs_dicts
 import duckdb as duck
 import math
+import json
 
 app = Flask(__name__)
-
-def tableau_start(): 
-    cnx = sqlite3.connect('Indicateur_des_services.db')
-    requete = f"""
-        SELECT Descriptif.code_indicateur,code_service,nom_service,Descriptif.code_commune,nom_commune, numero_siren,mode_gestion,type_collectivite,unite from Descriptif join Commune on Descriptif.code_commune=Commune.code_commune
-        join Indicateur on Descriptif.code_indicateur=Indicateur.code_indicateur join Collectivite on Descriptif.numero_collectivite = 
-        Collectivite.numero_collectivite limit 10;  
-    """
-    #soit on garde cette requête comme étant une "démo" du tableau, ou on l'enlève et y'a rien quand on est sur la page au début
-    df = pd.read_sql_query(requete, cnx)
-    cnx.close()
-    return df
 
 def tableau_by_search(filtrage,an,zone,service,Lservice):
     cnx = sqlite3.connect('Indicateur_des_services.db')
@@ -116,14 +105,14 @@ def tableau_by_search(filtrage,an,zone,service,Lservice):
     except Exception as e:
         return f'une erreur est survenue : {e}. Mince alors...'
 
-def test(search,tableau):
+def jauge(search,tableau):
     if search in docs_dicts.dict_indicateurs.keys() or search in docs_dicts.dict_indicateurs.values():
         maxi=tableau['valeur'].max(skipna=True)
         mini=tableau['valeur'].min(skipna=True)
         if maxi!=mini:
             moy=tableau['valeur'].mean(skipna=True)
             val_comparaison=maxi-mini
-            pourcent=(moy/val_comparaison)*100
+            pourcent=((moy-mini)/val_comparaison)*100
             con = duck.connect()
             con.register('tableau', tableau)
             con.register('tab_reg', docs_dicts.tab_reg)
@@ -137,23 +126,47 @@ def test(search,tableau):
     else :
         return ""
 
-import json
 
-def constr_graphe(tableau):
+def constr_graphe(tableau,zone,search,service):
     con = duck.connect()
     con.register('tableau', tableau)
     con.register('tab_reg', docs_dicts.tab_reg)
-    resultat = con.execute("""
-        select avg(valeur) as moyenne, unite, code_indicateur from tableau join tab_reg on tableau.code_commune = tab_reg.code_commune
-        group by code_indicateur, unite""").fetchdf()
-    noms = [f"{ligne['code_indicateur']}_{ligne['unite']}" for _, ligne in resultat.iterrows()]
+    #si une zone est cliqué est qu'un indicateur est recherché dans la search bar, on group by département de la région. Si c'est un dept cliqué
+    #alors y'aura juste la moyenne du departement (jsp si c'est une bonne idée tho)
+    if (search in docs_dicts.dict_indicateurs.keys() or search in docs_dicts.dict_indicateurs.values()) and zone :
+        groupe="departement"
+    #si le mot clé un indicateur : alors le group by se fait sur la région. Le graphique de l'évolution de l'indicateur va aussi s'afficher
+    elif (search in docs_dicts.dict_indicateurs.keys() or search in docs_dicts.dict_indicateurs.values()):
+        groupe="region"
+    else : 
+        groupe="code_indicateur"
+    resultat = con.execute(f"""
+    select avg(valeur) as moyenne, unite, {groupe} from tableau join tab_reg on tableau.code_commune = tab_reg.code_commune
+    group by {groupe}, unite""").fetchdf()
+    noms = [f"{ligne[groupe]}_{ligne['unite']}" for _, ligne in resultat.iterrows()]
     vals = resultat['moyenne'].tolist()
     valeurs=[-1 if math.isnan(val) else val for val in vals]
     data = {"noms": noms,"valeurs": valeurs}
-    print(data)
+    if groupe=="region":
+        evolution_data = {}
+        for i in range(2008,2020):
+            #dttemp va retourner une dataframe avec les bons params pour chaque année
+            dttemp=tableau_by_search(search,i,zone,service,"")
+            #on ignore les vals nuls dans le calcul de la moyenne
+            valeurs = [v for v in dttemp['valeur'] if v is not None]
+            moyenne = sum(valeurs) / len(valeurs) if valeurs.count(0)<len(valeurs) else 0 
+            evolution_data[i] = moyenne
+        #data est constitué de data{"nom":[...],"valeurs":[...],"evolution":{annee:valeur....}}
+        data["evolution"] = evolution_data
+    else:
+        data["evolution"] = {"rien":"rien"}
+    con.close()
+            
     with open("static/graph_data_region.json", "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        json.dump({**data}, f, ensure_ascii=False, indent=2)
+
     print('c bon')
+    con.close()
 
 
 def recup_val():
@@ -174,10 +187,7 @@ def Documentation():
 
 @app.route('/Données_indicateurs', methods=['GET'])
 def Données_indicateurs():
-    dtframe=tableau_start()
-    tableau=dtframe.to_html(classes="tableau",index=False)
-    tableau = tableau.replace('<table ', '<table id="tableau" ') 
-    return render_template('Données_indicateurs.html', table=tableau)
+    return render_template('Données_indicateurs.html', table="")
 
 @app.route('/Update_tableau', methods=['GET'])
 def Update_tableau():
@@ -191,13 +201,12 @@ def Update_tableau():
         if search or zone:
             dtframe=tableau_by_search(search,annee,zone,service,Lservice)
         else:
-            dtframe=tableau_start()
+            return "" + "|" + ""
         if isinstance(dtframe,str):       #si la requête n'affiche rien, un message en str s'affiche
             return dtframe
         else:
-            if zone : 
-                constr_graphe(dtframe)
-            test_indicateur= test(search,dtframe)
+            constr_graphe(dtframe,zone,search,service)
+            test_indicateur= jauge(search,dtframe)
             tableau=dtframe.to_html(classes="tableau",index=False)
             tableau = tableau.replace('<table ', '<table id="tableau" ') 
         return tableau + "|" + test_indicateur 
