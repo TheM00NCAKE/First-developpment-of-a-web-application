@@ -60,7 +60,7 @@ function envoie(zone,id){
     var search=document.getElementById('barre_filtrage').value;
     service_choisi=service.split(':');
     if (id=='gua'){
-        url=`/Update_tableau?zone=Guadeloupe&annee=${encodeURIComponent(annee_choisi)}`;
+        url=`/Update_tableau?zone=Guadeloupe&annee=${encodeURIComponent(annee_choisi)}&service=${encodeURIComponent(service_choisi[0])}&Lservice=${encodeURIComponent(service_choisi[1])}`;
     }else{
         url=`/Update_tableau?zone=${encodeURIComponent(zone)}&search=${encodeURIComponent(search)}&annee=${encodeURIComponent(annee_choisi)}&service=${encodeURIComponent(service_choisi[0])}&Lservice=${encodeURIComponent(service_choisi[1])}`;
     }
@@ -72,6 +72,8 @@ function envoie(zone,id){
             if (id=="b"){
                 var data= parseFloat(parts[1]);
                 jauge([data]);
+                $(".switch2 .slider").css('opacity','1');
+                $(".switch2 .slider").css('cursor','pointer');
             }
             tri()
             fetch('/static/graph_data_region.json')
@@ -105,7 +107,8 @@ function jauge(val){
         gauge.layout('horizontal');
         // create a color scale
         var scaleBarColorScale = anychart.scales.ordinalColor().ranges(
-        [{from: 0,to: 25,color: ['#D81E05', '#EB7A02']},
+        [{from: -10,to: 0,color: ['#d5d5da', '#d5d5da']},
+        {from: 0,to: 25,color: ['#D81E05', '#EB7A02']},
         {from: 25,to: 50,color: ['#EB7A02', '#FFD700']},
         {from: 50,to: 75,color: ['#FFD700', '#CAD70b']},
         {from: 75,to: 100,color: ['#CAD70b', '#2AD62A']}]);
@@ -127,7 +130,7 @@ function jauge(val){
         marker.width(30);
         // configure the scale
         var scale = gauge.scale();
-        scale.minimum(0);
+        scale.minimum(-10);
         scale.maximum(100);
         scale.ticks().interval(10);
         // configure the axis
@@ -141,14 +144,37 @@ function jauge(val){
         axis.offset('90%');
         axis.orientation('top');
         // format axis labels
-        axis.labels().format('{%value}%');
+        var valeurs=['vide','0%','10%','20%','30%','40%','50%','60%','70%','80%','90%','100%'];
+        axis.labels().format(function() {
+            var val = this.value;
+            var index = (val + 10) / 10;  // car valeurs de -10 à 100 avec intervalle 10
+            return valeurs[index] || '';  // retourne une chaîne vide si index invalide
+        });
         axis.labels().fontColor('black');
         gauge.padding([0, 50]);
         gauge.container('jauge');
         gauge.draw();
         document.getElementsByClassName('anychart-credits')[0].innerHTML="";
-        }
+    }
 }
+
+function couleur_region(dict){
+    const etat2 = document.getElementById("clr").checked;
+    if (etat2){
+    $(".regions").css('fill','#d5d5da'); 
+    $('.departements').css('fill','transparent');
+    for (let element in dict){
+        if (element=="Guadeloupe"){
+            $('.Gua').css('fill', dict[element]);
+        }
+        $('#'+element).css('fill', dict[element]);
+    }
+    }else{
+        $(".regions").css('fill',''); 
+        $('.departements').css('fill','');
+    }
+}
+
 //quand le document est chargé : 
 $(document).ready(function () {
     document.getElementById('annee').value='2019';
@@ -170,7 +196,7 @@ $(document).ready(function () {
     $('#regs .regions').click(function (e) {   /*lorsqu'une zone de la carte de la France a été cliqué*/
         e.stopPropagation();
         $('.regions').css('fill', '');
-        $(this).css('fill', couleurs['color_reg_clique']); //couleur de la région cliqué change
+        $(this).css('fill', couleurs['color_reg_clique'] ); //couleur de la région cliqué change
         region_clique = "#" + this.id;
         //id correspondant au "groupe" de départements cliqué (les depts de la région quoi)
         var depts='#Depts_'+this.id;
@@ -216,6 +242,7 @@ $(document).ready(function () {
             if (this.classList.contains('Gua')) {
                 $('.Gua').css('fill', couleurs['color_reg_clique']);
                 envoie("","gua");
+                region_clique = "#Guadeloupe";
             } else {
                 $(this).css('fill', couleurs['color_reg_clique']);
                 region_clique = "#" + this.id;
@@ -257,17 +284,53 @@ $(document).ready(function () {
     }
 }
 let barChart = null;
+let barChart2 = null;
 let lineChart = null;
 
+function avant(){
+    fetch('/static/graph_data_region.json')
+        .then(resp => resp.json())
+        .then(data => {
+        couleur_region(data.couleur_region);
+    })}
+
+
 function graphiques(labels1, values1,labels2,values2) {
-    const barCanvas = document.getElementById("barCanvas");
-    const lineCanvas = document.getElementById("lineCanvas");
     if (barChart) {
         barChart.destroy();
+    }
+    if (barChart2){
+        barChart2.destroy();
     }
     if (lineChart){
         lineChart.destroy();
     };
+    const barCanvas2 = document.getElementById("barCanvas2");
+    var vp61=labels1.indexOf("VP.061_m³");
+    var val_vp61=values1[vp61];
+    if (val_vp61){
+    labels1.splice(vp61,1);
+    values1.splice(vp61,1);
+    barChart2 = new Chart(barCanvas2, {
+        type: "bar",
+        data: {
+            labels:["VP.061_m³"],
+            datasets: [{
+                label: "Valeur de l'indicateur VP.061_m³",
+                data: [val_vp61],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    })
+    }
+    const barCanvas = document.getElementById("barCanvas");
+    const lineCanvas = document.getElementById("lineCanvas");
     barChart = new Chart(barCanvas, {
         type: "bar",
         data: {
