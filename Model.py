@@ -15,6 +15,11 @@ class Session:
         self.zone=zone
         self.service=service
         self.Lservice=Lservice
+        self.maxi_jauge=0
+        self.mini_jauge=0
+        self.indicateur_actuel = None
+        self.annee_actuelle = None
+        self.moyenne=""
     
     def update_search(self,nouv_filtrage):
         self.filtrage=nouv_filtrage
@@ -30,7 +35,7 @@ class Session:
     
     def update_Lservice(self,nouv_Lservice):
         self.Lservice=nouv_Lservice
-    
+
     def update_valeurs(self, search,zone,annee,service,Lservice):
         self.update_search(search)
         self.update_zone(zone)
@@ -44,7 +49,6 @@ class Session:
         Une requête va s'exécuter en fonction des filtres (zone cliquée ou pas, barre de filtrage utilisée ou pas, quel année etc)
         et elle gère les erreurs, si il y'a rien comme filtrage, ou si la requête échoue (pas de données).
         """
-        
         cnx = sqlite3.connect('Indicateur_des_services.db')
         df_total=pd.DataFrame()
         frame=[]
@@ -110,21 +114,30 @@ class Session:
             liste_infos = df[['code_service','code_indicateur']].drop_duplicates().values.tolist()
             df.insert(column='valeur', loc=8,value=None)
             #Le but est d'exécuter plusieurs URL pour récupérer les infos de TOUT. Problème : communes max par url : 200
-            l_liste_200_ou_1 = range(1) if self.filtrage in docs_dicts.dict_indicateurs.keys() or self.filtrage in docs_dicts.dict_indicateurs.values() else range (0,len(liste),200)
+            l_liste_200_ou_1 = range(1) if (self.filtrage in docs_dicts.dict_indicateurs.keys() or self.filtrage in docs_dicts.dict_indicateurs.values()) and self.service else range (0,len(liste),200)
             for element in l_liste_200_ou_1 :
                 #On fait donc une liste de 200 communes à chaque fois et on les mets dans les URL. 
                 codes=','.join(liste[element:element+200])
-                if self.filtrage in docs_dicts.dict_indicateurs.keys() or self.filtrage in docs_dicts.dict_indicateurs.values():
+                if (self.filtrage in docs_dicts.dict_indicateurs.keys() or self.filtrage in docs_dicts.dict_indicateurs.values()) and self.service:
                     url=f'https://hubeau.eaufrance.fr/api/v0/indicateurs_services/communes?annee={self.annee}&format=json&size=5000&type_service={self.service}'
-                else :
+                elif (self.filtrage in docs_dicts.dict_indicateurs.keys() or self.filtrage in docs_dicts.dict_indicateurs.values()):
+                    this = df['nom_service'].iloc[0]
+                    if this=='assainissement collectif':
+                        self.service='AC'
+                    elif this=='assainissement non collectif':
+                        self.service='ANC'
+                    else:
+                        self.service='AEP'
                 #urllib.parse.quote permet de bien 'traduire' les ',' en %2C dans les URL (qui signifie les ',', mais sont pas sous forme de ',')
+                    url=f'https://hubeau.eaufrance.fr/api/v0/indicateurs_services/communes?annee={self.annee}&code_commune={urllib.parse.quote(codes)}&format=json&size=1000&type_service={self.service}'
+                else:
                     url=f'https://hubeau.eaufrance.fr/api/v0/indicateurs_services/communes?annee={self.annee}&code_commune={urllib.parse.quote(codes)}&format=json&size=1000&type_service={self.service}'
                 reponse = requests.get(url)
                 reponse2 = reponse.json()
                 #{code service : {indicateur : valeur, indicateur:valeur...}} 
-                data = {list(commune.values())[2][0]: list(commune.values())[5] for commune in reponse2['data']} 
+                data = {info['codes_service'][0]: info['indicateurs'] for info in reponse2['data']}
                 for ligne in liste_infos: 
-                    code_service = ligne[0]
+                    code_service = int(ligne[0])
                     code_indicateur = ligne[1]
                     if code_service in data and code_indicateur in data[code_service]:  #data[code_service] contient tt les clés vals de chaque indicateur 
                             #localise toutes les lignes qui cochent cette condition (concerne les services avec bcp de communes) et leur attribue la val de l'indicateur
@@ -141,13 +154,17 @@ class Session:
         if self.filtrage in docs_dicts.dict_indicateurs.keys() or self.filtrage in docs_dicts.dict_indicateurs.values():
             maxi=tableau['valeur'].max(skipna=True)
             mini=tableau['valeur'].min(skipna=True)
+            if self.zone=="":
+                self.maxi_jauge=maxi
+                self.mini_jauge=mini
             if maxi!=mini:
                 moy=tableau['valeur'].mean(skipna=True)
                 val_comparaison=maxi-mini
                 pourcent=((moy-mini)/val_comparaison)*100
-                return str(pourcent) 
+                self.moyenne=str(pourcent)
+                return f"{self.moyenne}|{self.filtrage}"
             else :
-                return "100"
+                return f"100|{self.filtrage}"
         else :
             return ""
 
@@ -168,14 +185,23 @@ class Session:
         resultat = con.execute(f"""
         select avg(valeur) as moyenne, unite, {groupe} from tableau join tab_reg on tableau.code_commune = tab_reg.code_commune
         group by {groupe}, unite""").fetchdf()
-        noms = [f"{ligne[groupe]}_{ligne['unite']}" for _, ligne in resultat.iterrows()]
+        nom_pas_filtrés = [f"{ligne[groupe]}_{ligne['unite']}" for _, ligne in resultat.iterrows()]
         vals = resultat['moyenne'].tolist()
-        valeurs=[-1 if math.isnan(val) else val for val in vals]
+        noms=[]
+        valeurs=[]
+        for index,val in enumerate(vals):
+            if not math.isnan(val) :
+                valeurs.append(val)
+                noms.append(nom_pas_filtrés[index])
         data = {"noms": noms,"valeurs": valeurs}
-        if groupe=="region":
+        if groupe=="region" or groupe=="departement":
             evolution_data = {}
             evolution=Session(self.filtrage,self.annee,self.zone,self.service,self.Lservice)
-            for i in range(2008,2020):
+            if tableau['nom_service'].iloc[0] == "assainissement non collectif":
+                annee_fin=2018
+            else :
+                annee_fin=2020
+            for i in range(2008,annee_fin):
                 #dttemp va retourner une dataframe avec les bons params pour chaque année
                 evolution.update_annee(i)
                 dttemp=evolution.tableau_by_search()
@@ -185,29 +211,36 @@ class Session:
                 evolution_data[i] = moyenne
             #data est constitué de data{"nom":[...],"valeurs":[...],"evolution":{annee:valeur....}}
             data["evolution"] = evolution_data
-            clr_region={}
-            maxi=tableau['valeur'].max(skipna=True)
-            mini=tableau['valeur'].min(skipna=True)
-            if maxi!=mini:
-                val_comparaison=maxi-mini
-            for _, elmt in resultat.iterrows():
-                if pd.isna(elmt['moyenne']):
-                    clr_region[elmt['region']] = "rgb(213, 213, 218)"
-                    continue
-                p=((elmt['moyenne']-mini)/val_comparaison)
-                # Rouge -> Jaune -> Vert
-                if p < 0.5:
-                    # de rouge (255,0,0) à jaune (255,255,0)
-                    red = 255
-                    green = int(255 * (p / 0.5)) # de 0 à 255
-                    blue = 0
-                else:
-                    # de jaune (255,255,0) à vert (0,255,0)
-                    red = int(510 * (1 - p))  # de 255 à 0
-                    green = 255
-                    blue = 0
-                clr_region[elmt['region']]=f"rgb({red},{green},{blue})"
-            data['couleur_region']=clr_region
+            clr_zone={} 
+            if self.maxi_jauge!=self.mini_jauge:
+                val_comparaison=self.maxi_jauge-self.mini_jauge
+                if groupe=="region":
+                    self.indicateur_actuel=self.filtrage
+                    self.annee_actuelle=self.annee
+                for _, elmt in resultat.iterrows():
+                    if pd.isna(elmt['moyenne']):
+                        clr_zone[elmt[f'{groupe}']] = "rgb(213, 213, 218)"
+                        continue
+                    p=((elmt['moyenne']-self.mini_jauge)/val_comparaison)
+                    # Rouge -> Jaune -> Vert
+                    if p < 0.5:
+                        # de rouge (255,0,0) à jaune (255,255,0)
+                        red = 255
+                        green = int(255 * (p / 0.5)) # de 0 à 255
+                        blue = 0
+                    else:
+                        # de jaune (255,255,0) à vert (0,255,0)
+                        red = int(510 * (1 - p))  # de 255 à 0
+                        green = 255
+                        blue = 0
+                    clr_zone[elmt[f'{groupe}']]=f"rgb({red},{green},{blue})"
+            elif self.mini_jauge==self.maxi_jauge and self.mini_jauge>0:
+                for _, elmt in resultat.iterrows():
+                    clr_zone[elmt[f'{groupe}']]=f"rgb(0,255,0)" 
+            else : 
+                for _, elmt in resultat.iterrows():
+                    clr_zone[elmt[f'{groupe}']]=f"rgb(255,0,0)" 
+            data['couleur_zone']=clr_zone
         else:
             data["evolution"] = {"rien":"rien"}
         con.close()
@@ -228,8 +261,8 @@ class Session:
             if isinstance(dtframe,str):       #si la requête n'affiche rien, un message en str s'affiche
                 return dtframe
             else:
-                self.constr_graphe(dtframe)
                 test_indicateur= self.jauge(dtframe)
+                self.constr_graphe(dtframe)
                 tableau=dtframe.to_html(classes="tableau",index=False)
                 tableau = tableau.replace('<table ', '<table id="tableau" ') 
             return tableau + "|" + test_indicateur 
