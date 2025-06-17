@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil</title>
-    <link id="theme" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% if theme == 'sombre' %}
+        <link id="theme" rel="stylesheet" href="{{ url_for('static', filename='style_sombre.css') }}">
+    {% else %}
+        <link id="theme" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% endif %}
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='script.js') }}"></script>
@@ -34,10 +38,15 @@
             <li><a href="{{ url_for('a_propos') }}">À propos</a></li>
         </ul>
         <label class="ui-switch">
+        {% if theme == 'sombre' %}
+        <input id="toggle" type="checkbox" onchange="mode_sombre()" checked>
+        {% else %}
         <input id="toggle" type="checkbox" onchange="mode_sombre()">
+        {%endif %}
         <div class="slider">
         <div class="circle"></div>
         </div>
+        </label>
     </nav>
 </header>
 

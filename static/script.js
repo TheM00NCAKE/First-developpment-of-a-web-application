@@ -272,17 +272,20 @@ $(document).ready(function () {
         document.getElementById('jauge').innerHTML="";
     }
 
-    function mode_sombre() {
-    const styleClair = "/static/style.css";
-    const styleSombre = "/static/style_sombre.css";
-    const etat = document.getElementById("toggle").checked;
-    const linkCSS = document.getElementById("theme");
-    if (etat) {
-        linkCSS.href = styleSombre;
-    } else {
-        linkCSS.href = styleClair;
-    }
-}
+function mode_sombre() {
+            // Envoyer la demande au serveur
+            fetch('/toggle_theme', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Recharger la page pour appliquer le nouveau thème
+                window.location.reload();
+            });
+        }
 let barChart = null;
 let barChart2 = null;
 let lineChart = null;

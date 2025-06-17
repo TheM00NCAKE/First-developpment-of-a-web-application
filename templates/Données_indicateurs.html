@@ -5,8 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" user-scalable=no>
     <title>Données indicateurs</title>
-    <link id="theme" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    {% if theme == 'sombre' %}
+        <link id="theme" rel="stylesheet" href="{{ url_for('static', filename='style_sombre.css') }}">
+    {% else %}
+        <link id="theme" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% endif %}    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,10 +48,15 @@
                 <li><a href="{{ url_for('a_propos') }}">À propos</a></li>
             </ul>
             <label class="ui-switch">
+            {% if theme == 'sombre' %}
+            <input id="toggle" type="checkbox" onchange="mode_sombre()" checked>
+            {% else %}
             <input id="toggle" type="checkbox" onchange="mode_sombre()">
+            {%endif %}
             <div class="slider">
             <div class="circle"></div>
             </div>
+            </label>
         </nav>
     </header>
         
