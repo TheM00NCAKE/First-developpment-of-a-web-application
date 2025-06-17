@@ -8,7 +8,8 @@
         <link id="theme" rel="stylesheet" href="{{ url_for('static', filename='style_sombre.css') }}">
     {% else %}
         <link id="theme" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    {% endif %}    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {% endif %}
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
@@ -36,14 +37,14 @@
                 <li><a href="{{ url_for('Données_indicateurs') }}">Données indicateurs</a></li>
             </ul>
             <label class="ui-switch">
-            {% if theme == 'sombre' %}
-            <input id="toggle" type="checkbox" onchange="mode_sombre()" checked>
-            {% else %}
-            <input id="toggle" type="checkbox" onchange="mode_sombre()">
-            {%endif %}
-            <div class="slider">
-            <div class="circle"></div>
-            </div>
+                {% if theme == 'sombre' %}
+                <input id="toggle" type="checkbox" onchange="mode_sombre()" checked>
+                {% else %}
+                <input id="toggle" type="checkbox" onchange="mode_sombre()">
+                {%endif %}
+                <div class="slider">
+                <div class="circle"></div>
+                </div>
             </label>
         </nav>
     </header>
@@ -109,7 +110,7 @@
         <div class="schema-er">
   <h2>Schéma Entité-Relation de la base de données</h2>
   <div class="schema-content">
-    <img src="{{ url_for('static', filename='schema_ER.jpg') }}" alt="Schéma ER de la base de données" />
+    <img src="{{ url_for('static', filename='SchemaER.png') }}" alt="Schéma ER de la base de données" />
     <div class="schema-text">
       <p>
         Ce schéma illustre la structure de notre base de données relationnelle. Il présente les différentes entités (tables),
