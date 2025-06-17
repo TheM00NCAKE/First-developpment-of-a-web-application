@@ -54,11 +54,22 @@ function tri(){
 //fonction pour envoyer les données sur flask 
 function envoie(zone,id){
     document.getElementById('tableau_contenu').innerHTML=test;
-    document.getElementById('jauge').innerHTML="";
     var annee_choisi=document.getElementById('annee').value;
     var service=document.getElementById('service').value;
     var search=document.getElementById('barre_filtrage').value;
     service_choisi=service.split(':');
+    if (id!="zoom"){
+    fetch("/dict_indicateurs_retourner")
+    .then(resp => resp.json()) 
+    .then(data => {
+        var x=document.getElementById('jauge');
+        if ((search === "" || (!Object.keys(data).includes(search) && !Object.values(data).includes(search))) || ((Object.keys(data).includes(search) || Object.values(data).includes(search)) && x.innerHTML != "")){
+            document.getElementById('jauge').innerHTML = "";
+            $(".switch2 .slider").css('opacity','0');
+            $(".switch2 .slider").css('cursor','default');
+        }
+    });
+    }
     if (id=='gua'){
         url=`/Update_tableau?zone=Guadeloupe&annee=${encodeURIComponent(annee_choisi)}&service=${encodeURIComponent(service_choisi[0])}&Lservice=${encodeURIComponent(service_choisi[1])}`;
     }else{
@@ -71,7 +82,7 @@ function envoie(zone,id){
             document.getElementById('tableau_contenu').innerHTML = parts[0];
             if (id=="b"){
                 var data= parseFloat(parts[1]);
-                jauge([data]);
+                jauge([data], parts[2]);
                 $(".switch2 .slider").css('opacity','1');
                 $(".switch2 .slider").css('cursor','pointer');
             }
@@ -81,6 +92,7 @@ function envoie(zone,id){
                 .then(data => {
                     graphiques(data.noms, data.valeurs,Object.keys(data.evolution),Object.values(data.evolution));
                 });
+                avant();
     });
 }
 function avant_envoie(x){
@@ -97,18 +109,20 @@ document.addEventListener('DOMContentLoaded', () => {
   tri();
 });
 /////////////////////////////Fin code tableau
-function jauge(val){
+function jauge(val,nom_indicateur){
     if (!isNaN(val)){
         // set the gauge type
         var gauge = anychart.gauges.linear();
+        var titre=gauge.title();
+        titre.enabled(true);
+        titre.text("Moyenne de l'indicateur " + nom_indicateur + " en France");
         // set the data for the gauge
         gauge.data(val);
         // set the layout
         gauge.layout('horizontal');
         // create a color scale
         var scaleBarColorScale = anychart.scales.ordinalColor().ranges(
-        [{from: -10,to: 0,color: ['#d5d5da', '#d5d5da']},
-        {from: 0,to: 25,color: ['#D81E05', '#EB7A02']},
+        [{from: 0,to: 25,color: ['#D81E05', '#EB7A02']},
         {from: 25,to: 50,color: ['#EB7A02', '#FFD700']},
         {from: 50,to: 75,color: ['#FFD700', '#CAD70b']},
         {from: 75,to: 100,color: ['#CAD70b', '#2AD62A']}]);
@@ -130,50 +144,62 @@ function jauge(val){
         marker.width(30);
         // configure the scale
         var scale = gauge.scale();
-        scale.minimum(-10);
+        scale.minimum(0);
         scale.maximum(100);
         scale.ticks().interval(10);
         // configure the axis
         var axis = gauge.axis();
+        const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+        if (bodyBg === "rgb(30, 42, 56)"){
+            axis.stroke('white');
+            axis.ticks().stroke('white');
+            axis.minorTicks().stroke('white');
+            axis.labels().fontColor('white');
+        }else{
         axis.stroke('black');
-        axis.minorTicks(true);
-        axis.ticks().length(20);
         axis.ticks().stroke('black');
         axis.minorTicks().stroke('black');
+        axis.labels().fontColor('black');
+        }
+        axis.minorTicks(true);
+        axis.ticks().length(20);
         axis.width('2%');
         axis.offset('90%');
         axis.orientation('top');
         // format axis labels
-        var valeurs=['vide','0%','10%','20%','30%','40%','50%','60%','70%','80%','90%','100%'];
-        axis.labels().format(function() {
-            var val = this.value;
-            var index = (val + 10) / 10;  // car valeurs de -10 à 100 avec intervalle 10
-            return valeurs[index] || '';  // retourne une chaîne vide si index invalide
-        });
-        axis.labels().fontColor('black');
+        axis.labels().format('{%value}%');
         gauge.padding([0, 50]);
         gauge.container('jauge');
+        gauge.background().fill("transparent");
         gauge.draw();
         document.getElementsByClassName('anychart-credits')[0].innerHTML="";
     }
 }
 
 function couleur_region(dict){
-    const etat2 = document.getElementById("clr").checked;
-    if (etat2){
+    const etat2 = document.getElementById("clr");
+    if ((etat2.checked)&&(($('.switch2 .slider').css('opacity') != '0'))){
     $(".regions").css('fill','#d5d5da'); 
+    $(".Gua").css('fill','#d5d5da'); 
     $('.departements').css('fill','transparent');
     for (let element in dict){
         if (element=="Guadeloupe"){
-            $('.Gua').css('fill', dict[element]);
+            $('.Gua').css('fill', dict[element] + ' !important');
         }
         $('#'+element).css('fill', dict[element]);
     }
-    }else{
+    }else if ($('.switch2 .slider').css('opacity') != '0') {
         $(".regions").css('fill',''); 
         $('.departements').css('fill','');
     }
 }
+
+function avant(){
+    fetch('/static/graph_data_region.json')
+        .then(resp => resp.json())
+        .then(data => {
+        couleur_region(data.couleur_zone);
+    })}
 
 //quand le document est chargé : 
 $(document).ready(function () {
@@ -191,8 +217,12 @@ $(document).ready(function () {
     });
 
     $('.Gua').on('mouseout', function () {
-        $('.Gua').css('fill', ''); // remet la couleur par défaut du SVG
-    });
+        if (document.getElementById('jauge').innerHTML==""){
+            $('.Gua').css('fill', ''); // remet la couleur par défaut du SVG
+        }else{
+            $('.Gua').css('fill', '#d5d5da');
+        }
+        });
     $('#regs .regions').click(function (e) {   /*lorsqu'une zone de la carte de la France a été cliqué*/
         e.stopPropagation();
         $('.regions').css('fill', '');
@@ -202,7 +232,7 @@ $(document).ready(function () {
         var depts='#Depts_'+this.id;
         deptss=$(depts).find('.departements'); //on récupère chaque département de l'id récupéré
         //application du css : zoom, ajout/enlève la possibilité de cliquer/mouseover sur certains endroits
-        envoie(this.id,"");
+        envoie(this.id,"zoom");
     // Applique le zoom dans la prochaine frame
         $carte.css('transform-origin', TOrigin[this.id]);
         // Active le will-change juste avant le zoom (permet de notifier le navig qu'on veut zoomer : le nav se "prépare" -> latence diminué)
@@ -217,21 +247,11 @@ $(document).ready(function () {
 
         $('#regs').css('pointer-events', 'none');
         $(deptss).css('pointer-events', 'auto');
-        $(deptss).mouseover(function () {
-        //le if pour l'instant est un bout de code inutile (prendre en compte que le else), à voir pour la suite avec la gestion des requêtes :)
-            if (departement_clique != "") {
-                $('.departements').not(departement_clique).css('fill', '');
-                $(departement_clique).css('fill',couleurs['color_dept_clique']); 
-            } else {
-                $('.departements').css('fill', '');
-            }
-            $(this).css('fill', couleurs['color_dept_mouseover']); //couleur de dept ou la souris passe dessus
-            });
             $(deptss).click(function(){
                 $(deptss).css('fill', '');
                 $(this).css('fill', couleurs['color_dept_clique']); //couleur de la région cliqué change
                 departement_clique="#"+this.id;
-                envoie(this.id,"");
+                envoie(this.id,"zoom");
             });
             });
         $('#reg_OutreMer .regions').click(function (e) {
@@ -269,7 +289,6 @@ $(document).ready(function () {
         $(deptss).css('pointer-events', 'none');
         region_clique = "";
         departement_clique = "";
-        document.getElementById('jauge').innerHTML="";
     }
 
 function mode_sombre() {
@@ -290,14 +309,6 @@ let barChart = null;
 let barChart2 = null;
 let lineChart = null;
 
-function avant(){
-    fetch('/static/graph_data_region.json')
-        .then(resp => resp.json())
-        .then(data => {
-        couleur_region(data.couleur_region);
-    })}
-
-
 function graphiques(labels1, values1,labels2,values2) {
     if (barChart) {
         barChart.destroy();
@@ -308,12 +319,16 @@ function graphiques(labels1, values1,labels2,values2) {
     if (lineChart){
         lineChart.destroy();
     };
+    $("#graphique").css('opacity',1);
     const barCanvas2 = document.getElementById("barCanvas2");
     var vp61=labels1.indexOf("VP.061_m³");
     var val_vp61=values1[vp61];
     if (val_vp61){
     labels1.splice(vp61,1);
     values1.splice(vp61,1);
+    none_val=labels1.indexOf(-1);
+    labels1.splice(none_val,14);
+    values1.splice(none_val,14);
     barChart2 = new Chart(barCanvas2, {
         type: "bar",
         data: {
@@ -357,7 +372,7 @@ function graphiques(labels1, values1,labels2,values2) {
         data: {
             labels: labels2,
             datasets: [{
-                label: "Evolution par année whatever",
+                label: "Evolution par année",
                 data: values2,
                 borderWidth: 1
             }]
