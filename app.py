@@ -1,23 +1,26 @@
-from flask import Flask, render_template, request, session, jsonify
+from flask import Flask, render_template, session, request, jsonify
 from Model import *
 
 app = Flask(__name__)
 app.secret_key = 'votre_cle_secrete'  # Changez cette clé !
-
 @app.route("/")
 def index():    
     theme = session.get('theme', 'clair')
-    return render_template("index.html", theme=theme)
+    return render_template("index.html",theme=theme)
+
+@app.route("/dict_indicateurs_retourner")
+def dict_indicateurs_retourner():
+    return jsonify(docs_dicts.dict_indicateurs)
 
 @app.route('/a_propos')
 def a_propos():
     theme = session.get('theme', 'clair')
-    return render_template('a_propos.html', theme=theme)
+    return render_template('a_propos.html',theme=theme)
 
 @app.route('/Documentation')
 def Documentation():
     theme = session.get('theme', 'clair')
-    return render_template('Documentation.html', theme=theme)
+    return render_template('Documentation.html',theme=theme)
 
 @app.route('/Données_indicateurs', methods=['GET'])
 def Données_indicateurs():
@@ -37,7 +40,7 @@ def Update_tableau():
         return sessions.processus_tab_graphe()
     except Exception as e:
         return(f"Erreur lors du chargement des données : {e}")
-    
+
 @app.route('/toggle_theme', methods=['POST'])
 def toggle_theme():
     # Récupérer l'état actuel du thème
