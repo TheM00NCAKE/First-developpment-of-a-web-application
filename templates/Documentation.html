@@ -35,15 +35,16 @@
                     <li><a href="{{ url_for('a_propos') }}">À propos</a></li>
                 </ul>
           <label class="ui-switch">
-          {% if theme == 'sombre' %}
-          <input id="toggle" type="checkbox" onchange="mode_sombre()" checked>
-          {% else %}
-          <input id="toggle" type="checkbox" onchange="mode_sombre()">
-          {%endif %}
-          <div class="slider">
-          <div class="circle"></div>
-          </div>
+            {% if theme == 'sombre' %}
+            <input id="toggle" type="checkbox" onchange="mode_sombre()" checked>
+            {% else %}
+            <input id="toggle" type="checkbox" onchange="mode_sombre()">
+            {%endif %}
+            <div class="slider">
+            <div class="circle"></div>
+            </div>
           </label>
+          <!--</div>  -->
         </nav>
     </header>
 
