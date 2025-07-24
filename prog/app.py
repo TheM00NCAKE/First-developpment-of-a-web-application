@@ -1,8 +1,11 @@
 from flask import Flask, render_template, session, request, jsonify
 from Model import *
-
-app = Flask(__name__)
-app.secret_key = 'votre_cle_secrete'  # Changez cette clé !
+from pathlib import Path
+#faire en sorte que les éléments comme la feuille de style et les images sont récupérés correctement
+path = str((Path(__file__).parent).parent / 'templates') 
+path2 = str((Path(__file__).parent).parent / 'static')
+app = Flask(__name__, template_folder=path, static_folder=path2)
+app.secret_key = 'la_cle_secrete'  
 @app.route("/")
 def index():    
     theme = session.get('theme', 'clair')
